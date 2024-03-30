@@ -14,13 +14,15 @@ import ProjectAllocation from './Src/ProjectAllocation';
 import ScheduleMeeting from './Src/ScheduleMeeting';
 import StudentMeeting from './Src/Meeting';
 import CommitteeMeetings from './Src/CommitteeMeetings';
+import FypGroups from './Src/FYP-Groups';
+import CommitteeProjectDetails from './Src/CommitteeProjectDetails';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="login">
+      <Stack.Navigator initialRouteName="CommitteeDashboard">
         <Stack.Screen name="login" component={Login} />
         <Stack.Screen name="StudentDashboard" component={Dash_borad} />
         <Stack.Screen name="Request" component={Request_Details} />
@@ -36,6 +38,11 @@ const App = () => {
         <Stack.Screen name="ProjectAllocation" component={ProjectAllocation} />
         <Stack.Screen name="ScheduleMeeting" component={ScheduleMeeting} />
         <Stack.Screen name="CommiteMeetings" component={CommitteeMeetings} />
+        <Stack.Screen name="FypGroups" component={FypGroups} />
+        <Stack.Screen
+          name="CommitteeProjectDetails"
+          component={CommitteeProjectDetails}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

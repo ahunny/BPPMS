@@ -12,39 +12,39 @@ const CommitteeMeetings = props => {
   const data = [
     {
       id: '1',
-      title: 'Committee',
-      Venue: 'Conference Room',
-      time: '12-12-2023',
-      image: require('./Assets/icons8-person-50.png'),
+      Group: 'FYP-0 Groups',
+      Date: '12-12-2023',
+      time: '10:00:00AM',
+      image: require('./Assets/icons8-group-30.png'),
       imageclock: require('./Assets/icons8-clock-50.png'),
-      imagedoor: require('./Assets/icons8-door-32.png'),
+      imagedoor: require('./Assets/icons8-schedule-64.png'),
     },
     {
       id: '2',
-      title: 'Committee',
-      Venue: 'Faculty Office S6',
-      time: '12-12-2023',
-      image: require('./Assets/icons8-person-50.png'),
+      Group: 'FYP-1 Groups',
+      Date: '01-01-2024',
+      time: '10:00:00AM',
+      image: require('./Assets/icons8-group-30.png'),
       imageclock: require('./Assets/icons8-clock-50.png'),
-      imagedoor: require('./Assets/icons8-door-32.png'),
+      imagedoor: require('./Assets/icons8-schedule-64.png'),
     },
     {
       id: '3',
-      title: 'Committee',
-      Venue: 'Conference Room',
-      time: '12-12-2023',
-      image: require('./Assets/icons8-person-50.png'),
+      Group: 'FYP-2 Groups',
+      Date: '02-02-2024',
+      time: '11:00:00AM',
+      image: require('./Assets/icons8-group-30.png'),
       imageclock: require('./Assets/icons8-clock-50.png'),
-      imagedoor: require('./Assets/icons8-door-32.png'),
+      imagedoor: require('./Assets/icons8-schedule-64.png'),
     },
     {
       id: '4',
-      title: 'Committee',
-      Venue: 'Conference Room',
-      time: '12-12-2023',
-      image: require('./Assets/icons8-person-50.png'),
+      Group: 'FYP-1 Groups',
+      Date: '26-04-2024',
+      time: '12:00:00PM',
+      image: require('./Assets/icons8-group-30.png'),
       imageclock: require('./Assets/icons8-clock-50.png'),
-      imagedoor: require('./Assets/icons8-door-32.png'),
+      imagedoor: require('./Assets/icons8-schedule-64.png'),
     },
   ];
 
@@ -84,7 +84,7 @@ const CommitteeMeetings = props => {
                   />
                   <Text
                     style={{textAlign: 'center', color: 'black', fontSize: 16}}>
-                    {item.title}
+                    {item.Group}
                   </Text>
                 </View>
                 <View
@@ -93,7 +93,7 @@ const CommitteeMeetings = props => {
                     style={{
                       width: 20,
                       height: 20,
-                      borderRadius: 25,
+                      borderRadius: 5,
                       marginRight: 5,
                     }}
                     source={item.imagedoor}
@@ -103,7 +103,7 @@ const CommitteeMeetings = props => {
                       textAlign: 'center',
                       color: 'black',
                       fontSize: 16,
-                    }}>{`${item.Venue}`}</Text>
+                    }}>{`${item.Date}`}</Text>
                 </View>
                 <View
                   style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
@@ -121,13 +121,13 @@ const CommitteeMeetings = props => {
                       textAlign: 'center',
                       color: 'black',
                       fontSize: 16,
-                    }}>{`Time: ${item.time}`}</Text>
+                    }}>{`${item.time}`}</Text>
                   <Image
                     source={require('./Assets/icons8-upcoming-event-24.png')} // Provide the local image path
                     style={{
                       width: 20,
                       height: 20,
-                      marginLeft: 120,
+                      marginLeft: 150,
                       marginTop: -50,
                     }} // Set the width and height of the image
                   />
