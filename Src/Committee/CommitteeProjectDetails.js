@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, FlatList} from 'react-native';
 import {SelectList} from 'react-native-dropdown-select-list';
+import {useNavigation} from '@react-navigation/native';
 
 const CommitteeProjectDetails = () => {
   const data = [
@@ -41,6 +42,8 @@ const CommitteeProjectDetails = () => {
     },
   ];
 
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -76,7 +79,8 @@ const CommitteeProjectDetails = () => {
           alignItems: 'center',
           alignContent: 'center',
           alignSelf: 'center',
-        }}>
+        }}
+        onPress={() => navigation.navigate('Addtask')}>
         <Text style={styles.buttonText}>Add Task</Text>
       </TouchableOpacity>
       <TouchableOpacity

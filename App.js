@@ -2,27 +2,29 @@ import React from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Dash_borad from './Src/StudentDashbord';
-import Request_Details from './Src/Request';
+import Dash_borad from './Src/Student/StudentDashbord';
 import Login from './Src/Login';
-import Creategroup from './Src/createGroup';
-import ReqSupervisor from './Src/ReqSupervisor';
-import UploadTasks from './Src/UploadTask';
-import CommitteeDashborad from './Src/CommitteeDashboard';
-import Groups from './Src/Groups';
-import ProjectAllocation from './Src/ProjectAllocation';
-import ScheduleMeeting from './Src/ScheduleMeeting';
-import StudentMeeting from './Src/Meeting';
-import CommitteeMeetings from './Src/CommitteeMeetings';
-import FypGroups from './Src/FYP-Groups';
-import CommitteeProjectDetails from './Src/CommitteeProjectDetails';
+import Creategroup from './Src/Student/createGroup';
+import ReqSupervisor from './Src/Student/ReqSupervisor';
+import UploadTasks from './Src/Student/UploadTask';
+import CommitteeDashborad from './Src/Committee/CommitteeDashboard';
+import Groups from './Src/Committee/Groups';
+import ProjectAllocation from './Src/Committee/ProjectAllocation';
+import ScheduleMeeting from './Src/Committee/ScheduleMeeting';
+import CommitteeMeetings from './Src/Committee/CommitteeMeetings';
+import FypGroups from './Src/Committee/FYP-Groups';
+import CommitteeProjectDetails from './Src/Committee/CommitteeProjectDetails';
+import Addtask from './Src/Committee/CommitteeAddTask';
+import Request_Details from './Src/Student/Request';
+import StudentMeeting from './Src/Student/Meeting';
+import UploadedTasks from './Src/Committee/ViewTask';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="CommitteeDashboard">
+      <Stack.Navigator initialRouteName="uploadedTasks">
         <Stack.Screen name="login" component={Login} />
         <Stack.Screen name="StudentDashboard" component={Dash_borad} />
         <Stack.Screen name="Request" component={Request_Details} />
@@ -43,6 +45,8 @@ const App = () => {
           name="CommitteeProjectDetails"
           component={CommitteeProjectDetails}
         />
+        <Stack.Screen name="Addtask" component={Addtask} />
+        <Stack.Screen name="uploadedTasks" component={UploadedTasks} />
       </Stack.Navigator>
     </NavigationContainer>
   );

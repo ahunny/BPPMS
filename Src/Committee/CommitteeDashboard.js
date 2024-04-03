@@ -15,18 +15,13 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Project_details from './Project';
-import Grades from './ProjectDetails';
-import Request_Details from './Request';
-import Meeting_Schedule from './Meeting';
-import Tasklist from './Task';
+
 const Tab = createBottomTabNavigator();
 const multiplescreen = createNativeStackNavigator();
-import Creategroup from './createGroup';
-import ProjectAllocation from './ProjectAllocation';
+
 import Groups from './Groups';
 import ScheduleMeeting from './ScheduleMeeting';
-import StudentMeeting from './Meeting';
+
 import CommitteeMeetings from './CommitteeMeetings';
 const Stack = createNativeStackNavigator();
 const Dashboardscreens = props => {
