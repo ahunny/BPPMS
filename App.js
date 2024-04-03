@@ -24,8 +24,16 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="uploadedTasks">
-        <Stack.Screen name="login" component={Login} />
+      <Stack.Navigator
+        initialRouteName="CommitteeDashboard"
+        screenOptions={{
+          headerStyle: {backgroundColor: '#74A2A8'},
+        }}>
+        <Stack.Screen
+          name="login"
+          component={Login}
+          options={{headerShown: false}}
+        />
         <Stack.Screen name="StudentDashboard" component={Dash_borad} />
         <Stack.Screen name="Request" component={Request_Details} />
         <Stack.Screen name="Meeting" component={StudentMeeting} />

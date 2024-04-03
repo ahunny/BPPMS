@@ -35,7 +35,7 @@ function Login() {
     <ScrollView style={{backgroundColor: '#74A2A8'}}>
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
         <View style={styles.container}>
-          <View style={{flexDirection: 'row', flex: 1}}>
+          <View style={{flexDirection: 'row', flex: 1, marginTop: 60}}>
             <Image source={require('./Assets/logo.png')} style={styles.logo} />
             <View style={styles.container1}>
               <Text style={styles.AppNameLabel1}>BIIT PROJECT PROGRESS</Text>
@@ -51,6 +51,7 @@ function Login() {
           <View style={styles.container2}>
             <Text style={styles.SmallLabels}>Username</Text>
             <TextInput
+              placeholderTextColor={'grey'}
               style={styles.input}
               placeholder="Enter your username"
               onChangeText={text => setusername(text)}
@@ -60,6 +61,7 @@ function Login() {
             <Text style={styles.SmallLabels}>Password</Text>
             <TextInput
               style={styles.input}
+              placeholderTextColor={'grey'}
               placeholder="Enter your password"
               secureTextEntry={true} // Mask the password
               onChangeText={text => setPassword(text)}
@@ -68,10 +70,6 @@ function Login() {
 
             <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
               <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={handleLogin}>
-              <Text style={styles.forgotPasswordlabel}>Forget Password?</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -101,11 +99,11 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 10,
+      height: 5,
     },
     shadowOpacity: 0.8,
-    shadowRadius: 5,
-    elevation: 10,
+    shadowRadius: 2,
+    elevation: 2,
   },
 
   SmallLabels: {
@@ -118,23 +116,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     alignSelf: 'center',
     fontWeight: 'bold',
-    color: 'blue',
+    color: 'black',
   },
   AppNameLabel1: {
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
     textShadowColor: 'rgba(0, 0, 0, 0.5)',
-    textShadowOffset: {width: 2, height: 6},
+    textShadowOffset: {width: 2, height: 2},
     textShadowRadius: 10,
     marginTop: 40,
   },
   AppNameLabel2: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: 'bold',
     color: 'white',
     textShadowColor: 'rgba(0, 0, 0, 0.5)',
-    textShadowOffset: {width: 2, height: 6},
+    textShadowOffset: {width: 2, height: 2},
     textShadowRadius: 10,
   },
   WelcomeLabel: {
@@ -142,7 +140,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     textShadowColor: 'rgba(0, 0, 0, 0.5)',
-    textShadowOffset: {width: 2, height: 6},
+    textShadowOffset: {width: 2, height: 1},
     textShadowRadius: 10,
     marginLeft: 20,
     //paddingBottom:5,
@@ -164,9 +162,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10, // 10-degree curve
     shadowColor: '#000',
+    color: 'black',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 1,
     },
     shadowOpacity: 0.3,
     shadowRadius: 3.84,
@@ -175,9 +174,9 @@ const styles = StyleSheet.create({
   loginButton: {
     backgroundColor: '#74A2A8',
     padding: 8,
-    borderRadius: 5,
+    borderRadius: 15,
     height: 40,
-    width: 100,
+    width: '50%',
     alignItems: 'center',
     alignSelf: 'center',
     marginTop: 20,
@@ -186,7 +185,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     textShadowColor: 'rgba(0, 0, 0, 0.5)',
-    textShadowOffset: {width: 2, height: 4},
+    textShadowOffset: {width: 2, height: 1},
     textShadowRadius: 10,
   },
   logo: {
