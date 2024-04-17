@@ -94,7 +94,8 @@ const CommitteeProjectDetails = () => {
           alignItems: 'center',
           alignContent: 'center',
           alignSelf: 'center',
-        }}>
+        }}
+        onPress={() => navigation.navigate('Uploaded Tasks')}>
         <Text style={styles.buttonText}>View Task</Text>
       </TouchableOpacity>
     </View>

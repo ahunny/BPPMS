@@ -15,9 +15,18 @@ import {useNavigation} from '@react-navigation/native';
 import {SelectList} from 'react-native-dropdown-select-list';
 
 const Creategroup = () => {
-  const [selectedSection, setSelectedSection] = useState('');
+  const [selectedStudent, setSelectedStudent] = useState('');
+  const [selectedPlatform, setSelectedPlatform] = useState('');
 
-  const SectionsList = [
+  const StudentList = [
+    {key: '1', value: 'Manufactring'},
+    {key: '2', value: 'Packing'},
+    {key: '3', value: 'Management'},
+    {key: '4', value: 'Shipping'},
+    {key: '5', value: 'Marketing'},
+  ];
+
+  const PlatformList = [
     {key: '1', value: 'Manufactring'},
     {key: '2', value: 'Packing'},
     {key: '3', value: 'Management'},
@@ -37,11 +46,11 @@ const Creategroup = () => {
               marginTop: 20,
             }}>
             <SelectList
-              setSelected={val => setSelectedSection(val)}
-              data={SectionsList}
+              setSelected={val => setSelectedStudent(val)}
+              data={StudentList}
               save="value" // also set save to key.
               onSelect={() => {
-                console.warn(selectedSection);
+                console.warn(selectedStudent);
               }}
               searchPlaceholder="Search Student"
               dropdownTextStyles={{color: 'black'}}
@@ -50,11 +59,110 @@ const Creategroup = () => {
               inputStyles={styles.selectListInput}
             />
             <SelectList
-              setSelected={val => setSelectedSection(val)}
-              data={SectionsList}
+              setSelected={val => setSelectedPlatform(val)}
+              data={PlatformList}
               save="value" // also set save to key.
               onSelect={() => {
-                console.warn(selectedSection);
+                console.warn(selectedPlatform);
+              }}
+              searchPlaceholder="Platform"
+              dropdownTextStyles={{color: 'black'}}
+              boxStyles={styles.platFormSelect}
+              placeholder="Platform"
+              inputStyles={styles.selectListInput}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginTop: 20,
+            }}>
+            <SelectList
+              setSelected={val => setSelectedStudent(val)}
+              data={StudentList}
+              save="value" // also set save to key.
+              onSelect={() => {
+                console.warn(selectedStudent);
+              }}
+              searchPlaceholder="Search Student"
+              dropdownTextStyles={{color: 'black'}}
+              boxStyles={styles.selectListStyle}
+              placeholder="Select Student"
+              inputStyles={styles.selectListInput}
+            />
+            <SelectList
+              setSelected={val => setSelectedPlatform(val)}
+              data={PlatformList}
+              save="value" // also set save to key.
+              onSelect={() => {
+                console.warn(selectedPlatform);
+              }}
+              searchPlaceholder="Platform"
+              dropdownTextStyles={{color: 'black'}}
+              boxStyles={styles.platFormSelect}
+              placeholder="Platform"
+              inputStyles={styles.selectListInput}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginTop: 20,
+            }}>
+            <SelectList
+              setSelected={val => setSelectedStudent(val)}
+              data={StudentList}
+              save="value" // also set save to key.
+              onSelect={() => {
+                console.warn(selectedStudent);
+              }}
+              searchPlaceholder="Search Student"
+              dropdownTextStyles={{color: 'black'}}
+              boxStyles={styles.selectListStyle}
+              placeholder="Select Student"
+              inputStyles={styles.selectListInput}
+            />
+            <SelectList
+              setSelected={val => setSelectedPlatform(val)}
+              data={PlatformList}
+              save="value" // also set save to key.
+              onSelect={() => {
+                console.warn(selectedPlatform);
+              }}
+              searchPlaceholder="Platform"
+              dropdownTextStyles={{color: 'black'}}
+              boxStyles={styles.platFormSelect}
+              placeholder="Platform"
+              inputStyles={styles.selectListInput}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginTop: 20,
+            }}>
+            <SelectList
+              setSelected={val => setSelectedStudent(val)}
+              data={StudentList}
+              save="value" // also set save to key.
+              onSelect={() => {
+                console.warn(selectedStudent);
+              }}
+              searchPlaceholder="Search Student"
+              dropdownTextStyles={{color: 'black'}}
+              boxStyles={styles.selectListStyle}
+              placeholder="Select Student"
+              inputStyles={styles.selectListInput}
+            />
+            <SelectList
+              setSelected={val => setSelectedPlatform(val)}
+              data={PlatformList}
+              save="value" // also set save to key.
+              onSelect={() => {
+                console.warn(selectedPlatform);
               }}
               searchPlaceholder="Platform"
               dropdownTextStyles={{color: 'black'}}
@@ -71,7 +179,7 @@ const Creategroup = () => {
             }}>
             <SelectList
               setSelected={val => setSelectedSection(val)}
-              data={SectionsList}
+              data={StudentList}
               save="value" // also set save to key.
               onSelect={() => {
                 console.warn(selectedSection);
@@ -83,110 +191,11 @@ const Creategroup = () => {
               inputStyles={styles.selectListInput}
             />
             <SelectList
-              setSelected={val => setSelectedSection(val)}
-              data={SectionsList}
+              setSelected={val => setSelectedPlatform(val)}
+              data={PlatformList}
               save="value" // also set save to key.
               onSelect={() => {
-                console.warn(selectedSection);
-              }}
-              searchPlaceholder="Platform"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.platFormSelect}
-              placeholder="Platform"
-              inputStyles={styles.selectListInput}
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginTop: 20,
-            }}>
-            <SelectList
-              setSelected={val => setSelectedSection(val)}
-              data={SectionsList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(selectedSection);
-              }}
-              searchPlaceholder="Search Student"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.selectListStyle}
-              placeholder="Select Student"
-              inputStyles={styles.selectListInput}
-            />
-            <SelectList
-              setSelected={val => setSelectedSection(val)}
-              data={SectionsList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(selectedSection);
-              }}
-              searchPlaceholder="Platform"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.platFormSelect}
-              placeholder="Platform"
-              inputStyles={styles.selectListInput}
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginTop: 20,
-            }}>
-            <SelectList
-              setSelected={val => setSelectedSection(val)}
-              data={SectionsList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(selectedSection);
-              }}
-              searchPlaceholder="Search Student"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.selectListStyle}
-              placeholder="Select Student"
-              inputStyles={styles.selectListInput}
-            />
-            <SelectList
-              setSelected={val => setSelectedSection(val)}
-              data={SectionsList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(selectedSection);
-              }}
-              searchPlaceholder="Platform"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.platFormSelect}
-              placeholder="Platform"
-              inputStyles={styles.selectListInput}
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginTop: 20,
-            }}>
-            <SelectList
-              setSelected={val => setSelectedSection(val)}
-              data={SectionsList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(selectedSection);
-              }}
-              searchPlaceholder="Search Student"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.selectListStyle}
-              placeholder="Select Student"
-              inputStyles={styles.selectListInput}
-            />
-            <SelectList
-              setSelected={val => setSelectedSection(val)}
-              data={SectionsList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(selectedSection);
+                console.warn(selectedPlatform);
               }}
               searchPlaceholder="Platform"
               dropdownTextStyles={{color: 'black'}}

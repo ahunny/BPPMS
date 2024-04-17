@@ -17,7 +17,9 @@ import CommitteeProjectDetails from './Src/Committee/CommitteeProjectDetails';
 import Addtask from './Src/Committee/CommitteeAddTask';
 import Request_Details from './Src/Student/Request';
 import StudentMeeting from './Src/Student/Meeting';
-import UploadedTasks from './Src/Committee/ViewTask';
+import ViewUploadedTasks from './Src/Committee/ViewUploadedTask';
+import Viewtask from './Src/Committee/ViewTask';
+import AddRemarks from './Src/Committee/AddRemarks';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,7 +56,9 @@ const App = () => {
           component={CommitteeProjectDetails}
         />
         <Stack.Screen name="Addtask" component={Addtask} />
-        <Stack.Screen name="uploadedTasks" component={UploadedTasks} />
+        <Stack.Screen name="Uploaded Tasks" component={ViewUploadedTasks} />
+        <Stack.Screen name="View Task" component={Viewtask} />
+        <Stack.Screen name="Add Remarks" component={AddRemarks} />
       </Stack.Navigator>
     </NavigationContainer>
   );
