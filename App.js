@@ -20,6 +20,7 @@ import StudentMeeting from './Src/Student/Meeting';
 import ViewUploadedTasks from './Src/Committee/ViewUploadedTask';
 import Viewtask from './Src/Committee/ViewTask';
 import AddRemarks from './Src/Committee/AddRemarks';
+import Grading from './Src/Committee/Grading1';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,7 +28,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="CommitteeDashboard"
+        initialRouteName="login"
         screenOptions={{
           headerStyle: {backgroundColor: '#74A2A8'},
         }}>
@@ -59,6 +60,7 @@ const App = () => {
         <Stack.Screen name="Uploaded Tasks" component={ViewUploadedTasks} />
         <Stack.Screen name="View Task" component={Viewtask} />
         <Stack.Screen name="Add Remarks" component={AddRemarks} />
+        <Stack.Screen name="Grading" component={Grading} />
       </Stack.Navigator>
     </NavigationContainer>
   );

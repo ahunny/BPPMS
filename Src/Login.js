@@ -22,9 +22,9 @@ function Login() {
 
   const handleLogin = () => {
     // Check if the entered email and password match the default values
-    if (username === 'student') {
+    if (username === 'Student') {
       navigation.navigate('StudentDashboard');
-    } else if (username === 'com') {
+    } else if (username === 'Committee') {
       navigation.navigate('CommitteeDashboard');
     } else {
       console.error('Invalid Credentials');

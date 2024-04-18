@@ -33,151 +33,181 @@ const Dashboardscreens = props => {
         alignItems: 'center',
         flexDirection: 'column',
       }}>
-      <TouchableOpacity
+      <View
         style={{
-          elevation: 5,
-          backgroundColor: 'lightgrey',
-          borderRadius: 10,
-          width: '85%',
-          height: '15%',
-          marginTop: 55,
-        }}
-        onPress={() => props.navigation.navigate('FypGroups')}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            justifyContent: 'flex-start',
-            padding: 10,
-          }}>
-          <View
-            style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
-            <Image
-              source={require('./Assets/icons8-group-30.png')} // Provide the local image path
-              style={{width: 50, height: 50, marginTop: 10}} // Set the width and height of the image
-            />
-            <Text style={{color: 'black', fontSize: 16}}>
-              {' '}
-              {'FYP-0 GROUPS'}
-            </Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          elevation: 5,
-          backgroundColor: 'lightgrey',
-          borderRadius: 10,
-          width: '85%',
-          height: '15%',
-          marginTop: 20,
-        }}
-        onPress={() => props.navigation.navigate('FypGroups')}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            justifyContent: 'flex-start',
-            padding: 10,
-          }}>
-          <View
-            style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
-            <Image
-              source={require('./Assets/icons8-group-30.png')} // Provide the local image path
-              style={{width: 50, height: 50, marginTop: 10}} // Set the width and height of the image
-            />
-            <Text style={{color: 'black', fontSize: 16}}>
-              {' '}
-              {'FYP-1 GROUPS'}
-            </Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          elevation: 5,
-          backgroundColor: 'lightgrey',
-          borderRadius: 10,
-          width: '85%',
-          height: '15%',
-          marginTop: 20,
-        }}
-        onPress={() => props.navigation.navigate('FypGroups')}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            justifyContent: 'flex-start',
-            padding: 10,
-          }}>
-          <View
-            style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
-            <Image
-              source={require('./Assets/icons8-group-30.png')} // Provide the local image path
-              style={{width: 50, height: 50, marginTop: 10}} // Set the width and height of the image
-            />
-            <Text style={{color: 'black', fontSize: 16}}>
-              {' '}
-              {'FYP-2 GROUPS'}
-            </Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          elevation: 5,
-          backgroundColor: 'lightgrey',
-          borderRadius: 10,
-          width: '85%',
-          height: '15%',
-          marginTop: 20,
+          flexDirection: 'row',
         }}>
-        <View
+        <TouchableOpacity
           style={{
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            justifyContent: 'flex-start',
-            padding: 10,
-          }}>
+            elevation: 5,
+            backgroundColor: 'lightgrey',
+            borderRadius: 40,
+            width: '45%',
+            height: '90%',
+            marginTop: 55,
+          }}
+          onPress={() => props.navigation.navigate('FypGroups')}>
           <View
-            style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
-            <Image
-              source={require('./Assets/icons8-refresh-50.png')} // Provide the local image path
-              style={{width: 50, height: 50, marginTop: 10}} // Set the width and height of the image
-            />
-            <Text style={{color: 'black', fontSize: 16}}>
-              {' '}
-              {'RE-Allocation'}
-            </Text>
+            style={{
+              flexDirection: 'row',
+              padding: 10,
+            }}>
+            <View
+              style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
+              <Image
+                source={require('./Assets/icons8-group-30.png')} // Provide the local image path
+                style={{width: 50, height: 50, marginTop: 30}} // Set the width and height of the image
+              />
+              <Text style={{color: 'black', fontSize: 16}}>
+                {' '}
+                {'FYP-0 GROUPS'}
+              </Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          elevation: 5,
-          backgroundColor: 'lightgrey',
-          borderRadius: 10,
-          width: '85%',
-          height: '15%',
-          marginTop: 20,
-        }}>
-        <View
+        </TouchableOpacity>
+        <TouchableOpacity
           style={{
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            justifyContent: 'flex-start',
-            padding: 10,
-          }}>
+            elevation: 5,
+            backgroundColor: 'lightgrey',
+            borderRadius: 40,
+            width: '45%',
+            height: '90%',
+            marginTop: 55,
+            marginLeft: 10,
+          }}
+          onPress={() => props.navigation.navigate('FypGroups')}>
           <View
-            style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
-            <Image
-              source={require('./Assets/icons8-grades-48.png')} // Provide the local image path
-              style={{width: 50, height: 50, marginTop: 10}} // Set the width and height of the image
-            />
-            <Text style={{color: 'black', fontSize: 16}}> {'Grading'}</Text>
+            style={{
+              flexDirection: 'row',
+              padding: 10,
+            }}>
+            <View
+              style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
+              <Image
+                source={require('./Assets/icons8-group-30.png')} // Provide the local image path
+                style={{width: 50, height: 50, marginTop: 30}} // Set the width and height of the image
+              />
+              <Text style={{color: 'black', fontSize: 16}}>
+                {' '}
+                {'FYP-I GROUPS'}
+              </Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
+      <View style={{flexDirection: 'row'}}>
+        <TouchableOpacity
+          style={{
+            elevation: 5,
+            backgroundColor: 'lightgrey',
+            borderRadius: 40,
+            width: '45%',
+            height: '90%',
+            marginTop: 55,
+          }}
+          onPress={() => props.navigation.navigate('FypGroups')}>
+          <View
+            style={{
+              flexDirection: 'row',
+              padding: 10,
+            }}>
+            <View
+              style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
+              <Image
+                source={require('./Assets/icons8-group-30.png')} // Provide the local image path
+                style={{width: 50, height: 50, marginTop: 30}} // Set the width and height of the image
+              />
+              <Text style={{color: 'black', fontSize: 16}}>
+                {' '}
+                {'FYP-II GROUPS'}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            elevation: 5,
+            backgroundColor: 'lightgrey',
+            borderRadius: 40,
+            width: '45%',
+            height: '90%',
+            marginTop: 55,
+            marginLeft: 10,
+          }}
+          onPress={() => props.navigation.navigate('')}>
+          <View
+            style={{
+              flexDirection: 'row',
+              padding: 10,
+            }}>
+            <View
+              style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
+              <Image
+                source={require('./Assets/icons8-refresh-50.png')} // Provide the local image path
+                style={{width: 50, height: 50, marginTop: 30}} // Set the width and height of the image
+              />
+              <Text style={{color: 'black', fontSize: 16}}>
+                {'Re-Allocation'}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+      <View style={{flexDirection: 'row'}}>
+        <TouchableOpacity
+          style={{
+            elevation: 5,
+            backgroundColor: 'lightgrey',
+            borderRadius: 40,
+            width: '45%',
+            height: '90%',
+            marginTop: 55,
+          }}
+          onPress={() => props.navigation.navigate('Grading')}>
+          <View
+            style={{
+              flexDirection: 'row',
+              padding: 10,
+            }}>
+            <View
+              style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
+              <Image
+                source={require('./Assets/icons8-grades-48.png')} // Provide the local image path
+                style={{width: 50, height: 50, marginTop: 30}} // Set the width and height of the image
+              />
+              <Text style={{color: 'black', fontSize: 16}}> {'Grading'}</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            elevation: 5,
+            backgroundColor: 'lightgrey',
+            borderRadius: 40,
+            width: '45%',
+            height: '90%',
+            marginTop: 55,
+            marginLeft: 10,
+          }}
+          onPress={() => props.navigation.navigate('FypGroups')}>
+          <View
+            style={{
+              flexDirection: 'row',
+              padding: 10,
+            }}>
+            <View
+              style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
+              <Image
+                source={require('./Assets/icons8-block-user-48.png')} // Provide the local image path
+                style={{width: 50, height: 50, marginTop: 30}} // Set the width and height of the image
+              />
+              <Text style={{color: 'black', fontSize: 16}}>
+                {'Restricted Students'}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
