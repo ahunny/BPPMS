@@ -216,16 +216,20 @@ const CommitteeDashborad = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
         tabBarStyle: {
           backgroundColor: '#C0C0C0',
+        },
+        headerStyle: {
+          backgroundColor: '#D9D9D9',
         },
       }}>
       <Tab.Screen
         name="dashboard"
         component={Dashboardscreens}
         options={{
-          title: 'Dashboard',
+          title: 'Committee Dashboard',
+          headerShown: true,
           tabBarIcon: () => (
             <Image
               source={require('./Assets/icons8-home-50.png')}

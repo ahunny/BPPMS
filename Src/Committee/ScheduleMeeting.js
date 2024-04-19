@@ -55,18 +55,14 @@ const ScheduleMeeting = () => {
       <View style={{marginTop: 20}}>
         <Text style={[styles.label, {marginLeft: 15}]}>Title</Text>
         <TextInput
-          style={[styles.input, {height: 50, width: 380, alignSelf: 'center'}]}
+          style={[
+            styles.input,
+            {height: 50, width: 380, alignSelf: 'center', color: 'black'},
+          ]}
           value={Title}
           onChangeText={setTitle}
           placeholder="Enter Title"
-        />
-
-        <Text style={[styles.label, {marginLeft: 15}]}>Meeting Notes:</Text>
-        <TextInput
-          style={[styles.input, {height: 180, width: 380, alignSelf: 'center'}]}
-          value={MeetingNotes}
-          onChangeText={setNotes}
-          multiline
+          placeholderTextColor="grey"
         />
 
         <View style={styles.selectContainer}>

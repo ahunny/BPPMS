@@ -15,23 +15,18 @@ import {useNavigation} from '@react-navigation/native';
 import {SelectList} from 'react-native-dropdown-select-list';
 
 const Creategroup = () => {
-  const [selectedStudent, setSelectedStudent] = useState('');
-  const [selectedPlatform, setSelectedPlatform] = useState('');
+  const [IosStudent, setIosStudent] = useState('');
+  const [FlutterStudent, setFlutterStudent] = useState('');
+  const [ReactNativeStudent, setReactNativeStudent] = useState('');
+  const [AndroidStudent, setAndroidStudent] = useState('');
+  const [WebStudent, setWebStudent] = useState('');
 
   const StudentList = [
-    {key: '1', value: 'Manufactring'},
-    {key: '2', value: 'Packing'},
-    {key: '3', value: 'Management'},
-    {key: '4', value: 'Shipping'},
-    {key: '5', value: 'Marketing'},
-  ];
-
-  const PlatformList = [
-    {key: '1', value: 'Manufactring'},
-    {key: '2', value: 'Packing'},
-    {key: '3', value: 'Management'},
-    {key: '4', value: 'Shipping'},
-    {key: '5', value: 'Marketing'},
+    {key: '1', value: 'Armughan Ul Haq'},
+    {key: '2', value: 'Muhammad Ruhab Qureshi'},
+    {key: '3', value: 'Areej Sajid'},
+    {key: '4', value: 'Malik Umer Aziz'},
+    {key: '5', value: 'Abdullah Faheem'},
   ];
 
   const navigation = useNavigation();
@@ -46,11 +41,11 @@ const Creategroup = () => {
               marginTop: 20,
             }}>
             <SelectList
-              setSelected={val => setSelectedStudent(val)}
+              setSelected={val => setIosStudent(val)}
               data={StudentList}
               save="value" // also set save to key.
               onSelect={() => {
-                console.warn(selectedStudent);
+                console.warn(IosStudent);
               }}
               searchPlaceholder="Search Student"
               dropdownTextStyles={{color: 'black'}}
@@ -58,19 +53,19 @@ const Creategroup = () => {
               placeholder="Select Student"
               inputStyles={styles.selectListInput}
             />
-            <SelectList
-              setSelected={val => setSelectedPlatform(val)}
-              data={PlatformList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(selectedPlatform);
-              }}
-              searchPlaceholder="Platform"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.platFormSelect}
-              placeholder="Platform"
-              inputStyles={styles.selectListInput}
-            />
+            <Text
+              style={{
+                backgroundColor: '#D9D9D9',
+                width: 150,
+                height: 50,
+                borderRadius: 20,
+                fontSize: 18,
+                color: 'black',
+                textAlign: 'center',
+                verticalAlign: 'middle',
+              }}>
+              IOS
+            </Text>
           </View>
           <View
             style={{
@@ -79,11 +74,11 @@ const Creategroup = () => {
               marginTop: 20,
             }}>
             <SelectList
-              setSelected={val => setSelectedStudent(val)}
+              setSelected={val => setFlutterStudent(val)}
               data={StudentList}
               save="value" // also set save to key.
               onSelect={() => {
-                console.warn(selectedStudent);
+                console.warn(FlutterStudent);
               }}
               searchPlaceholder="Search Student"
               dropdownTextStyles={{color: 'black'}}
@@ -91,19 +86,19 @@ const Creategroup = () => {
               placeholder="Select Student"
               inputStyles={styles.selectListInput}
             />
-            <SelectList
-              setSelected={val => setSelectedPlatform(val)}
-              data={PlatformList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(selectedPlatform);
-              }}
-              searchPlaceholder="Platform"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.platFormSelect}
-              placeholder="Platform"
-              inputStyles={styles.selectListInput}
-            />
+            <Text
+              style={{
+                backgroundColor: '#D9D9D9',
+                width: 150,
+                height: 50,
+                borderRadius: 20,
+                fontSize: 18,
+                color: 'black',
+                textAlign: 'center',
+                verticalAlign: 'middle',
+              }}>
+              Flutter
+            </Text>
           </View>
           <View
             style={{
@@ -112,11 +107,11 @@ const Creategroup = () => {
               marginTop: 20,
             }}>
             <SelectList
-              setSelected={val => setSelectedStudent(val)}
+              setSelected={val => setReactNativeStudent(val)}
               data={StudentList}
               save="value" // also set save to key.
               onSelect={() => {
-                console.warn(selectedStudent);
+                console.warn(ReactNativeStudent);
               }}
               searchPlaceholder="Search Student"
               dropdownTextStyles={{color: 'black'}}
@@ -124,19 +119,19 @@ const Creategroup = () => {
               placeholder="Select Student"
               inputStyles={styles.selectListInput}
             />
-            <SelectList
-              setSelected={val => setSelectedPlatform(val)}
-              data={PlatformList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(selectedPlatform);
-              }}
-              searchPlaceholder="Platform"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.platFormSelect}
-              placeholder="Platform"
-              inputStyles={styles.selectListInput}
-            />
+            <Text
+              style={{
+                backgroundColor: '#D9D9D9',
+                width: 150,
+                height: 50,
+                borderRadius: 20,
+                fontSize: 18,
+                color: 'black',
+                textAlign: 'center',
+                verticalAlign: 'middle',
+              }}>
+              React-Native
+            </Text>
           </View>
           <View
             style={{
@@ -145,11 +140,11 @@ const Creategroup = () => {
               marginTop: 20,
             }}>
             <SelectList
-              setSelected={val => setSelectedStudent(val)}
+              setSelected={val => setAndroidStudent(val)}
               data={StudentList}
               save="value" // also set save to key.
               onSelect={() => {
-                console.warn(selectedStudent);
+                console.warn(AndroidStudent);
               }}
               searchPlaceholder="Search Student"
               dropdownTextStyles={{color: 'black'}}
@@ -157,19 +152,19 @@ const Creategroup = () => {
               placeholder="Select Student"
               inputStyles={styles.selectListInput}
             />
-            <SelectList
-              setSelected={val => setSelectedPlatform(val)}
-              data={PlatformList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(selectedPlatform);
-              }}
-              searchPlaceholder="Platform"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.platFormSelect}
-              placeholder="Platform"
-              inputStyles={styles.selectListInput}
-            />
+            <Text
+              style={{
+                backgroundColor: '#D9D9D9',
+                width: 150,
+                height: 50,
+                borderRadius: 20,
+                fontSize: 18,
+                color: 'black',
+                textAlign: 'center',
+                verticalAlign: 'middle',
+              }}>
+              Android
+            </Text>
           </View>
           <View
             style={{
@@ -178,11 +173,11 @@ const Creategroup = () => {
               marginTop: 20,
             }}>
             <SelectList
-              setSelected={val => setSelectedSection(val)}
+              setSelected={val => setWebStudent(val)}
               data={StudentList}
               save="value" // also set save to key.
               onSelect={() => {
-                console.warn(selectedSection);
+                console.warn(WebStudent);
               }}
               searchPlaceholder="Search Student"
               dropdownTextStyles={{color: 'black'}}
@@ -190,19 +185,19 @@ const Creategroup = () => {
               placeholder="Select Student"
               inputStyles={styles.selectListInput}
             />
-            <SelectList
-              setSelected={val => setSelectedPlatform(val)}
-              data={PlatformList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(selectedPlatform);
-              }}
-              searchPlaceholder="Platform"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.platFormSelect}
-              placeholder="Platform"
-              inputStyles={styles.selectListInput}
-            />
+            <Text
+              style={{
+                backgroundColor: '#D9D9D9',
+                width: 150,
+                height: 50,
+                borderRadius: 20,
+                fontSize: 18,
+                color: 'black',
+                textAlign: 'center',
+                verticalAlign: 'middle',
+              }}>
+              Web
+            </Text>
           </View>
           <TouchableOpacity style={styles.Button}>
             <Text style={styles.buttonText}>Create</Text>

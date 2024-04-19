@@ -69,7 +69,8 @@ const Dashboardscreens = props => {
           height: 120,
           marginTop: 30,
           marginLeft: 20,
-        }}>
+        }}
+        onPress={() => props.navigation.navigate('Grades')}>
         <View
           style={{
             flexDirection: 'row',
@@ -155,20 +156,24 @@ const Dashboardscreens = props => {
   );
 };
 
-const Dash_borad = () => {
+const StudentDashboard = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        headerShown: false,
         tabBarStyle: {
           backgroundColor: '#C0C0C0',
+        },
+        headerStyle: {
+          backgroundColor: '#D9D9D9',
         },
       }}>
       <Tab.Screen
         name="dashboard"
         component={Dashboardscreens}
         options={{
-          title: 'Dashboard,',
+          title: 'Dashboard',
+          headerShown: true,
+
           tabBarIcon: () => (
             <Image
               source={require('./Assets/icons8-home-50.png')}
@@ -219,4 +224,4 @@ const Dash_borad = () => {
     </Tab.Navigator>
   );
 };
-export default Dash_borad;
+export default StudentDashboard;

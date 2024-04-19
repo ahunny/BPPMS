@@ -50,7 +50,10 @@ const Addtask = () => {
       <View style={{marginTop: 20}}>
         <Text style={[styles.label, {marginLeft: 15}]}>Title</Text>
         <TextInput
-          style={[styles.input, {height: 50, width: 380, alignSelf: 'center'}]}
+          style={[
+            styles.input,
+            {height: 50, width: 380, alignSelf: 'center', color: 'black'},
+          ]}
           value={Title}
           onChangeText={setTitle}
           placeholder="Enter Title"
@@ -58,7 +61,10 @@ const Addtask = () => {
 
         <Text style={[styles.label, {marginLeft: 15}]}>Task Details:</Text>
         <TextInput
-          style={[styles.input, {height: 180, width: 380, alignSelf: 'center'}]}
+          style={[
+            styles.input,
+            {height: 180, width: 380, alignSelf: 'center', color: 'black'},
+          ]}
           value={TaskNotes}
           onChangeText={setNotes}
           multiline

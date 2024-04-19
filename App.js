@@ -21,6 +21,8 @@ import ViewUploadedTasks from './Src/Committee/ViewUploadedTask';
 import Viewtask from './Src/Committee/ViewTask';
 import AddRemarks from './Src/Committee/AddRemarks';
 import Grading from './Src/Committee/Grading1';
+import StudentDashboard from './Src/Student/StudentDashbord';
+import StudentGrading from './Src/Student/Grading';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,24 +30,58 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="login"
+        initialRouteName="StudentDashboard"
         screenOptions={{
-          headerStyle: {backgroundColor: '#74A2A8'},
+          headerStyle: {
+            backgroundColor: '#D9D9D9',
+          },
         }}>
         <Stack.Screen
           name="login"
           component={Login}
           options={{headerShown: false}}
         />
-        <Stack.Screen name="StudentDashboard" component={Dash_borad} />
-        <Stack.Screen name="Request" component={Request_Details} />
-        <Stack.Screen name="Meeting" component={StudentMeeting} />
+        <Stack.Screen
+          name="StudentDashboard"
+          component={StudentDashboard}
+          options={{
+            headerShown: false,
+            headerBackVisible: false, // Hide the back button
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+            headerStyle: {backgroundColor: '#74A2A8'}, // Custom header style for StudentDashboard
+          }}
+        />
+        <Stack.Screen
+          name="Request"
+          component={Request_Details}
+          options={{title: 'Requests'}}
+        />
+        <Stack.Screen
+          name="Meeting"
+          component={StudentMeeting}
+          options={{title: 'Meetings'}}
+        />
         <Stack.Screen name="creategroup" component={Creategroup} />
         <Stack.Screen name="reqsupervisor" component={ReqSupervisor} />
         <Stack.Screen name="uploadtask" component={UploadTasks} />
+        <Stack.Screen name="Grades" component={StudentGrading} />
+
+        {/*Committee Screen Navigation */}
         <Stack.Screen
           name="CommitteeDashboard"
           component={CommitteeDashborad}
+          options={{
+            headerShown: false,
+            headerBackVisible: false, // Hide the back button
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+            headerStyle: {backgroundColor: '#74A2A8'}, // Custom header style for StudentDashboard
+          }}
         />
         <Stack.Screen name="Groups" component={Groups} />
         <Stack.Screen name="ProjectAllocation" component={ProjectAllocation} />
