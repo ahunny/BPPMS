@@ -7,22 +7,23 @@ import Login from './Src/Login';
 import Creategroup from './Src/Student/createGroup';
 import ReqSupervisor from './Src/Student/ReqSupervisor';
 import UploadTasks from './Src/Student/UploadTask';
-import CommitteeDashborad from './Src/Committee/CommitteeDashboard';
-import Groups from './Src/Committee/Groups';
-import ProjectAllocation from './Src/Committee/ProjectAllocation';
-import ScheduleMeeting from './Src/Committee/ScheduleMeeting';
-import CommitteeMeetings from './Src/Committee/CommitteeMeetings';
-import FypGroups from './Src/Committee/FYP-Groups';
-import CommitteeProjectDetails from './Src/Committee/CommitteeProjectDetails';
-import Addtask from './Src/Committee/CommitteeAddTask';
+import CommitteeDashborad from './Src/Committee&Supervisor/CommitteeDashboard';
+import Groups from './Src/Committee&Supervisor/Groups';
+import ProjectAllocation from './Src/Committee&Supervisor/ProjectAllocation';
+import ScheduleMeeting from './Src/Committee&Supervisor/ScheduleMeeting';
+import CommitteeMeetings from './Src/Committee&Supervisor/CommitteeMeetings';
+import FypGroups from './Src/Committee&Supervisor/FYP-Groups';
+import CommitteeProjectDetails from './Src/Committee&Supervisor/CommitteeProjectDetails';
+import Addtask from './Src/Committee&Supervisor/CommitteeAddTask';
 import Request_Details from './Src/Student/Request';
 import StudentMeeting from './Src/Student/Meeting';
-import ViewUploadedTasks from './Src/Committee/ViewUploadedTask';
-import Viewtask from './Src/Committee/ViewTask';
-import AddRemarks from './Src/Committee/AddRemarks';
-import Grading from './Src/Committee/Grading1';
+import ViewUploadedTasks from './Src/Committee&Supervisor/ViewUploadedTask';
+import Viewtask from './Src/Committee&Supervisor/ViewTask';
+import AddRemarks from './Src/Committee&Supervisor/AddRemarks';
+import Grading from './Src/Committee&Supervisor/Grading1';
 import StudentDashboard from './Src/Student/StudentDashbord';
 import StudentGrading from './Src/Student/Grading';
+import SupervisorDashboard from './Src/Supervisor/SupervisorDashboard';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,7 +31,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="StudentDashboard"
+        initialRouteName="login"
         screenOptions={{
           headerStyle: {
             backgroundColor: '#D9D9D9',
@@ -69,7 +70,7 @@ const App = () => {
         <Stack.Screen name="uploadtask" component={UploadTasks} />
         <Stack.Screen name="Grades" component={StudentGrading} />
 
-        {/*Committee Screen Navigation */}
+        {/*Committee Screen Navigation Stack*/}
         <Stack.Screen
           name="CommitteeDashboard"
           component={CommitteeDashborad}
@@ -97,6 +98,8 @@ const App = () => {
         <Stack.Screen name="View Task" component={Viewtask} />
         <Stack.Screen name="Add Remarks" component={AddRemarks} />
         <Stack.Screen name="Grading" component={Grading} />
+
+        {/*Supervisor Screen Navigation Stack*/}
       </Stack.Navigator>
     </NavigationContainer>
   );
