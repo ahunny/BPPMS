@@ -15,9 +15,9 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {SelectList} from 'react-native-dropdown-select-list';
 
-const Grading = () => {
+const SupervisorGrading = () => {
   const [selectedStudent, setSelectedStudent] = useState('');
-  const [selectedPlatform, setSelectedPlatform] = useState('');
+  const [selectedCriteria, setSelectedCriteria] = useState('');
 
   const StudentList = [
     {key: '1', value: 'Armughan Ul Haq'},
@@ -25,6 +25,12 @@ const Grading = () => {
     {key: '3', value: 'Areej Sajid'},
     {key: '4', value: 'Malik Umer Aziz'},
     {key: '5', value: 'Abdullah Faheem'},
+  ];
+
+  const Criteria = [
+    {key: '1', value: 'Supervisor'},
+    {key: '2', value: 'Web Api Demo'},
+    {key: '3', value: 'Documentation'},
   ];
 
   const navigation = useNavigation();
@@ -63,91 +69,22 @@ const Grading = () => {
         <View
           style={{
             flexDirection: 'row',
-            marginTop: 20,
-          }}>
-          <View
-            style={{
-              backgroundColor: '#D9D9D9',
-              width: 230,
-              height: 50,
-              borderRadius: 10,
-            }}>
-            <Text
-              style={{
-                color: 'black',
-                fontSize: 20,
-                alignSelf: 'center',
-                margin: 10,
-              }}>
-              Supervisor
-            </Text>
-          </View>
-          <Text
-            style={{
-              backgroundColor: '#D9D9D9',
-              width: 100,
-              height: 50,
-              borderRadius: 10,
-              color: 'black',
-              marginLeft: 20,
-            }}></Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
             justifyContent: 'space-around',
-            marginTop: 20,
+            marginTop: 30,
           }}>
-          <View
-            style={{
-              backgroundColor: '#D9D9D9',
-              width: 230,
-              height: 50,
-              borderRadius: 10,
-            }}>
-            <Text
-              style={{
-                color: 'black',
-                fontSize: 20,
-                alignSelf: 'center',
-                margin: 10,
-              }}>
-              Web API Demo
-            </Text>
-          </View>
-          <Text
-            style={{
-              backgroundColor: '#D9D9D9',
-              width: 100,
-              height: 50,
-              borderRadius: 10,
-              color: 'black',
-              marginLeft: 20,
-            }}></Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            marginTop: 20,
-          }}>
-          <View
-            style={{
-              backgroundColor: '#D9D9D9',
-              width: 230,
-              height: 50,
-              borderRadius: 10,
-            }}>
-            <Text
-              style={{
-                color: 'black',
-                fontSize: 20,
-                alignSelf: 'center',
-                margin: 10,
-              }}>
-              Pitching
-            </Text>
-          </View>
+          <SelectList
+            setSelected={val => setSelectedCriteria(val)}
+            data={Criteria}
+            save="value" // also set save to key.
+            onSelect={() => {
+              console.warn(selectedCriteria);
+            }}
+            dropdownTextStyles={{color: 'black'}}
+            boxStyles={styles.selectListStyle}
+            placeholder="Select Criteria"
+            inputStyles={styles.selectListInput}
+          />
+
           <TextInput
             style={{
               backgroundColor: '#D9D9D9',
@@ -157,39 +94,6 @@ const Grading = () => {
               color: 'black',
               marginLeft: 20,
             }}></TextInput>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            marginTop: 20,
-          }}>
-          <View
-            style={{
-              backgroundColor: '#D9D9D9',
-              width: 230,
-              height: 50,
-              borderRadius: 10,
-            }}>
-            <Text
-              style={{
-                color: 'black',
-                fontSize: 20,
-                alignSelf: 'center',
-                margin: 10,
-              }}>
-              Documentation
-            </Text>
-          </View>
-          <Text
-            style={{
-              backgroundColor: '#D9D9D9',
-              width: 100,
-              height: 50,
-              borderRadius: 10,
-              color: 'black',
-              marginLeft: 20,
-            }}></Text>
         </View>
 
         <Text
@@ -212,11 +116,6 @@ const Grading = () => {
           }}></Text>
 
         <TouchableOpacity
-          style={[styles.Button, {marginTop: 20, marginLeft: -220}]}>
-          <Text style={styles.buttonText}>Calculate</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
           style={[
             styles.Button,
             {marginTop: 20, alignSelf: 'flex-end', marginRight: 30},
@@ -233,7 +132,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E5E5E5',
     borderColor: '#E5E5E5',
     borderRadius: 20,
-    width: 220,
+    width: 230,
     height: 50,
   },
   platFormSelect: {
@@ -299,4 +198,4 @@ const styles = StyleSheet.create({
     top: 35,
   },
 });
-export default Grading;
+export default SupervisorGrading;

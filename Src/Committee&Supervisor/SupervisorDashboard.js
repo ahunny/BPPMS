@@ -49,8 +49,8 @@ const Dashboardscreens = props => {
             backgroundColor: 'lightgrey',
             borderRadius: 20,
             width: '90%',
-            height: '14%',
-            marginTop: 22,
+            height: '15%',
+            marginTop: 20,
           }}
           onPress={() => props.navigation.navigate('FypGroups')}>
           <View
@@ -77,7 +77,7 @@ const Dashboardscreens = props => {
             backgroundColor: 'lightgrey',
             borderRadius: 20,
             width: '90%',
-            height: '14%',
+            height: '15%',
             marginTop: 15,
           }}
           onPress={() => props.navigation.navigate('FypGroups')}>
@@ -106,7 +106,7 @@ const Dashboardscreens = props => {
             backgroundColor: 'lightgrey',
             borderRadius: 20,
             width: '90%',
-            height: '14%',
+            height: '15%',
             marginTop: 15,
           }}
           onPress={() => props.navigation.navigate('FypGroups')}>
@@ -128,34 +128,6 @@ const Dashboardscreens = props => {
             </View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            elevation: 5,
-            backgroundColor: 'lightgrey',
-            borderRadius: 20,
-            width: '90%',
-            height: '14%',
-            marginTop: 15,
-          }}
-          onPress={() => props.navigation.navigate('FypGroups')}>
-          <View
-            style={{
-              flexDirection: 'row',
-              padding: 10,
-            }}>
-            <View
-              style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
-              <Image
-                source={require('./Assets/icons8-refresh-50.png')} // Provide the local image path
-                style={{width: 50, height: 50, marginTop: 10}} // Set the width and height of the image
-              />
-              <Text style={{color: 'black', fontSize: 16}}>
-                {' '}
-                {'Re-Allocation'}
-              </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
 
         <TouchableOpacity
           style={{
@@ -163,10 +135,10 @@ const Dashboardscreens = props => {
             backgroundColor: 'lightgrey',
             borderRadius: 20,
             width: '90%',
-            height: '14%',
+            height: '15%',
             marginTop: 15,
           }}
-          onPress={() => props.navigation.navigate('Grading')}>
+          onPress={() => props.navigation.navigate('Supervisor Grading')}>
           <View
             style={{
               flexDirection: 'row',
@@ -188,7 +160,7 @@ const Dashboardscreens = props => {
             backgroundColor: 'lightgrey',
             borderRadius: 20,
             width: '90%',
-            height: '14%',
+            height: '15%',
             marginTop: 15,
           }}
           onPress={() => props.navigation.navigate('FypGroups')}>
@@ -214,7 +186,7 @@ const Dashboardscreens = props => {
   );
 };
 
-const CommitteeDashborad = () => {
+const SupervisorDashboard = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -230,7 +202,7 @@ const CommitteeDashborad = () => {
         name="dashboard"
         component={Dashboardscreens}
         options={{
-          title: 'Committee Dashboard',
+          title: 'Supervisor Dashboard',
           headerShown: true,
           tabBarIcon: () => (
             <Image
@@ -240,19 +212,7 @@ const CommitteeDashborad = () => {
           ),
         }}
       />
-      <Tab.Screen
-        name="Groups"
-        component={Groups}
-        options={{
-          title: 'Project Allocation',
-          tabBarIcon: () => (
-            <Image
-              source={require('./Assets/icons8-person-64.png')}
-              style={{width: 35, height: 35}}
-            />
-          ),
-        }}
-      />
+
       <Tab.Screen
         name="ScheduleMeeting"
         component={ScheduleMeeting}
@@ -282,4 +242,4 @@ const CommitteeDashborad = () => {
     </Tab.Navigator>
   );
 };
-export default CommitteeDashborad;
+export default SupervisorDashboard;

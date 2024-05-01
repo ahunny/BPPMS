@@ -47,67 +47,81 @@ const Addtask = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
-      <View style={{marginTop: 20}}>
-        <Text style={[styles.label, {marginLeft: 15}]}>Title</Text>
-        <TextInput
-          style={[
-            styles.input,
-            {height: 50, width: 380, alignSelf: 'center', color: 'black'},
-          ]}
-          value={Title}
-          onChangeText={setTitle}
-          placeholder="Enter Title"
-        />
-
-        <Text style={[styles.label, {marginLeft: 15}]}>Task Details:</Text>
-        <TextInput
-          style={[
-            styles.input,
-            {height: 180, width: 380, alignSelf: 'center', color: 'black'},
-          ]}
-          value={TaskNotes}
-          onChangeText={setNotes}
-          multiline
-        />
-
-        <View>
-          {fileResponse[0] && (
-            <View style={{marginTop: 20, alignSelf: 'center'}}>
-              <Image source={{uri: fileResponse[0].uri}} />
-              <Text>Selected File: {fileResponse[0].name}</Text>
-            </View>
-          )}
-        </View>
-
-        <TouchableOpacity
-          style={styles.uploadButton}
-          onPress={handleDocumentSelection}>
-          <Text style={styles.buttonText}>Choose File</Text>
-        </TouchableOpacity>
-
-        <Text style={[styles.boldText, {marginLeft: 20, marginTop: 20}]}>
-          Due Date
-        </Text>
-        <TouchableOpacity
-          style={styles.datePickerButton}
-          onPress={showDatepicker}>
-          <Text style={styles.buttonText}>{DueDate.toLocaleDateString()}</Text>
-        </TouchableOpacity>
-
-        {showDatePicker && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={DueDate}
-            mode="time"
-            is24Hour={true}
-            display="default"
-            onChange={handleDateChange}
+      <View
+        style={{
+          backgroundColor: '#C0C0C0',
+          width: '93%',
+          height: '97%',
+          alignSelf: 'center',
+          alignItems: 'center',
+          marginTop: 10,
+          borderRadius: 20,
+        }}>
+        <View style={{marginTop: 20}}>
+          <Text style={[styles.label, {marginLeft: 15}]}>Title</Text>
+          <TextInput
+            style={[
+              styles.input,
+              {height: 50, width: 360, alignSelf: 'center', color: 'black'},
+            ]}
+            value={Title}
+            onChangeText={setTitle}
+            placeholder="Enter Title"
+            placeholderTextColor={'grey'}
           />
-        )}
 
-        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity>
+          <Text style={[styles.label, {marginLeft: 15}]}>Task Details:</Text>
+          <TextInput
+            style={[
+              styles.input,
+              {height: 180, width: 360, alignSelf: 'center', color: 'black'},
+            ]}
+            value={TaskNotes}
+            onChangeText={setNotes}
+            multiline
+          />
+
+          <View>
+            {fileResponse[0] && (
+              <View style={{marginTop: 20, alignSelf: 'center'}}>
+                <Image source={{uri: fileResponse[0].uri}} />
+                <Text style={{color: 'black'}}>
+                  Selected File: {fileResponse[0].name}
+                </Text>
+              </View>
+            )}
+          </View>
+
+          <TouchableOpacity
+            style={styles.uploadButton}
+            onPress={handleDocumentSelection}>
+            <Text style={styles.buttonText}>Choose File</Text>
+          </TouchableOpacity>
+
+          <Text style={[styles.boldText, {marginTop: 20}]}>Due Date</Text>
+          <TouchableOpacity
+            style={styles.datePickerButton}
+            onPress={showDatepicker}>
+            <Text style={styles.buttonText}>
+              {DueDate.toLocaleDateString()}
+            </Text>
+          </TouchableOpacity>
+
+          {showDatePicker && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={DueDate}
+              mode="time"
+              is24Hour={true}
+              display="default"
+              onChange={handleDateChange}
+            />
+          )}
+
+          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Add</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -125,7 +139,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 5,
     alignItems: 'center',
-    marginLeft: 20,
     width: '50%',
   },
   label: {
@@ -170,12 +183,11 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   uploadButton: {
-    backgroundColor: '#C0C0C0',
+    backgroundColor: '#D9D9D9',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
     alignItems: 'center',
-    marginLeft: 20,
     marginBottom: 15,
     width: '50%',
   },
@@ -193,15 +205,15 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   submitButton: {
-    backgroundColor: '#C0C0C0',
+    backgroundColor: '#D9D9D9',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
     alignItems: 'center',
     alignSelf: 'center',
     marginTop: 40,
-    marginLeft: 200,
-    width: '40%',
+    marginLeft: 250,
+    width: 100,
   },
   buttonText: {
     color: 'black',

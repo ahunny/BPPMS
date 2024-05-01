@@ -44,56 +44,74 @@ const AddRemarks = () => {
   const [TaskRemarks, setremarks] = useState('');
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={data}
-        renderItem={({item, index}) => (
-          <ScrollView>
-            <TouchableOpacity
-              style={[styles.itemContainer, {marginTop: index === 0 ? 50 : 0}]}>
-              <View style={styles.itemContent}>
-                <View style={styles.column}>
-                  <Text style={styles.boldText}>{item.Name}</Text>
-                  <Text style={{color: 'black'}}>{item.Aridnum}</Text>
-                  <Text style={{color: 'black'}}>
-                    {'Supervisor: ' + item.supervisor}
-                  </Text>
-                </View>
-                <View style={styles.column}>
-                  <Text style={{color: 'black'}}>{'Cgpa: ' + item.Cgpa}</Text>
-                  <Text style={{color: 'black'}}>
-                    {'Platform: ' + item.Platform}
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-          </ScrollView>
-        )}
-        keyExtractor={item => item.id}
-      />
-
-      <Text style={[styles.label]}>Remarks:</Text>
-      <TextInput
-        style={[styles.input, {height: 180, width: 380, alignSelf: 'center'}]}
-        placeholder="Enter Remarks"
-        placeholderTextColor={'grey'}
-        value={TaskRemarks}
-        onChangeText={setremarks}
-        multiline
-      />
-      <TouchableOpacity
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: '#74A2A8',
+      }}>
+      <View
         style={{
-          marginBottom: 200,
-          backgroundColor: '#D9D9D9',
-          borderRadius: 40,
-          height: 50,
-          width: 200,
-          alignItems: 'center',
-          alignContent: 'center',
+          backgroundColor: '#C0C0C0',
+          width: '93%',
+          height: '97%',
           alignSelf: 'center',
+          alignItems: 'center',
+          marginTop: 10,
+          borderRadius: 20,
         }}>
-        <Text style={styles.buttonText}>Add Remark</Text>
-      </TouchableOpacity>
+        <FlatList
+          data={data}
+          renderItem={({item, index}) => (
+            <ScrollView>
+              <TouchableOpacity
+                style={[
+                  styles.itemContainer,
+                  {marginTop: index === 0 ? 20 : 0},
+                ]}>
+                <View style={styles.itemContent}>
+                  <View style={styles.column}>
+                    <Text style={styles.boldText}>{item.Name}</Text>
+                    <Text style={{color: 'black'}}>{item.Aridnum}</Text>
+                    <Text style={{color: 'black'}}>
+                      {'Supervisor: ' + item.supervisor}
+                    </Text>
+                  </View>
+                  <View style={styles.column}>
+                    <Text style={{color: 'black'}}>{'Cgpa: ' + item.Cgpa}</Text>
+                    <Text style={{color: 'black'}}>
+                      {'Platform: ' + item.Platform}
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </ScrollView>
+          )}
+          keyExtractor={item => item.id}
+        />
+
+        <Text style={[styles.label, {marginLeft: -270}]}>Remarks:</Text>
+        <TextInput
+          style={[styles.input, {height: 180, width: 360, alignSelf: 'center'}]}
+          placeholder="Enter Remarks"
+          placeholderTextColor={'grey'}
+          value={TaskRemarks}
+          onChangeText={setremarks}
+          multiline
+        />
+        <TouchableOpacity
+          style={{
+            marginBottom: 200,
+            backgroundColor: '#D9D9D9',
+            borderRadius: 40,
+            height: 50,
+            width: 200,
+            alignItems: 'center',
+            alignContent: 'center',
+            alignSelf: 'center',
+          }}>
+          <Text style={styles.buttonText}>Add Remark</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

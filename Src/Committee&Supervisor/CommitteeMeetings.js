@@ -50,95 +50,123 @@ const CommitteeMeetings = props => {
 
   return (
     <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
-      <FlatList
-        data={data}
-        renderItem={({item, index}) => (
-          <TouchableOpacity
-            style={{
-              elevation: 5,
-              backgroundColor: 'lightgrey',
-              borderRadius: 10,
-              width: 370,
-              marginBottom: 10,
-              marginTop: index === 0 ? 50 : 0,
-              marginLeft: 20,
-            }}>
-            <View
+      <View
+        style={{
+          backgroundColor: '#C0C0C0',
+          width: '93%',
+          height: '97%',
+          alignSelf: 'center',
+          alignItems: 'center',
+          marginTop: 10,
+          borderRadius: 20,
+        }}>
+        <FlatList
+          data={data}
+          renderItem={({item, index}) => (
+            <TouchableOpacity
               style={{
-                flexDirection: 'row',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start',
-                padding: 10,
+                elevation: 5,
+                backgroundColor: 'lightgrey',
+                borderRadius: 10,
+                width: 360,
+                marginBottom: 10,
+                marginTop: index === 0 ? 20 : 0,
               }}>
-              <View style={{flexDirection: 'column'}}>
-                <View
-                  style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
-                  <Image
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-start',
+                  padding: 10,
+                }}>
+                <View style={{flexDirection: 'column'}}>
+                  <View
                     style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: 25,
-                      marginRight: 5,
-                    }}
-                    source={item.image}
-                  />
-                  <Text
-                    style={{textAlign: 'center', color: 'black', fontSize: 16}}>
-                    {item.Group}
-                  </Text>
-                </View>
-                <View
-                  style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
-                  <Image
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      flex: 1,
+                    }}>
+                    <Image
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: 25,
+                        marginRight: 5,
+                      }}
+                      source={item.image}
+                    />
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        color: 'black',
+                        fontSize: 16,
+                      }}>
+                      {item.Group}
+                    </Text>
+                  </View>
+                  <View
                     style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: 5,
-                      marginRight: 5,
-                    }}
-                    source={item.imagedoor}
-                  />
-                  <Text
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      flex: 1,
+                    }}>
+                    <Image
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: 5,
+                        marginRight: 5,
+                      }}
+                      source={item.imagedoor}
+                    />
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        color: 'black',
+                        fontSize: 16,
+                      }}>{`${item.Date}`}</Text>
+                  </View>
+                  <View
                     style={{
-                      textAlign: 'center',
-                      color: 'black',
-                      fontSize: 16,
-                    }}>{`${item.Date}`}</Text>
-                </View>
-                <View
-                  style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
-                  <Image
-                    style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: 25,
-                      marginRight: 5,
-                    }}
-                    source={item.imageclock}
-                  />
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      color: 'black',
-                      fontSize: 16,
-                    }}>{`${item.time}`}</Text>
-                  <Image
-                    source={require('./Assets/icons8-upcoming-event-24.png')} // Provide the local image path
-                    style={{
-                      width: 20,
-                      height: 20,
-                      marginLeft: 150,
-                      marginTop: -50,
-                    }} // Set the width and height of the image
-                  />
-                  <Text style={{marginLeft: -65}}>upcoming event</Text>
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      flex: 1,
+                    }}>
+                    <Image
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: 25,
+                        marginRight: 5,
+                      }}
+                      source={item.imageclock}
+                    />
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        color: 'black',
+                        fontSize: 16,
+                      }}>{`${item.time}`}</Text>
+                    <Image
+                      source={require('./Assets/icons8-upcoming-event-24.png')} // Provide the local image path
+                      style={{
+                        width: 20,
+                        height: 20,
+                        marginLeft: 150,
+                        marginTop: -50,
+                      }} // Set the width and height of the image
+                    />
+                    <Text style={{marginLeft: -65, color: 'black'}}>
+                      upcoming event
+                    </Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        )}
-        keyExtractor={item => item.id}
-      />
+            </TouchableOpacity>
+          )}
+          keyExtractor={item => item.id}
+        />
+      </View>
     </View>
   );
 };

@@ -45,59 +45,74 @@ const CommitteeProjectDetails = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={data}
-        renderItem={({item, index}) => (
-          <TouchableOpacity
-            style={[styles.itemContainer, {marginTop: index === 0 ? 50 : 0}]}>
-            <View style={styles.itemContent}>
-              <View style={styles.column}>
-                <Text style={styles.boldText}>{item.Name}</Text>
-                <Text style={{color: 'black'}}>{item.Aridnum}</Text>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: '#74A2A8',
+      }}>
+      <View
+        style={{
+          backgroundColor: '#C0C0C0',
+          width: '93%',
+          height: '97%',
+          alignSelf: 'center',
+          alignItems: 'center',
+          marginTop: 10,
+          borderRadius: 20,
+        }}>
+        <FlatList
+          data={data}
+          renderItem={({item, index}) => (
+            <TouchableOpacity
+              style={[styles.itemContainer, {marginTop: index === 0 ? 20 : 0}]}>
+              <View style={styles.itemContent}>
+                <View style={styles.column}>
+                  <Text style={styles.boldText}>{item.Name}</Text>
+                  <Text style={{color: 'black'}}>{item.Aridnum}</Text>
+                </View>
+                <View style={styles.column}>
+                  <Text style={{color: 'black'}}>{'Cgpa: ' + item.Cgpa}</Text>
+                  <Text style={{color: 'black'}}>
+                    {'Platform: ' + item.Platform}
+                  </Text>
+                </View>
               </View>
-              <View style={styles.column}>
-                <Text style={{color: 'black'}}>{'Cgpa: ' + item.Cgpa}</Text>
-                <Text style={{color: 'black'}}>
-                  {'Platform: ' + item.Platform}
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        )}
-        keyExtractor={item => item.id}
-      />
+            </TouchableOpacity>
+          )}
+          keyExtractor={item => item.id}
+        />
 
-      <TouchableOpacity
-        style={{
-          marginBottom: 20,
-          backgroundColor: '#D9D9D9',
-          padding: 8,
-          borderRadius: 40,
-          height: 60,
-          width: 330,
-          alignItems: 'center',
-          alignContent: 'center',
-          alignSelf: 'center',
-        }}
-        onPress={() => navigation.navigate('Addtask')}>
-        <Text style={styles.buttonText}>Add Task</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          marginBottom: 200,
-          backgroundColor: '#D9D9D9',
-          padding: 8,
-          borderRadius: 40,
-          height: 60,
-          width: 330,
-          alignItems: 'center',
-          alignContent: 'center',
-          alignSelf: 'center',
-        }}
-        onPress={() => navigation.navigate('Uploaded Tasks')}>
-        <Text style={styles.buttonText}>View Task</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            marginBottom: 20,
+            backgroundColor: '#D9D9D9',
+            padding: 8,
+            borderRadius: 40,
+            height: 60,
+            width: 330,
+            alignItems: 'center',
+            alignContent: 'center',
+            alignSelf: 'center',
+          }}
+          onPress={() => navigation.navigate('Addtask')}>
+          <Text style={styles.buttonText}>Add Task</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            marginBottom: 200,
+            backgroundColor: '#D9D9D9',
+            padding: 8,
+            borderRadius: 40,
+            height: 60,
+            width: 330,
+            alignItems: 'center',
+            alignContent: 'center',
+            alignSelf: 'center',
+          }}
+          onPress={() => navigation.navigate('Uploaded Tasks')}>
+          <Text style={styles.buttonText}>View Task</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

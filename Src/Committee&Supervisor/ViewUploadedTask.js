@@ -38,77 +38,95 @@ const ViewUploadedTasks = props => {
 
   return (
     <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
-      <FlatList
-        data={data}
-        renderItem={({item, index}) => (
-          <TouchableOpacity
-            style={{
-              elevation: 5,
-              backgroundColor: 'lightgrey',
-              borderRadius: 10,
-              width: 370,
-              marginBottom: 10,
-              marginTop: index === 0 ? 50 : 0,
-              marginLeft: 20,
-            }}
-            onPress={() => props.navigation.navigate('View Task')}>
-            <View
+      <View
+        style={{
+          backgroundColor: '#C0C0C0',
+          width: '93%',
+          height: '97%',
+          alignSelf: 'center',
+          alignItems: 'center',
+          marginTop: 10,
+          borderRadius: 20,
+        }}>
+        <FlatList
+          data={data}
+          renderItem={({item, index}) => (
+            <TouchableOpacity
               style={{
-                flexDirection: 'row',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start',
-                padding: 10,
-              }}>
-              <View style={{flexDirection: 'column', width: 200}}>
-                <View
-                  style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
-                  <Text
+                elevation: 5,
+                backgroundColor: 'lightgrey',
+                borderRadius: 10,
+                width: 360,
+                marginBottom: 10,
+                marginTop: index === 0 ? 20 : 0,
+              }}
+              onPress={() => props.navigation.navigate('View Task')}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-start',
+                  padding: 10,
+                }}>
+                <View style={{flexDirection: 'column', width: 200}}>
+                  <View
                     style={{
-                      fontWeight: 'bold',
-                      textAlign: 'center',
-                      color: 'black',
-                      fontSize: 16,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      flex: 1,
                     }}>
-                    {item.title}
-                  </Text>
-                </View>
+                    <Text
+                      style={{
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                        color: 'black',
+                        fontSize: 16,
+                      }}>
+                      {item.title}
+                    </Text>
+                  </View>
 
-                <View
-                  style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
-                  <Image
+                  <View
                     style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: 25,
-                      marginRight: 5,
-                    }}
-                    source={item.imageclock}
-                  />
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      color: 'black',
-                      fontSize: 16,
-                    }}>{`Due Date: ${item.time}`}</Text>
-                  <Image
-                    source={require('./Assets/icons8-pending-30.png')} // Provide the local image path
-                    style={{
-                      width: 20,
-                      height: 20,
-                      marginLeft: 100,
-                      marginTop: -50,
-                    }} // Set the width and height of the image
-                  />
-                  <Text style={{marginLeft: -40, color: 'black'}}>
-                    pending{' '}
-                  </Text>
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      flex: 1,
+                    }}>
+                    <Image
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: 25,
+                        marginRight: 5,
+                      }}
+                      source={item.imageclock}
+                    />
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        color: 'black',
+                        fontSize: 16,
+                      }}>{`Due Date: ${item.time}`}</Text>
+                    <Image
+                      source={require('./Assets/icons8-pending-30.png')} // Provide the local image path
+                      style={{
+                        width: 20,
+                        height: 20,
+                        marginLeft: 100,
+                        marginTop: -50,
+                      }} // Set the width and height of the image
+                    />
+                    <Text style={{marginLeft: -40, color: 'black'}}>
+                      pending{' '}
+                    </Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        )}
-        keyExtractor={item => item.id}
-      />
+            </TouchableOpacity>
+          )}
+          keyExtractor={item => item.id}
+        />
+      </View>
     </View>
   );
 };

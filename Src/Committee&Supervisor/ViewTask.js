@@ -18,44 +18,55 @@ const Viewtask = props => {
 
   return (
     <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
-      <View style={{marginTop: 50}}>
-        <Text style={[styles.label, {marginLeft: 15}]}>Task Subject</Text>
-        <View
-          style={{
-            backgroundColor: '#D9D9D9',
-            width: 380,
-            height: 50,
-            borderRadius: 10,
-            alignSelf: 'center',
-          }}>
-          <Text style={[styles.label, {marginLeft: 15, marginTop: 10}]}>
-            Mockups
-          </Text>
+      <View
+        style={{
+          backgroundColor: '#C0C0C0',
+          width: '93%',
+          height: '97%',
+          alignSelf: 'center',
+          alignItems: 'center',
+          marginTop: 10,
+          borderRadius: 20,
+        }}>
+        <View style={{marginTop: 50}}>
+          <Text style={[styles.label]}>Task Subject</Text>
+          <View
+            style={{
+              backgroundColor: '#D9D9D9',
+              width: 360,
+              height: 50,
+              borderRadius: 10,
+              alignSelf: 'center',
+            }}>
+            <Text style={[styles.label, {marginLeft: 15, marginTop: 10}]}>
+              Mockups
+            </Text>
+          </View>
+
+          <Text style={[styles.label]}>Task File:</Text>
+          <View
+            style={{
+              backgroundColor: '#D9D9D9',
+              width: 360,
+              height: 50,
+              borderRadius: 10,
+              alignSelf: 'center',
+            }}>
+            <Text style={[styles.label, {marginLeft: 15, marginTop: 10}]}>
+              Mockups.pptx
+            </Text>
+          </View>
+
+          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>View</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={() => props.navigation.navigate('Add Remarks')}>
+            <Text style={styles.buttonText}>Add Remarks</Text>
+          </TouchableOpacity>
         </View>
-
-        <Text style={[styles.label, {marginLeft: 15}]}>Task File:</Text>
-        <View
-          style={{
-            backgroundColor: '#D9D9D9',
-            width: 380,
-            height: 50,
-            borderRadius: 10,
-            alignSelf: 'center',
-          }}>
-          <Text style={[styles.label, {marginLeft: 15, marginTop: 10}]}>
-            Mockups.pptx
-          </Text>
-        </View>
-
-        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>View</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={() => props.navigation.navigate('Add Remarks')}>
-          <Text style={styles.buttonText}>Add Remarks</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -141,7 +152,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   submitButton: {
-    backgroundColor: '#C0C0C0',
+    backgroundColor: '#D9D9D9',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,

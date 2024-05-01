@@ -52,82 +52,101 @@ const ScheduleMeeting = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
-      <View style={{marginTop: 20}}>
-        <Text style={[styles.label, {marginLeft: 15}]}>Title</Text>
-        <TextInput
-          style={[
-            styles.input,
-            {height: 50, width: 380, alignSelf: 'center', color: 'black'},
-          ]}
-          value={Title}
-          onChangeText={setTitle}
-          placeholder="Enter Title"
-          placeholderTextColor="grey"
-        />
-
-        <View style={styles.selectContainer}>
-          <Text style={styles.boldText}>Select FYP Group:</Text>
-          <SelectList
-            setSelected={val => setFypGroup(val)}
-            data={FypGroupList}
-            save="value"
-            onSelect={() => {
-              console.warn(FypGroup);
-            }}
-            dropdownTextStyles={{color: 'black'}}
-            boxStyles={styles.selectListStyle}
-            placeholder="Select FYP Group"
-            inputStyles={styles.selectListInput}
+      <View
+        style={{
+          backgroundColor: '#C0C0C0',
+          width: '93%',
+          height: '97%',
+          alignSelf: 'center',
+          alignItems: 'center',
+          marginTop: 10,
+          borderRadius: 20,
+        }}>
+        <View style={{marginTop: 20}}>
+          <Text style={[styles.label, {marginLeft: 10}]}>Title</Text>
+          <TextInput
+            style={[
+              styles.input,
+              {height: 50, width: 360, alignSelf: 'center', color: 'black'},
+            ]}
+            value={Title}
+            onChangeText={setTitle}
+            placeholder="Enter Title"
+            placeholderTextColor="grey"
           />
+          <Text style={[styles.label, {marginLeft: 10}]}>Title</Text>
+          <TextInput
+            style={[
+              styles.input,
+              {height: 120, width: 360, alignSelf: 'center', color: 'black'},
+            ]}
+            value={MeetingNotes}
+            onChangeText={setNotes}
+            placeholder="Enter Notes"
+            placeholderTextColor="grey"
+            multiline
+          />
+
+          <View style={styles.selectContainer}>
+            <Text style={styles.boldText}>Select FYP Group:</Text>
+            <SelectList
+              setSelected={val => setFypGroup(val)}
+              data={FypGroupList}
+              save="value"
+              onSelect={() => {
+                console.warn(FypGroup);
+              }}
+              dropdownTextStyles={{color: 'black'}}
+              boxStyles={styles.selectListStyle}
+              placeholder="Select FYP Group"
+              inputStyles={styles.selectListInput}
+            />
+          </View>
+
+          <Text style={[styles.boldText, {marginTop: 20}]}>Meeting Date</Text>
+          <TouchableOpacity
+            style={styles.datePickerButton}
+            onPress={showDatepicker}>
+            <Text style={styles.buttonText}>
+              {selectedDate.toLocaleDateString()}
+            </Text>
+          </TouchableOpacity>
+
+          {showDatePicker && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={selectedDate}
+              mode="date"
+              is24Hour={true}
+              display="default"
+              onChange={handleDateChange}
+            />
+          )}
+
+          <Text style={[styles.boldText, {marginTop: 20}]}>Start Time</Text>
+          <TouchableOpacity
+            style={styles.datePickerButton}
+            onPress={showTimepicker}>
+            <Text style={styles.buttonText}>
+              {selectedTime.toLocaleTimeString()}
+            </Text>
+          </TouchableOpacity>
+
+          {showTimePicker && (
+            <DateTimePicker
+              testID="timePicker"
+              value={selectedTime}
+              mode="time"
+              is24Hour={true}
+              display="default"
+              onChange={handleTimeChange}
+            />
+          )}
+
+          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Schedule</Text>
+          </TouchableOpacity>
         </View>
-
-        <Text style={[styles.boldText, {marginLeft: 20, marginTop: 20}]}>
-          Meeting Date
-        </Text>
-        <TouchableOpacity
-          style={styles.datePickerButton}
-          onPress={showDatepicker}>
-          <Text style={styles.buttonText}>
-            {selectedDate.toLocaleDateString()}
-          </Text>
-        </TouchableOpacity>
-
-        {showDatePicker && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={selectedDate}
-            mode="date"
-            is24Hour={true}
-            display="default"
-            onChange={handleDateChange}
-          />
-        )}
-
-        <Text style={[styles.boldText, {marginLeft: 20, marginTop: 20}]}>
-          Start Time
-        </Text>
-        <TouchableOpacity
-          style={styles.datePickerButton}
-          onPress={showTimepicker}>
-          <Text style={styles.buttonText}>
-            {selectedTime.toLocaleTimeString()}
-          </Text>
-        </TouchableOpacity>
-
-        {showTimePicker && (
-          <DateTimePicker
-            testID="timePicker"
-            value={selectedTime}
-            mode="time"
-            is24Hour={true}
-            display="default"
-            onChange={handleTimeChange}
-          />
-        )}
-
-        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Schedule</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -145,7 +164,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 5,
     alignItems: 'center',
-    marginLeft: 20,
     width: '50%',
   },
   label: {
@@ -163,7 +181,6 @@ const styles = StyleSheet.create({
   },
   selectContainer: {
     marginTop: 10,
-    marginLeft: 20,
   },
   boldText: {
     fontWeight: 'bold',
@@ -213,7 +230,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   submitButton: {
-    backgroundColor: '#C0C0C0',
+    backgroundColor: '#D9D9D9',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,

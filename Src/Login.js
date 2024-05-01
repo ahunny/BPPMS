@@ -26,6 +26,8 @@ function Login() {
       navigation.navigate('StudentDashboard');
     } else if (username === 'Committee') {
       navigation.navigate('CommitteeDashboard');
+    } else if (username === 'Supervisor') {
+      navigation.navigate('SupervisorDashboard');
     } else {
       console.error('Invalid Credentials');
     }

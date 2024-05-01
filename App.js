@@ -23,7 +23,8 @@ import AddRemarks from './Src/Committee&Supervisor/AddRemarks';
 import Grading from './Src/Committee&Supervisor/Grading1';
 import StudentDashboard from './Src/Student/StudentDashbord';
 import StudentGrading from './Src/Student/Grading';
-import SupervisorDashboard from './Src/Supervisor/SupervisorDashboard';
+import SupervisorDashboard from './Src/Committee&Supervisor/SupervisorDashboard';
+import SupervisorGrading from './Src/Committee&Supervisor/SupervisorGrading';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,7 +32,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="login"
+        initialRouteName="StudentDashboard"
         screenOptions={{
           headerStyle: {
             backgroundColor: '#D9D9D9',
@@ -100,6 +101,20 @@ const App = () => {
         <Stack.Screen name="Grading" component={Grading} />
 
         {/*Supervisor Screen Navigation Stack*/}
+        <Stack.Screen
+          name="SupervisorDashboard"
+          component={SupervisorDashboard}
+          options={{
+            headerShown: false,
+            headerBackVisible: false, // Hide the back button
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+            headerStyle: {backgroundColor: '#74A2A8'}, // Custom header style for StudentDashboard
+          }}
+        />
+        <Stack.Screen name="Supervisor Grading" component={SupervisorGrading} />
       </Stack.Navigator>
     </NavigationContainer>
   );

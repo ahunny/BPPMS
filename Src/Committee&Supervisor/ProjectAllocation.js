@@ -61,63 +61,80 @@ const ProjectAllocation = () => {
   ];
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={data}
-        renderItem={({item, index}) => (
-          <TouchableOpacity
-            style={[styles.itemContainer, {marginTop: index === 0 ? 50 : 0}]}>
-            <View style={styles.itemContent}>
-              <View style={styles.column}>
-                <Text style={styles.boldText}>{item.Name}</Text>
-                <Text>{item.Aridnum}</Text>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: '#74A2A8',
+      }}>
+      <View
+        style={{
+          backgroundColor: '#C0C0C0',
+          width: '93%',
+          height: '97%',
+          alignSelf: 'center',
+          alignItems: 'center',
+          marginTop: 10,
+          borderRadius: 20,
+        }}>
+        <FlatList
+          data={data}
+          renderItem={({item, index}) => (
+            <TouchableOpacity
+              style={[styles.itemContainer, {marginTop: index === 0 ? 50 : 0}]}>
+              <View style={styles.itemContent}>
+                <View style={styles.column}>
+                  <Text style={styles.boldText}>{item.Name}</Text>
+                  <Text style={{color: 'black'}}>{item.Aridnum}</Text>
+                </View>
+                <View style={styles.column}>
+                  <Text style={{color: 'black'}}>{'Cgpa: ' + item.Cgpa}</Text>
+                  <Text style={{color: 'black'}}>
+                    {'Platform: ' + item.Platform}
+                  </Text>
+                </View>
               </View>
-              <View style={styles.column}>
-                <Text>{'Cgpa: ' + item.Cgpa}</Text>
-                <Text>{'Platform: ' + item.Platform}</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        )}
-        keyExtractor={item => item.id}
-      />
-
-      <View style={styles.selectContainer}>
-        <Text style={styles.boldText}>Select FYP Project</Text>
-        <SelectList
-          setSelected={val => setSelectedSupervisor(val)}
-          data={ProjectList}
-          save="value"
-          onSelect={() => {
-            console.warn(selectedSupervisor);
-          }}
-          searchPlaceholder="Search Project"
-          dropdownTextStyles={{color: 'black'}}
-          boxStyles={styles.selectListStyle}
-          placeholder="Select Project"
-          inputStyles={styles.selectListInput}
+            </TouchableOpacity>
+          )}
+          keyExtractor={item => item.id}
         />
-      </View>
-      <View style={styles.selectContainer}>
-        <Text style={styles.boldText}>Assign Supervisor</Text>
-        <SelectList
-          setSelected={val => setSelectedSupervisor(val)}
-          data={SupervisorList}
-          save="value"
-          onSelect={() => {
-            console.warn(selectedSupervisor);
-          }}
-          searchPlaceholder="Search Supervisor"
-          dropdownTextStyles={{color: 'black'}}
-          boxStyles={styles.selectListStyle}
-          placeholder="Select Supervisor"
-          inputStyles={styles.selectListInput}
-        />
-      </View>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>ASSIGN</Text>
-      </TouchableOpacity>
+        <View style={[styles.selectContainer, {marginLeft: -120}]}>
+          <Text style={styles.boldText}>Select FYP Project</Text>
+          <SelectList
+            setSelected={val => setSelectedSupervisor(val)}
+            data={ProjectList}
+            save="value"
+            onSelect={() => {
+              console.warn(selectedSupervisor);
+            }}
+            searchPlaceholder="Search Project"
+            dropdownTextStyles={{color: 'black'}}
+            boxStyles={styles.selectListStyle}
+            placeholder="Select Project"
+            inputStyles={styles.selectListInput}
+          />
+        </View>
+        <View style={[styles.selectContainer, {marginLeft: -120}]}>
+          <Text style={styles.boldText}>Assign Supervisor</Text>
+          <SelectList
+            setSelected={val => setSelectedSupervisor(val)}
+            data={SupervisorList}
+            save="value"
+            onSelect={() => {
+              console.warn(selectedSupervisor);
+            }}
+            searchPlaceholder="Search Supervisor"
+            dropdownTextStyles={{color: 'black'}}
+            boxStyles={styles.selectListStyle}
+            placeholder="Select Supervisor"
+            inputStyles={styles.selectListInput}
+          />
+        </View>
+
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>ASSIGN</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -167,7 +184,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: 130,
     alignItems: 'center',
-    alignSelf: 'flex-end',
+
     marginTop: 50,
     marginBottom: 50,
   },
