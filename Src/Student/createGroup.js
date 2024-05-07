@@ -33,39 +33,39 @@ const Creategroup = props => {
     AndroidStudent,
     WebStudent,
   ]);
-  const HandleCreatGroup = async () => {
-    try {
-      const url = await fetch(`${API_URL}/Auth/CreateGroup`);
-      const formData = new FormData();
-      formData.append('student_id', selectedStudents.id);
-      formData.append('technology', selectedStudents.Technology);
-      formData.append('user_id', userid);
-      console.log(formData);
+  // const HandleCreatGroup = async () => {
+  //   try {
+  //     const url = await fetch(`${API_URL}/Auth/CreateGroup`);
+  //     const formData = new FormData();
+  //     formData.append('student_id', selectedStudents.id);
+  //     formData.append('technology', selectedStudents.Technology);
+  //     formData.append('user_id', userid);
+  //     console.log(formData);
 
-      const response = await fetch(url, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+  //     const response = await fetch(url, {
+  //       method: 'POST',
+  //       body: formData,
+  //       headers: {
+  //         Accept: 'application/json',
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //     });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Response data:', data);
-        Alert.alert('Group Added');
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       console.log('Response data:', data);
+  //       Alert.alert('Group Added');
 
-        // Optionally, navigate to another screen or show success message
-      } else {
-        console.log('Request failed with status:', response.status);
-        Alert.alert('Error', 'Failed to add Group.');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
-    }
-  };
+  //       // Optionally, navigate to another screen or show success message
+  //     } else {
+  //       console.log('Request failed with status:', response.status);
+  //       Alert.alert('Error', 'Failed to add Group.');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     Alert.alert('Error', 'An unexpected error occurred. Please try again.');
+  //   }
+  // };
 
   // const StudentList = [
   //   {key: '1', value: 'Armughan Ul Haq'},
@@ -331,7 +331,7 @@ const Creategroup = props => {
               Web
             </Text>
           </View>
-          <TouchableOpacity style={styles.Button} onPress={HandleCreatGroup}>
+          <TouchableOpacity style={styles.Button} onPress={sendRequest}>
             <Text style={styles.buttonText}>Create</Text>
           </TouchableOpacity>
         </View>
