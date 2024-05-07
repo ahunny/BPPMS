@@ -127,7 +127,9 @@ const Tasklist = props => {
                       marginTop: -50,
                     }} // Set the width and height of the image
                   />
-                  <Text style={{marginLeft: -35}}>pending </Text>
+                  <Text style={{marginLeft: -35, color: 'black'}}>
+                    pending{' '}
+                  </Text>
                 </View>
               </View>
             </View>

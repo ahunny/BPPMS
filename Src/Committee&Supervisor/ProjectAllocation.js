@@ -4,6 +4,7 @@ import {SelectList} from 'react-native-dropdown-select-list';
 
 const ProjectAllocation = () => {
   const [selectedSupervisor, setSelectedSupervisor] = useState('');
+  const [selectedproject, setSelectedproject] = useState('');
 
   const ProjectList = [
     {key: '1', value: 'BIIT PROJECT PROGRESS MONITORING SYSTEM'},
@@ -98,14 +99,16 @@ const ProjectAllocation = () => {
           keyExtractor={item => item.id}
         />
 
-        <View style={[styles.selectContainer, {marginLeft: -120}]}>
-          <Text style={styles.boldText}>Select FYP Project</Text>
+        <View style={[styles.selectContainer]}>
+          <Text style={[styles.boldText, {marginLeft: 40}]}>
+            Select FYP Project
+          </Text>
           <SelectList
-            setSelected={val => setSelectedSupervisor(val)}
+            setSelected={val => setSelectedproject(val)}
             data={ProjectList}
             save="value"
             onSelect={() => {
-              console.warn(selectedSupervisor);
+              console.warn(selectedproject);
             }}
             searchPlaceholder="Search Project"
             dropdownTextStyles={{color: 'black'}}
@@ -114,8 +117,10 @@ const ProjectAllocation = () => {
             inputStyles={styles.selectListInput}
           />
         </View>
-        <View style={[styles.selectContainer, {marginLeft: -120}]}>
-          <Text style={styles.boldText}>Assign Supervisor</Text>
+        <View style={[styles.selectContainer]}>
+          <Text style={[styles.boldText, {marginLeft: 40}]}>
+            Assign Supervisor
+          </Text>
           <SelectList
             setSelected={val => setSelectedSupervisor(val)}
             data={SupervisorList}
@@ -154,6 +159,7 @@ const styles = StyleSheet.create({
   },
   selectContainer: {
     marginTop: 10,
+    width: '60%',
   },
   itemContent: {
     flexDirection: 'row',
@@ -173,8 +179,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#E5E5E5',
     borderColor: '#E5E5E5',
     borderRadius: 20,
-    width: 220,
+    width: 320,
     height: 50,
+    alignSelf: 'center',
   },
   selectListInput: {color: 'black', fontSize: 18},
   button: {

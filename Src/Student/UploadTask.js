@@ -43,6 +43,7 @@ const UploadTasks = () => {
           value={subject}
           onChangeText={setSubject}
           placeholder="Enter subject"
+          placeholderTextColor={'grey'}
         />
 
         <Text style={[styles.label, {marginLeft: 15}]}>Description</Text>
@@ -52,6 +53,7 @@ const UploadTasks = () => {
           onChangeText={setDescription}
           multiline
           placeholder="Enter description"
+          placeholderTextColor={'grey'}
         />
         <View>
           {fileResponse[0] && (

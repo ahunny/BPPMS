@@ -22,6 +22,8 @@ const multiplescreen = createNativeStackNavigator();
 import Creategroup from './createGroup';
 import StudentMeeting from './Meeting';
 const Stack = createNativeStackNavigator();
+var userid;
+
 const Dashboardscreens = props => {
   // return(
   //     <multiplescreen.Navigator>
@@ -101,7 +103,7 @@ const Dashboardscreens = props => {
           marginTop: 30,
           marginLeft: 20,
         }}
-        onPress={() => props.navigation.navigate('creategroup')}>
+        onPress={() => props.navigation.navigate('creategroup', {userid})}>
         <View
           style={{
             flexDirection: 'row',
@@ -156,7 +158,14 @@ const Dashboardscreens = props => {
   );
 };
 
-const StudentDashboard = () => {
+const StudentDashboard = props => {
+  const {data} = props.route.params;
+  console.log(data.user_id);
+  var id = data.user_id;
+  console.log(id);
+  userid = id;
+  console.log(userid);
+
   return (
     <Tab.Navigator
       screenOptions={{

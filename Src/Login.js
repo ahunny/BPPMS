@@ -10,27 +10,70 @@ import {
   Image,
   KeyboardAvoidingView,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
-import {RadioButton} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
+import API_URL from '../apiConfig';
 
-function Login() {
+const Login = props => {
   const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
+  const [id, setid] = useState('');
 
   const navigation = useNavigation();
 
-  const handleLogin = () => {
-    // Check if the entered email and password match the default values
-    if (username === 'Student') {
-      navigation.navigate('StudentDashboard');
-    } else if (username === 'Committee') {
-      navigation.navigate('CommitteeDashboard');
-    } else if (username === 'Supervisor') {
-      navigation.navigate('SupervisorDashboard');
-    } else {
-      console.error('Invalid Credentials');
+  const handleLoginPress = async () => {
+    try {
+      if (!username.trim() || !password.trim()) {
+        ToastAndroid.show(
+          'Please provide necessary credentials.',
+          ToastAndroid.SHORT,
+        );
+        return;
+      }
+
+      const response = await fetch(
+        `${API_URL}/Auth/Login?username=${username.trim()}&password=${password.trim()}`,
+      );
+
+      if (!response.ok) {
+        ToastAndroid.show(
+          'Incorrect credentials. Please try again.',
+          ToastAndroid.SHORT,
+        );
+        return;
+      }
+
+      const data = await response.json();
+      let role = data.role;
+      console.log(data);
+
+      if (role == 'Student') {
+        props.navigation.navigate('StudentDashboard', {data});
+      } else if (role == 'Supervisor') {
+        props.navigation.navigate('SupervisorDashboard');
+      } else if (role == 'Committee') {
+        props.navigation.navigate('CommitteeDashboard');
+      } else {
+        ToastAndroid.show(
+          'Incorrect credentials. Please try again.',
+          ToastAndroid.SHORT,
+        );
+        return;
+      }
+      setusername('');
+      setPassword('');
+    } catch (error) {
+      console.error('Error occurred during login:', error);
     }
+  };
+
+  const handleUsernameChange = text => {
+    setusername(text);
+  };
+
+  const handlePasswordChange = text => {
+    setPassword(text);
   };
 
   return (
@@ -56,7 +99,7 @@ function Login() {
               placeholderTextColor={'grey'}
               style={styles.input}
               placeholder="Enter your username"
-              onChangeText={text => setusername(text)}
+              onChangeText={handleUsernameChange}
               value={username}
             />
 
@@ -66,11 +109,13 @@ function Login() {
               placeholderTextColor={'grey'}
               placeholder="Enter your password"
               secureTextEntry={true} // Mask the password
-              onChangeText={text => setPassword(text)}
+              onChangeText={handlePasswordChange}
               value={password}
             />
 
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+            <TouchableOpacity
+              style={styles.loginButton}
+              onPress={handleLoginPress}>
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
           </View>
@@ -78,7 +123,7 @@ function Login() {
       </KeyboardAvoidingView>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

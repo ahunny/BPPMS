@@ -123,7 +123,9 @@ const StudentMeeting = props => {
                       marginTop: -50,
                     }} // Set the width and height of the image
                   />
-                  <Text style={{marginLeft: -65}}>upcoming event</Text>
+                  <Text style={{marginLeft: -65, color: 'black'}}>
+                    upcoming event
+                  </Text>
                 </View>
               </View>
             </View>
