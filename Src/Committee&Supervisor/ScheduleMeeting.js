@@ -63,18 +63,7 @@ const ScheduleMeeting = () => {
           borderRadius: 20,
         }}>
         <View style={{marginTop: 20}}>
-          <Text style={[styles.label, {marginLeft: 10}]}>Title</Text>
-          <TextInput
-            style={[
-              styles.input,
-              {height: 50, width: 360, alignSelf: 'center', color: 'black'},
-            ]}
-            value={Title}
-            onChangeText={setTitle}
-            placeholder="Enter Title"
-            placeholderTextColor="grey"
-          />
-          <Text style={[styles.label, {marginLeft: 10}]}>Title</Text>
+          <Text style={[styles.label, {marginLeft: 10}]}>Description</Text>
           <TextInput
             style={[
               styles.input,

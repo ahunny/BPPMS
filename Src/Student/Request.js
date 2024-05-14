@@ -1,39 +1,63 @@
-import React from 'react';
-import {View, Text, TouchableOpacity, FlatList, Alert} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  Alert,
+  ToastAndroid,
+} from 'react-native';
+import API_URL from '../../apiConfig';
+import {useFocusEffect} from '@react-navigation/native';
 
-const Request_Details = props => {
-  const data = [
-    {
-      id: '1',
-      title: 'Armaghan has requested you to join this group ',
-      description: 'React native ',
-    },
-    {
-      id: '2',
-      title: 'Armaghan has requested you to join this group ',
-      description: 'React native ',
-    },
-    {
-      id: '3',
-      title: 'Armaghan has requested you to join this group ',
-      description: 'React native ',
-    },
-  ];
+const Request_Details = ({route}) => {
+  const {userid} = route.params;
+  const [RequestList, setRequestList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const handleAccept = () => {
-    Alert.alert(
-      'Congratulations',
-      'You have Created Fyp Group with Armughan Ul Haq Your Platform Is React Native',
-    );
+  const fetchRequests = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/AcceptReject/GetStudentRequests?userId=${userid}`,
+      );
+      const data = await response.json();
+      console.log(data);
+      const filteredData = data.filter(item => item.user_id !== userid);
+      setRequestList(filteredData);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Requests', ToastAndroid.SHORT);
+      console.error('Error fetching Requests:', error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
   };
-  const handleReject = () => {
-    Alert.alert('Sorry', 'Your request has been rejected');
+  useFocusEffect(
+    // useCallback prevent unnecessary re-renders caused by creating a newfunction instance on every render.
+    useCallback(() => {
+      fetchRequests();
+    }, []),
+  );
+
+  const handleAcceptReject = async (id, acceptReject) => {
+    try {
+      const response = await fetch(
+        `${API_URL}/AcceptReject/acceptStudentRequest?userId=${userid}&isAccepted=${acceptReject}&requestId=${id}`,
+      );
+      const data = await response.json();
+      console.log(data);
+      fetchRequests();
+    } catch (error) {
+      ToastAndroid.show('Error Occured', ToastAndroid.SHORT);
+      console.error('Error Occured:', error);
+    }
   };
 
   return (
     <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
       <FlatList
-        data={data}
+        data={RequestList}
         renderItem={({item, index}) => (
           <TouchableOpacity
             style={{
@@ -60,14 +84,14 @@ const Request_Details = props => {
                     fontSize: 16,
                     marginBottom: 5,
                   }}>
-                  {item.title}
+                  {item.senderName + ' Has Requested you to join their group'}
                 </Text>
                 <Text
                   style={{
                     textAlign: 'center',
                     color: 'black',
                     fontSize: 16,
-                  }}>{`Platform: ${item.description}`}</Text>
+                  }}>{`Platform: ${item.technology_preference}`}</Text>
               </View>
               <View
                 style={{
@@ -82,11 +106,15 @@ const Request_Details = props => {
                     borderRadius: 5,
                     marginHorizontal: 5,
                   }}
-                  onPress={handleAccept}>
+                  onPress={() => {
+                    handleAcceptReject(item.request_id, true);
+                  }}>
                   <Text style={{color: 'white'}}>Accept</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={handleReject}
+                  onPress={() => {
+                    handleAcceptReject(item.request_id, false);
+                  }}
                   style={{
                     backgroundColor: 'grey',
                     padding: 10,

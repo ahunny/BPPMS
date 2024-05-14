@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 
 import {
   SafeAreaView,
@@ -11,8 +11,9 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  ToastAndroid,
 } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useFocusEffect} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Request_Details from './Request';
@@ -21,8 +22,10 @@ const Tab = createBottomTabNavigator();
 const multiplescreen = createNativeStackNavigator();
 import Creategroup from './createGroup';
 import StudentMeeting from './Meeting';
+import API_URL from '../../apiConfig';
 const Stack = createNativeStackNavigator();
 var userid;
+var roles;
 
 const Dashboardscreens = props => {
   // return(
@@ -134,7 +137,7 @@ const Dashboardscreens = props => {
           marginTop: 30,
           marginLeft: 20,
         }}
-        onPress={() => props.navigation.navigate('reqsupervisor')}>
+        onPress={() => props.navigation.navigate('reqsupervisor', {userid})}>
         <View
           style={{
             flexDirection: 'row',
@@ -161,10 +164,9 @@ const Dashboardscreens = props => {
 const StudentDashboard = props => {
   const {data} = props.route.params;
   console.log(data.user_id);
-  var id = data.user_id;
-  console.log(id);
-  userid = id;
-  console.log(userid);
+  userid = data.user_id;
+  roles = data.role;
+  console.log(userid, roles);
 
   return (
     <Tab.Navigator
@@ -194,6 +196,7 @@ const StudentDashboard = props => {
       <Tab.Screen
         name="Request"
         component={Request_Details}
+        initialParams={{userid: userid}} // Pass userid as initial parameter
         options={{
           title: 'Request',
           tabBarIcon: () => (
@@ -220,6 +223,7 @@ const StudentDashboard = props => {
       <Tab.Screen
         name="Task"
         component={Tasklist}
+        initialParams={{userid: userid, roles: roles}} // Pass userid as initial parameter
         options={{
           title: 'Tasks',
           tabBarIcon: () => (

@@ -1,4 +1,5 @@
-import React from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import React, {useCallback, useState} from 'react';
 import {
   View,
   Text,
@@ -6,52 +7,52 @@ import {
   FlatList,
   Alert,
   Image,
+  ToastAndroid,
 } from 'react-native';
+import API_URL from '../../apiConfig';
 
-const Tasklist = props => {
-  const data = [
-    {
-      id: '1',
-      title: 'Project Outline',
-      description: 'Sir Azeem',
-      time: '12-12-2023',
-      image: require('./Assets/icons8-person-50.png'),
-      imageclock: require('./Assets/icons8-clock-50.png'),
-      imagedoor: require('./Assets/icons8-person-50.png'),
-    },
-    {
-      id: '2',
-      title: 'Mockups',
-      description: 'Sir Hassan',
-      time: '12-12-2023',
-      image: require('./Assets/icons8-add-male-user-64.png'),
-      imageclock: require('./Assets/icons8-clock-50.png'),
-      imagedoor: require('./Assets/icons8-person-50.png'),
-    },
-    {
-      id: '3',
-      title: 'Features',
-      description: 'Sir Zahid',
-      time: '12-12-2023',
-      image: require('./Assets/icons8-add-male-user-64.png'),
-      imageclock: require('./Assets/icons8-clock-50.png'),
-      imagedoor: require('./Assets/icons8-person-50.png'),
-    },
-    {
-      id: '4',
-      title: 'Completed Erd mockups and conceptual',
-      description: 'sir Umer',
-      time: '12-12-2023',
-      image: require('./Assets/icons8-add-male-user-64.png'),
-      imageclock: require('./Assets/icons8-clock-50.png'),
-      imagedoor: require('./Assets/icons8-person-50.png'),
-    },
-  ];
+const Tasklist = ({route}) => {
+  const {roles} = route.params;
+
+  const [TaskList, setTaskList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const navigation = useNavigation();
+
+  const fetchTasks = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/Tasks/GetTask?groupId=1&role=${roles}`,
+      );
+      const data = await response.json();
+      setTaskList(data);
+      console.log(data);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Tasks', ToastAndroid.SHORT);
+      console.error('Error fetching Tasks:', error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+  useFocusEffect(
+    // useCallback prevent unnecessary re-renders caused by creating a newfunction instance on every render.
+    useCallback(() => {
+      fetchTasks();
+    }, []),
+  );
+
+  //const {userid} = route.params;
+
+  const handleTaskPress = item => {
+    // Navigate to 'uploadtask' screen and pass item data
+    navigation.navigate('uploadtask', {taskData: item});
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
       <FlatList
-        data={data}
+        data={TaskList}
         renderItem={({item, index}) => (
           <TouchableOpacity
             style={{
@@ -63,7 +64,7 @@ const Tasklist = props => {
               marginTop: index === 0 ? 50 : 0,
               marginLeft: 20,
             }}
-            onPress={() => props.navigation.navigate('uploadtask')}>
+            onPress={() => handleTaskPress(item)}>
             <View
               style={{
                 flexDirection: 'row',
@@ -81,7 +82,7 @@ const Tasklist = props => {
                       color: 'black',
                       fontSize: 16,
                     }}>
-                    {item.title}
+                    {item.task_description}
                   </Text>
                 </View>
                 <View
@@ -93,12 +94,12 @@ const Tasklist = props => {
                       borderRadius: 25,
                       marginRight: 5,
                     }}
-                    source={item.imagedoor}
+                    source={require('./Assets/icons8-person-50.png')}
                   />
                   <Text
                     style={{textAlign: 'center', color: 'black', fontSize: 16}}>
                     {' '}
-                    {item.description}
+                    {item.is_from_supervisor ? 'Supervisor' : 'Committee'}
                   </Text>
                 </View>
                 <View
@@ -110,20 +111,20 @@ const Tasklist = props => {
                       borderRadius: 25,
                       marginRight: 5,
                     }}
-                    source={item.imageclock}
+                    source={require('./Assets/icons8-clock-50.png')}
                   />
                   <Text
                     style={{
                       textAlign: 'center',
                       color: 'black',
                       fontSize: 16,
-                    }}>{`Time: ${item.time}`}</Text>
+                    }}>{`Deadline: ${item.deadline.split('T')[0]}`}</Text>
                   <Image
                     source={require('./Assets/icons8-pending-30.png')} // Provide the local image path
                     style={{
                       width: 20,
                       height: 20,
-                      marginLeft: 120,
+                      marginLeft: 100,
                       marginTop: -50,
                     }} // Set the width and height of the image
                   />

@@ -1,4 +1,5 @@
-import React from 'react';
+import {useFocusEffect} from '@react-navigation/native';
+import React, {useCallback, useState} from 'react';
 import {
   View,
   Text,
@@ -6,43 +7,42 @@ import {
   FlatList,
   Alert,
   Image,
+  ToastAndroid,
 } from 'react-native';
+import API_URL from '../../apiConfig';
 
 const StudentMeeting = props => {
-  const data = [
-    {
-      id: '1',
-      meetingby: 'Committee',
-      date: '04-30-2024',
-      time: '10:00:00 Am',
-      image: require('./Assets/icons8-person-50.png'),
-      imageclock: require('./Assets/icons8-clock-50.png'),
-      imagedoor: require('./Assets/icons8-schedule-64.png'),
-    },
-    {
-      id: '2',
-      meetingby: 'Committee',
-      date: '04-30-2024',
-      time: '10:00:00 Am',
-      image: require('./Assets/icons8-person-50.png'),
-      imageclock: require('./Assets/icons8-clock-50.png'),
-      imagedoor: require('./Assets/icons8-schedule-64.png'),
-    },
-    {
-      id: '3',
-      meetingby: 'Committee',
-      date: '04-30-2024',
-      time: '10:00:00 Am',
-      image: require('./Assets/icons8-person-50.png'),
-      imageclock: require('./Assets/icons8-clock-50.png'),
-      imagedoor: require('./Assets/icons8-schedule-64.png'),
-    },
-  ];
+  const [MeetingList, setMeetingList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchMeetings = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/Meeting/GetMeetings?groupId=1&isForStudent=true`,
+      );
+      const data = await response.json();
+      setMeetingList(data);
+      console.log(data);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Students', ToastAndroid.SHORT);
+      console.error('Error fetching Students:', error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+  useFocusEffect(
+    // useCallback prevent unnecessary re-renders caused by creating a newfunction instance on every render.
+    useCallback(() => {
+      fetchMeetings();
+    }, []),
+  );
 
   return (
     <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
       <FlatList
-        data={data}
+        data={MeetingList}
         renderItem={({item, index}) => (
           <TouchableOpacity
             style={{
@@ -71,11 +71,11 @@ const StudentMeeting = props => {
                       borderRadius: 25,
                       marginRight: 5,
                     }}
-                    source={item.image}
+                    source={require('./Assets/icons8-person-50.png')}
                   />
                   <Text
                     style={{textAlign: 'center', color: 'black', fontSize: 16}}>
-                    {item.meetingby}
+                    {item.is_with_supervisor ? 'Supervisor' : 'Committee'}
                   </Text>
                 </View>
                 <View
@@ -86,14 +86,14 @@ const StudentMeeting = props => {
                       height: 20,
                       marginRight: 5,
                     }}
-                    source={item.imagedoor}
+                    source={require('./Assets/icons8-clock-50.png')}
                   />
                   <Text
                     style={{
                       textAlign: 'center',
                       color: 'black',
                       fontSize: 16,
-                    }}>{`${item.date}`}</Text>
+                    }}>{`${item.meeting_date.split('T')[0]}`}</Text>
                 </View>
                 <View
                   style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
@@ -101,10 +101,10 @@ const StudentMeeting = props => {
                     style={{
                       width: 20,
                       height: 20,
-                      borderRadius: 25,
+                      borderRadius: 1,
                       marginRight: 5,
                     }}
-                    source={item.imageclock}
+                    source={require('./Assets/icons8-schedule-64.png')}
                   />
                   <Text
                     style={{
@@ -112,19 +112,19 @@ const StudentMeeting = props => {
                       color: 'black',
                       fontSize: 16,
                     }}>
-                    {item.time}
+                    {item.meeting_starttime}
                   </Text>
                   <Image
                     source={require('./Assets/icons8-upcoming-event-24.png')} // Provide the local image path
                     style={{
                       width: 20,
                       height: 20,
-                      marginLeft: 150,
+                      marginLeft: 200,
                       marginTop: -50,
                     }} // Set the width and height of the image
                   />
-                  <Text style={{marginLeft: -65, color: 'black'}}>
-                    upcoming event
+                  <Text style={{marginLeft: -45, color: 'black'}}>
+                    upcoming
                   </Text>
                 </View>
               </View>

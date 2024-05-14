@@ -18,7 +18,6 @@ import API_URL from '../apiConfig';
 const Login = props => {
   const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
-  const [id, setid] = useState('');
 
   const navigation = useNavigation();
 

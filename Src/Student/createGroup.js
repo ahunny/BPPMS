@@ -33,47 +33,45 @@ const Creategroup = props => {
     AndroidStudent,
     WebStudent,
   ]);
-  // const HandleCreatGroup = async () => {
-  //   try {
-  //     const url = await fetch(`${API_URL}/Auth/CreateGroup`);
-  //     const formData = new FormData();
-  //     formData.append('student_id', selectedStudents.id);
-  //     formData.append('technology', selectedStudents.Technology);
-  //     formData.append('user_id', userid);
-  //     console.log(formData);
+  const {userid} = props.route.params;
+  console.log('ok id', userid);
 
-  //     const response = await fetch(url, {
-  //       method: 'POST',
-  //       body: formData,
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     });
+  const HandleCreatGroup = async () => {
+    try {
+      const data = selectedStudents
+        .map(student => ({
+          student_id: student.id,
+          technology: student.Technology,
+          user_id: userid,
+        }))
+        .filter(
+          item =>
+            item.student_id !== undefined && item.technology !== undefined,
+        );
 
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       console.log('Response data:', data);
-  //       Alert.alert('Group Added');
+      const response = await fetch(`${API_URL}/Auth/CreateGroup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-  //       // Optionally, navigate to another screen or show success message
-  //     } else {
-  //       console.log('Request failed with status:', response.status);
-  //       Alert.alert('Error', 'Failed to add Group.');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //     Alert.alert('Error', 'An unexpected error occurred. Please try again.');
-  //   }
-  // };
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Response data:', data);
+        Alert.alert('Group Added');
 
-  // const StudentList = [
-  //   {key: '1', value: 'Armughan Ul Haq'},
-  //   {key: '2', value: 'Muhammad Ruhab Qureshi'},
-  //   {key: '3', value: 'Areej Sajid'},
-  //   {key: '4', value: 'Malik Umer Aziz'},
-  //   {key: '5', value: 'Abdullah Faheem'},
-  // ];
+        // Optionally, navigate to another screen or show success message
+      } else {
+        console.log('Request failed with status:', response.status);
+        ToastAndroid.show('Error Occured', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
+    }
+  };
 
   const fetchStudents = async () => {
     try {
@@ -111,11 +109,10 @@ const Creategroup = props => {
       WebStudent,
     ]);
     console.log(selectedStudents);
+    HandleCreatGroup();
   };
 
   const navigation = useNavigation();
-  const {userid} = props.route.params;
-  console.log('ok id', userid);
 
   return (
     <ScrollView style={{backgroundColor: '#74A2A8'}}>

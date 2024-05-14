@@ -10,7 +10,9 @@ import {
 import {RadioButton} from 'react-native-paper';
 import DocumentPicker from 'react-native-document-picker';
 
-const UploadTasks = () => {
+const UploadTasks = ({route}) => {
+  const {taskData} = route.params;
+
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
   const [fileResponse, setFileResponse] = useState([]);
@@ -37,15 +39,6 @@ const UploadTasks = () => {
   return (
     <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
       <View style={{marginTop: 20}}>
-        <Text style={[styles.label, {marginLeft: 15}]}>Subject</Text>
-        <TextInput
-          style={[styles.input, {height: 50, width: 380, alignSelf: 'center'}]}
-          value={subject}
-          onChangeText={setSubject}
-          placeholder="Enter subject"
-          placeholderTextColor={'grey'}
-        />
-
         <Text style={[styles.label, {marginLeft: 15}]}>Description</Text>
         <TextInput
           style={[styles.input, {height: 200, width: 380, alignSelf: 'center'}]}
@@ -69,26 +62,6 @@ const UploadTasks = () => {
           onPress={handleDocumentSelection}>
           <Text style={styles.buttonText}>Choose File</Text>
         </TouchableOpacity>
-
-        <View style={styles.radioContainer}>
-          <Text style={[styles.label, {marginLeft: 15}]}>Recipient:</Text>
-          <View style={styles.radioButton}>
-            <RadioButton
-              value="supervisor"
-              status={recipient === 'supervisor' ? 'checked' : 'unchecked'}
-              onPress={() => setRecipient('supervisor')}
-            />
-            <Text style={styles.radioText}>To Supervisor</Text>
-          </View>
-          <View style={styles.radioButton}>
-            <RadioButton
-              value="committee"
-              status={recipient === 'committee' ? 'checked' : 'unchecked'}
-              onPress={() => setRecipient('committee')}
-            />
-            <Text style={styles.radioText}>To FYP Committee</Text>
-          </View>
-        </View>
 
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
           <Text style={styles.buttonText}>UPLOAD</Text>

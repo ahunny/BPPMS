@@ -1,85 +1,117 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, FlatList} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
+import React, {useCallback, useState} from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  ToastAndroid,
+  ScrollView,
+} from 'react-native';
 import {SelectList} from 'react-native-dropdown-select-list';
+import API_URL from '../../apiConfig';
 
-const ReqSupervisor = () => {
-  const [selectedSupervisor, setSelectedSupervisor] = useState('');
+const ReqSupervisor = props => {
+  const [firstpreference, setfirstpreference] = useState('');
+  const [secondpreference, setsecondpreference] = useState('');
+  const [thirdpreference, setthirdpreference] = useState('');
+  const [SupervisorList, setsupervisorlist] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const SupervisorList = [
-    {key: '1', value: 'Sir Azeem'},
-    {key: '2', value: 'Sir Umer'},
-    {key: '3', value: 'Sir Hassan'},
-    {key: '4', value: 'Sir Shahid'},
-    {key: '5', value: 'Sir Zahid'},
-    {key: '6', value: 'Sir Ahsan'},
-  ];
+  const {userid} = props.route.params;
 
-  const data = [
-    {
-      id: '1',
-      Name: 'Armughan Ul Haq',
-      Aridnum: '2020-Arid-3609',
-      Cgpa: '3.43',
-      Platform: 'React-Native',
-    },
-    {
-      id: '2',
-      Name: 'Muhammad Ruhab Qureshi',
-      Aridnum: '2020-Arid-3722',
-      Cgpa: '3.01',
-      Platform: 'Flutter',
-    },
-    {
-      id: '3',
-      Name: 'Areej Sajid',
-      Aridnum: '2020-Arid-3606',
-      Cgpa: '3.43',
-      Platform: 'React-JS',
-    },
-    {
-      id: '4',
-      Name: 'Malik Umer Aziz',
-      Aridnum: '2020-Arid-3666',
-      Cgpa: '3.06',
-      Platform: 'IOS',
-    },
-    {
-      id: '5',
-      Name: 'Abdullah Faheem',
-      Aridnum: '2020-Arid-3588',
-      Cgpa: '3.43',
-      Platform: 'Android',
-    },
-  ];
+  const [selectedSupervisors, setSelectedSupervisors] = useState([
+    firstpreference,
+    secondpreference,
+    thirdpreference,
+  ]);
+
+  const fetchSupervisors = async () => {
+    try {
+      const response = await fetch(`${API_URL}/Student/GetAllSupervisors`);
+      const data = await response.json();
+      const formattedData = data.map(item => ({
+        key: item.supervisor_id.toString(),
+        value: item.name,
+      }));
+
+      setsupervisorlist(formattedData);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Supervisors', ToastAndroid.SHORT);
+      console.error('Error fetching Supervisors:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchSupervisors();
+    }, []),
+  );
+
+  const [users, setUsers] = useState([]);
+
+  const fetchGroupDetails = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/Groups/GetGroupDetails?student_id=${userid}`,
+      );
+      const data = await response.json();
+
+      if (response.ok) {
+        const members = data.members || [];
+        const userList = members.map(member => member.user);
+        setUsers(userList);
+      } else {
+        throw new Error(data);
+      }
+    } catch (error) {
+      ToastAndroid.show('Error fetching Group Details', ToastAndroid.SHORT);
+      console.error('Error fetching Group Details:', error);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchGroupDetails();
+    }, []),
+  );
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={data}
-        renderItem={({item, index}) => (
-          <TouchableOpacity
-            style={[styles.itemContainer, {marginTop: index === 0 ? 50 : 0}]}>
-            <View style={styles.itemContent}>
-              <View style={styles.column}>
-                <Text style={styles.boldText}>{item.Name}</Text>
-                <Text style={{color: 'black'}}>{item.Aridnum}</Text>
+        data={users}
+        renderItem={({item}) => (
+          <ScrollView style={{marginTop: 20}}>
+            <TouchableOpacity style={styles.itemContainer}>
+              <View style={styles.itemContent}>
+                <View style={styles.column}>
+                  <Text style={styles.boldText}>
+                    {item.student.student_name}
+                  </Text>
+                  <Text style={{color: 'black'}}>{item.student.arid_no}</Text>
+                </View>
+                <View style={styles.column}>
+                  <Text style={{color: 'black'}}>
+                    {'Cgpa: ' + item.student.cgpa}
+                  </Text>
+                  <Text style={{color: 'black'}}>
+                    {'Platform: ' + item.platform}
+                  </Text>
+                </View>
               </View>
-              <View style={styles.column}>
-                <Text style={{color: 'black'}}>{'Cgpa: ' + item.Cgpa}</Text>
-                <Text style={{color: 'black'}}>
-                  {'Platform: ' + item.Platform}
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </ScrollView>
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id} // Assuming 'id' is unique for each user
       />
 
       <View style={styles.selectContainer}>
         <Text style={styles.boldText}>Supervisor Preferences</Text>
         <SelectList
-          setSelected={val => setSelectedSupervisor(val)}
+          setSelected={val => setfirstpreference(val)}
           data={SupervisorList}
           save="value"
           onSelect={() => {
@@ -94,7 +126,7 @@ const ReqSupervisor = () => {
       </View>
       <View style={styles.selectContainer}>
         <SelectList
-          setSelected={val => setSelectedSupervisor(val)}
+          setSelected={val => setsecondpreference(val)}
           data={SupervisorList}
           save="value"
           onSelect={() => {
@@ -109,7 +141,7 @@ const ReqSupervisor = () => {
       </View>
       <View style={styles.selectContainer}>
         <SelectList
-          setSelected={val => setSelectedSupervisor(val)}
+          setSelected={val => setthirdpreference(val)}
           data={SupervisorList}
           save="value"
           onSelect={() => {
@@ -140,7 +172,6 @@ const styles = StyleSheet.create({
     elevation: 5,
     backgroundColor: 'lightgrey',
     borderRadius: 10,
-    marginBottom: 10,
     width: '100%',
   },
   selectContainer: {
