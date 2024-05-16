@@ -230,7 +230,7 @@ const CommitteeDashborad = () => {
         name="dashboard"
         component={Dashboardscreens}
         options={{
-          title: 'Committee Dashboard',
+          title: 'Dashboard',
           headerShown: true,
           tabBarIcon: () => (
             <Image

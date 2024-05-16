@@ -1,5 +1,5 @@
 import {useFocusEffect} from '@react-navigation/native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,6 +8,7 @@ import {
   FlatList,
   ToastAndroid,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {SelectList} from 'react-native-dropdown-select-list';
 import API_URL from '../../apiConfig';
@@ -27,6 +28,13 @@ const ReqSupervisor = props => {
     thirdpreference,
   ]);
 
+  useEffect(() => {
+    setSelectedSupervisors([
+      firstpreference,
+      secondpreference,
+      thirdpreference,
+    ]);
+  }, [firstpreference, secondpreference, thirdpreference]);
   const fetchSupervisors = async () => {
     try {
       const response = await fetch(`${API_URL}/Student/GetAllSupervisors`);
@@ -45,6 +53,118 @@ const ReqSupervisor = props => {
     }
   };
 
+  // const HandleCreateSupervisorsRequest = async () => {
+  //   if (loading) {
+  //     Alert.alert('Please wait', 'Supervisors are being loaded...');
+  //     return;
+  //   }
+
+  //   try {
+  //     const filteredSupervisors = selectedSupervisors.filter(
+  //       supervisorId => supervisorId,
+  //     ); // Ensure valid supervisor IDs
+
+  //     const data = filteredSupervisors.map(supervisorId => ({
+  //       supervisor_id: supervisorId,
+  //       user_id: userid,
+  //     }));
+
+  //     setLoading(true); // Set loading state for API call feedback
+  //     const response = await fetch(
+  //       `${API_URL}/Auth/SupervisorPreferences?pref=${selectedSupervisors}`,
+  //       {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify(data),
+  //       },
+  //     );
+
+  //     if (!response.ok) {
+  //       console.error('Request failed with status:', response.status);
+  //       setLoading(false); // Reset loading state on error
+  //       const errorData = await response.json(); // Attempt to extract error message
+  //       ToastAndroid.show(
+  //         errorData?.message ||
+  //           'Error submitting preferences. Please try again.',
+  //         ToastAndroid.SHORT,
+  //       );
+  //       return;
+  //     }
+
+  //     const responseData = await response.json();
+  //     console.log('Response data:', responseData);
+  //     Alert.alert(
+  //       'Supervisors Request Sent',
+  //       'Your preferred supervisors have been submitted.',
+  //     );
+
+  //     // Optionally, navigate to another screen or show success message
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     setLoading(false); // Reset loading state on error
+  //     Alert.alert('Error', 'An unexpected error occurred. Please try again.');
+  //   } finally {
+  //     setLoading(false); // Reset loading state regardless of success or failure
+  //   }
+  // };
+  const handleCreateSupervisorsRequest = async () => {
+    if (loading) {
+      Alert.alert('Please wait', 'Supervisors are being loaded...');
+      return;
+    }
+
+    try {
+      const filteredSupervisors = [
+        firstpreference,
+        secondpreference,
+        thirdpreference,
+      ].filter(supervisorId => supervisorId); // Ensure valid supervisor IDs
+
+      const data = {
+        user_id: userid,
+        prefferedSupervisors: filteredSupervisors,
+      };
+
+      setLoading(true); // Set loading state for API call feedback
+      const response = await fetch(`${API_URL}/Auth/SupervisorPreferences`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        console.error('Request failed with status:', response.status);
+        const errorData = await response.json(); // Attempt to extract error message
+        console.error('Error data:', errorData);
+        setLoading(false); // Reset loading state on error
+        ToastAndroid.show(
+          errorData?.message ||
+            'Error submitting preferences. Please try again.',
+          ToastAndroid.SHORT,
+        );
+        return;
+      }
+
+      const responseData = await response.json();
+      console.log('Response data:', responseData);
+      Alert.alert(
+        'Supervisors Request Sent',
+        'Your preferred supervisors have been submitted.',
+      );
+
+      // Optionally, navigate to another screen or show success message
+    } catch (error) {
+      console.error('Error:', error);
+      setLoading(false); // Reset loading state on error
+      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
+    } finally {
+      setLoading(false); // Reset loading state regardless of success or failure
+    }
+  };
   useFocusEffect(
     useCallback(() => {
       fetchSupervisors();
@@ -115,7 +235,7 @@ const ReqSupervisor = props => {
           data={SupervisorList}
           save="value"
           onSelect={() => {
-            console.warn(selectedSupervisor);
+            console.log(selectedSupervisors);
           }}
           searchPlaceholder="Search Supervisor"
           dropdownTextStyles={{color: 'black'}}
@@ -130,7 +250,7 @@ const ReqSupervisor = props => {
           data={SupervisorList}
           save="value"
           onSelect={() => {
-            console.warn(selectedSupervisor);
+            console.log(selectedSupervisors);
           }}
           searchPlaceholder="Search Supervisor"
           dropdownTextStyles={{color: 'black'}}
@@ -145,7 +265,7 @@ const ReqSupervisor = props => {
           data={SupervisorList}
           save="value"
           onSelect={() => {
-            console.warn(selectedSupervisor);
+            console.log(selectedSupervisors);
           }}
           searchPlaceholder="Search Supervisor"
           dropdownTextStyles={{color: 'black'}}
@@ -155,7 +275,9 @@ const ReqSupervisor = props => {
         />
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleCreateSupervisorsRequest}>
         <Text style={styles.buttonText}>Send Request</Text>
       </TouchableOpacity>
     </View>

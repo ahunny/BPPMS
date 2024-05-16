@@ -6,17 +6,16 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Alert,
 } from 'react-native';
-import {RadioButton} from 'react-native-paper';
 import DocumentPicker from 'react-native-document-picker';
+import API_URL from '../../apiConfig';
 
 const UploadTasks = ({route}) => {
   const {taskData} = route.params;
 
-  const [subject, setSubject] = useState('');
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState(taskData.task_description);
   const [fileResponse, setFileResponse] = useState([]);
-  const [recipient, setRecipient] = useState('supervisor');
 
   const handleDocumentSelection = useCallback(async () => {
     try {
@@ -25,15 +24,50 @@ const UploadTasks = ({route}) => {
       });
 
       setFileResponse(response);
-      console.log(response);
+      console.log('URI is: ', response[0].uri);
     } catch (err) {
-      // console.warn(err);
+      // Handle the error
     }
   }, []);
 
-  const handleSubmit = () => {
-    // Implement form submission logic here
-    console.log('Form submitted');
+  const handleSubmit = async () => {
+    const isStudentSubmitting = true; // This is set to true as per your requirement
+
+    const formData = new FormData();
+    formData.append('isStudent', isStudentSubmitting.toString());
+    formData.append('task_id', taskData.task_id.toString());
+    formData.append('task_description', description);
+
+    if (fileResponse[0]) {
+      formData.append('fileUrl', {
+        uri: fileResponse[0].uri,
+        type: fileResponse[0].type,
+        name: fileResponse[0].name,
+      });
+    }
+    console.log(formData);
+
+    try {
+      const response = await fetch(`${API_URL}/Tasks/AddTask`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Response data:', data);
+        Alert.alert('Task uploaded successfully');
+      } else {
+        console.log('Request failed with status:', response.status);
+        Alert.alert('Error', 'Failed to upload task');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
+    }
   };
 
   return (
@@ -41,7 +75,10 @@ const UploadTasks = ({route}) => {
       <View style={{marginTop: 20}}>
         <Text style={[styles.label, {marginLeft: 15}]}>Description</Text>
         <TextInput
-          style={[styles.input, {height: 200, width: 380, alignSelf: 'center'}]}
+          style={[
+            styles.input,
+            {height: 200, width: 380, alignSelf: 'center', color: 'black'},
+          ]}
           value={description}
           onChangeText={setDescription}
           multiline
@@ -51,7 +88,10 @@ const UploadTasks = ({route}) => {
         <View>
           {fileResponse[0] && (
             <View style={{marginTop: 20, alignSelf: 'center'}}>
-              <Image source={{uri: fileResponse[0].uri}} />
+              <Image
+                source={{uri: fileResponse[0].uri}}
+                style={{width: 100, height: 100}}
+              />
               <Text>Selected File: {fileResponse[0].name}</Text>
             </View>
           )}
@@ -72,11 +112,6 @@ const UploadTasks = ({route}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
-  },
   label: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -99,19 +134,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 15,
     width: '50%',
-  },
-  radioButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  radioText: {
-    fontSize: 16,
-    marginLeft: 10,
-    color: 'black',
-  },
-  radioContainer: {
-    marginBottom: 15,
   },
   submitButton: {
     backgroundColor: '#C0C0C0',
