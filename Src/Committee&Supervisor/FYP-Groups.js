@@ -1,4 +1,4 @@
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
@@ -17,8 +17,10 @@ const FypGroups = props => {
   const [FilteredProjects, setFilteredProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const navigation = useNavigation();
 
   const {fyptype} = props.route.params;
+  console.log(fyptype);
 
   const fetchProjectsWithFyptype = async fyptype => {
     try {
@@ -63,12 +65,28 @@ const FypGroups = props => {
     fetchData();
   }, [fyptype]);
 
+  // const handleSearch = text => {
+  //   setSearchQuery(text);
+  //   const filtered = FilteredProjects.filter(item =>
+  //     item.Project.toLowerCase().includes(text.toLowerCase()),
+  //   );
+  //   setFilteredData(filtered);
+  // };
   const handleSearch = text => {
-    setSearchQuery(text);
-    const filtered = FilteredProjects.filter(item =>
-      item.Project.toLowerCase().includes(text.toLowerCase()),
+    setSearchQuery(text); // Update search input state
+
+    // Case-insensitive search with optional chaining and default value
+    const filtered = FilteredProjects.filter(
+      project =>
+        project?.ProjectTitle?.toLowerCase()?.includes(text.toLowerCase()) ||
+        '',
     );
-    setFilteredData(filtered);
+
+    setFilteredData(filtered); // Update filtered projects for display
+  };
+  const handleProjectPress = item => {
+    // Navigate to 'uploadtask' screen and pass item data
+    navigation.navigate('CommitteeProjectDetails', {projectData: item});
   };
 
   return (
@@ -116,9 +134,7 @@ const FypGroups = props => {
                 marginBottom: 10,
                 marginTop: index === 0 ? 20 : 0,
               }}
-              onPress={() =>
-                props.navigation.navigate('CommitteeProjectDetails')
-              }>
+              onPress={() => handleProjectPress(item)}>
               <View
                 style={{
                   flexDirection: 'row',

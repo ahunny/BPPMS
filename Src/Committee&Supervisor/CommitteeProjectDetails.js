@@ -1,46 +1,56 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, FlatList} from 'react-native';
 import {SelectList} from 'react-native-dropdown-select-list';
 import {useNavigation} from '@react-navigation/native';
+import API_URL from '../../apiConfig';
 
-const CommitteeProjectDetails = () => {
-  const data = [
-    {
-      id: '1',
-      Name: 'Armughan Ul Haq',
-      Aridnum: '2020-Arid-3609',
-      Cgpa: '3.43',
-      Platform: 'React-Native',
-    },
-    {
-      id: '2',
-      Name: 'Muhammad Ruhab Qureshi',
-      Aridnum: '2020-Arid-3722',
-      Cgpa: '3.01',
-      Platform: 'Flutter',
-    },
-    {
-      id: '3',
-      Name: 'Areej Sajid',
-      Aridnum: '2020-Arid-3606',
-      Cgpa: '3.43',
-      Platform: 'React-JS',
-    },
-    {
-      id: '4',
-      Name: 'Malik Umer Aziz',
-      Aridnum: '2020-Arid-3666',
-      Cgpa: '3.06',
-      Platform: 'IOS',
-    },
-    {
-      id: '5',
-      Name: 'Abdullah Faheem',
-      Aridnum: '2020-Arid-3588',
-      Cgpa: '3.43',
-      Platform: 'Android',
-    },
-  ];
+const CommitteeProjectDetails = ({route}) => {
+  const [students, setStudents] = useState([]);
+  const [Supervisors, setSupervisor] = useState([]);
+
+  const {projectData} = route.params;
+  groupid = projectData.GroupId;
+  console.log('details', projectData);
+  console.log('id', groupid);
+
+  const fetchStudents = async groupid => {
+    try {
+      const response = await fetch(
+        `${API_URL}/AssignProject/GetGroupdetailsByProject?group_id=${groupid}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        const students = data.members.map(member => ({
+          student_name: member.user.student.student_name,
+          arid_no: member.user.student.arid_no,
+          cgpa: member.user.student.cgpa,
+          platform: member.user.platform,
+        }));
+
+        setStudents(students);
+        console.log(students);
+      } else {
+        throw new Error('Failed to fetch student data');
+      }
+    } catch (error) {
+      console.error('Error fetching student data:', error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchStudents(groupid);
+    };
+
+    fetchData();
+  }, [groupid]);
 
   const navigation = useNavigation();
 
@@ -61,19 +71,19 @@ const CommitteeProjectDetails = () => {
           borderRadius: 20,
         }}>
         <FlatList
-          data={data}
+          data={students}
           renderItem={({item, index}) => (
             <TouchableOpacity
               style={[styles.itemContainer, {marginTop: index === 0 ? 20 : 0}]}>
               <View style={styles.itemContent}>
                 <View style={styles.column}>
-                  <Text style={styles.boldText}>{item.Name}</Text>
-                  <Text style={{color: 'black'}}>{item.Aridnum}</Text>
+                  <Text style={styles.boldText}>{item.student_name}</Text>
+                  <Text style={{color: 'black'}}>{item.arid_no}</Text>
                 </View>
                 <View style={styles.column}>
-                  <Text style={{color: 'black'}}>{'Cgpa: ' + item.Cgpa}</Text>
+                  <Text style={{color: 'black'}}>{'Cgpa: ' + item.cgpa}</Text>
                   <Text style={{color: 'black'}}>
-                    {'Platform: ' + item.Platform}
+                    {'Platform: ' + item.platform}
                   </Text>
                 </View>
               </View>
@@ -89,7 +99,7 @@ const CommitteeProjectDetails = () => {
             padding: 8,
             borderRadius: 40,
             height: 60,
-            width: 330,
+            width: 300,
             alignItems: 'center',
             alignContent: 'center',
             alignSelf: 'center',
@@ -104,7 +114,7 @@ const CommitteeProjectDetails = () => {
             padding: 8,
             borderRadius: 40,
             height: 60,
-            width: 330,
+            width: 300,
             alignItems: 'center',
             alignContent: 'center',
             alignSelf: 'center',
@@ -128,7 +138,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgrey',
     borderRadius: 10,
     marginBottom: 10,
-    width: '100%',
+    width: 320,
   },
 
   itemContent: {
