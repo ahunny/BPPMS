@@ -117,7 +117,8 @@ const Creategroup = props => {
   return (
     <ScrollView style={{backgroundColor: '#74A2A8'}}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
+        <View
+          style={{flex: 1, backgroundColor: '#74A2A8', alignItems: 'center'}}>
           <View
             style={{
               flexDirection: 'row',
@@ -149,13 +150,14 @@ const Creategroup = props => {
             <Text
               style={{
                 backgroundColor: '#D9D9D9',
-                width: 150,
+                width: '30%',
                 height: 50,
                 borderRadius: 20,
                 fontSize: 18,
                 color: 'black',
                 textAlign: 'center',
                 verticalAlign: 'middle',
+                marginLeft: -40,
               }}>
               IOS
             </Text>
@@ -191,13 +193,14 @@ const Creategroup = props => {
             <Text
               style={{
                 backgroundColor: '#D9D9D9',
-                width: 150,
+                width: '30%',
                 height: 50,
                 borderRadius: 20,
                 fontSize: 18,
                 color: 'black',
                 textAlign: 'center',
                 verticalAlign: 'middle',
+                marginLeft: -40,
               }}>
               Flutter
             </Text>
@@ -233,13 +236,14 @@ const Creategroup = props => {
             <Text
               style={{
                 backgroundColor: '#D9D9D9',
-                width: 150,
+                width: '30%',
                 height: 50,
                 borderRadius: 20,
                 fontSize: 18,
                 color: 'black',
                 textAlign: 'center',
                 verticalAlign: 'middle',
+                marginLeft: -40,
               }}>
               React-Native
             </Text>
@@ -275,13 +279,14 @@ const Creategroup = props => {
             <Text
               style={{
                 backgroundColor: '#D9D9D9',
-                width: 150,
+                width: '30%',
                 height: 50,
                 borderRadius: 20,
                 fontSize: 18,
                 color: 'black',
                 textAlign: 'center',
                 verticalAlign: 'middle',
+                marginLeft: -40,
               }}>
               Android
             </Text>
@@ -317,13 +322,14 @@ const Creategroup = props => {
             <Text
               style={{
                 backgroundColor: '#D9D9D9',
-                width: 150,
+                width: '30%',
                 height: 50,
                 borderRadius: 20,
                 fontSize: 18,
                 color: 'black',
                 textAlign: 'center',
                 verticalAlign: 'middle',
+                marginLeft: -40,
               }}>
               Web
             </Text>
@@ -342,7 +348,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E5E5E5',
     borderColor: '#E5E5E5',
     borderRadius: 20,
-    width: 220,
+    width: '70%',
     height: 50,
   },
 

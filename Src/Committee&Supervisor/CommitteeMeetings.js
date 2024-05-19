@@ -68,7 +68,7 @@ const CommitteeMeetings = props => {
                 elevation: 5,
                 backgroundColor: 'lightgrey',
                 borderRadius: 10,
-                width: 360,
+                width: 320,
                 marginBottom: 10,
                 marginTop: index === 0 ? 20 : 0,
               }}>
@@ -152,7 +152,7 @@ const CommitteeMeetings = props => {
                       style={{
                         width: 20,
                         height: 20,
-                        marginLeft: 150,
+                        marginLeft: 130,
                         marginTop: -50,
                       }} // Set the width and height of the image
                     />

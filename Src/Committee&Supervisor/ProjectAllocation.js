@@ -1,66 +1,174 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, FlatList} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  TextBase,
+  ToastAndroid,
+} from 'react-native';
 import {SelectList} from 'react-native-dropdown-select-list';
+import API_URL from '../../apiConfig';
+import {black} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import {useFocusEffect} from '@react-navigation/native';
 
-const ProjectAllocation = () => {
+const ProjectAllocation = props => {
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [selectedSupervisor, setSelectedSupervisor] = useState('');
-  const [selectedproject, setSelectedproject] = useState('');
+  const [selectedProject, setSelectedProject] = useState('');
+  const [students, setStudents] = useState([]);
+  const [prefsupervisors, setprefSupervisors] = useState([]);
+  const [ProjectList, setProjectList] = useState([]);
+  const [Supervisorlist, setsupervisorlist] = useState([]);
 
-  const ProjectList = [
-    {key: '1', value: 'BIIT PROJECT PROGRESS MONITORING SYSTEM'},
-    {key: '2', value: 'SECRET MESSAGE'},
-    {key: '3', value: 'ADVENTURE PLANNER'},
-    {key: '4', value: 'LOST CHILD '},
-    {key: '5', value: 'HAKEEM HIKMAT APP'},
-  ];
+  const [allocatedProject, setAllocatedProject] = useState([
+    selectedProject,
+    selectedSupervisor,
+  ]);
 
-  const SupervisorList = [
-    {key: '1', value: 'Sir Azeem'},
-    {key: '2', value: 'Sir Umer'},
-    {key: '3', value: 'Sir Hassan'},
-    {key: '4', value: 'Sir Shahid'},
-    {key: '5', value: 'Sir Zahid'},
-    {key: '6', value: 'Sir Ahsan'},
-  ];
+  const {groupId} = props.route.params;
 
-  const data = [
-    {
-      id: '1',
-      Name: 'Armughan Ul Haq',
-      Aridnum: '2020-Arid-3609',
-      Cgpa: '3.43',
-      Platform: 'React-Native',
-    },
-    {
-      id: '2',
-      Name: 'Muhammad Ruhab Qureshi',
-      Aridnum: '2020-Arid-3722',
-      Cgpa: '3.01',
-      Platform: 'Flutter',
-    },
-    {
-      id: '3',
-      Name: 'Areej Sajid',
-      Aridnum: '2020-Arid-3606',
-      Cgpa: '3.43',
-      Platform: 'React-JS',
-    },
-    {
-      id: '4',
-      Name: 'Malik Umer Aziz',
-      Aridnum: '2020-Arid-3666',
-      Cgpa: '3.06',
-      Platform: 'IOS',
-    },
-    {
-      id: '5',
-      Name: 'Abdullah Faheem',
-      Aridnum: '2020-Arid-3588',
-      Cgpa: '3.43',
-      Platform: 'Android',
-    },
-  ];
+  const fetchStudents = async groupId => {
+    try {
+      const response = await fetch(
+        `${API_URL}/AssignProject/GetGroupGetailsByGroupId?group_id=${groupId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
 
+      if (response.ok) {
+        const data = await response.json();
+        const students = data.members.map(member => ({
+          student_name: member.user.student.student_name,
+          arid_no: member.user.student.arid_no,
+          cgpa: member.user.student.cgpa,
+          platform: member.user.platform,
+        }));
+
+        setStudents(students);
+        console.log(students);
+
+        const prefsupervisors = data.supervisors.map(supervisor => ({
+          supervisor_id: supervisor.supervisor_id,
+          supervisorName: supervisor.SupervisorName,
+        }));
+        setprefSupervisors(prefsupervisors);
+        console.log('Supervisors:', prefsupervisors);
+      } else {
+        throw new Error('Failed to fetch student data');
+      }
+    } catch (error) {
+      console.error('Error fetching student data:', error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchStudents(groupId);
+    };
+
+    fetchData();
+  }, [groupId]);
+
+  const fetchProjects = async () => {
+    try {
+      const response = await fetch(`${API_URL}/AssignProject/GetAllProjects?`);
+      const data = await response.json();
+      const formattedData = data.map(item => ({
+        key: item.project_id.toString(),
+        value: item.project_title,
+      }));
+      setProjectList(formattedData);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Students', ToastAndroid.SHORT);
+      console.error('Error fetching Students:', error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  const fetchSupervisors = async () => {
+    try {
+      const response = await fetch(`${API_URL}/Student/GetAllSupervisors`);
+      const data = await response.json();
+      const formattedData = data.map(item => ({
+        key: item.supervisor_id.toString(), // Extract supervisor ID as string
+        value: item.name,
+      }));
+
+      setsupervisorlist(formattedData);
+      console.log(Supervisorlist);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Supervisors', ToastAndroid.SHORT);
+      console.error('Error fetching Supervisors:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useFocusEffect(
+    // useCallback prevent unnecessary re-renders caused by creating a new
+    // function instance on every render.
+    useCallback(() => {
+      fetchProjects();
+      fetchSupervisors();
+    }, []),
+  );
+
+  const handleProjectAllocation = async () => {
+    if (!selectedProject || !selectedSupervisor) {
+      ToastAndroid.show(
+        'Please select Project and Supervisor',
+        ToastAndroid.SHORT,
+      );
+      return;
+    }
+
+    try {
+      const projectId = parseInt(selectedProject, 10); // Parse project ID to integer
+      const supervisorId = parseInt(selectedSupervisor, 10); // Parse supervisor ID to integer
+
+      const response = await fetch(
+        `${API_URL}/AssignProject/ProjectAllocation?project_id=${projectId}&supervisor_id=${supervisorId}&group_id=${groupId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      if (response.ok) {
+        ToastAndroid.show(
+          'Project allocated successfully!',
+          ToastAndroid.SHORT,
+        );
+        // Clear selections after successful allocation (optional)
+        setSelectedProject('');
+        setSelectedSupervisor('');
+      } else {
+        const error = await response.text();
+        console.error('Error allocating project:', error);
+        ToastAndroid.show(
+          'Error allocating project. Please try again.',
+          ToastAndroid.SHORT,
+        );
+      }
+    } catch (error) {
+      console.error('Error allocating project:', error);
+      ToastAndroid.show(
+        'Error allocating project. Please try again.',
+        ToastAndroid.SHORT,
+      );
+    }
+  };
   return (
     <View
       style={{
@@ -78,20 +186,37 @@ const ProjectAllocation = () => {
           borderRadius: 20,
         }}>
         <FlatList
-          data={data}
+          data={students}
           renderItem={({item, index}) => (
             <TouchableOpacity
-              style={[styles.itemContainer, {marginTop: index === 0 ? 50 : 0}]}>
+              style={[styles.itemContainer, {marginTop: index === 0 ? 20 : 0}]}>
               <View style={styles.itemContent}>
                 <View style={styles.column}>
-                  <Text style={styles.boldText}>{item.Name}</Text>
-                  <Text style={{color: 'black'}}>{item.Aridnum}</Text>
+                  <Text style={styles.boldText}>{item.student_name}</Text>
+                  <Text style={{color: 'black'}}>{item.arid_no}</Text>
                 </View>
                 <View style={styles.column}>
-                  <Text style={{color: 'black'}}>{'Cgpa: ' + item.Cgpa}</Text>
+                  <Text style={{color: 'black'}}>{'Cgpa: ' + item.cgpa}</Text>
                   <Text style={{color: 'black'}}>
-                    {'Platform: ' + item.Platform}
+                    {'Platform: ' + item.platform}
                   </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          )}
+          keyExtractor={item => item.id}
+        />
+        <Text style={{color: 'black', fontSize: 18}}>
+          Supervisor Preferences:
+        </Text>
+        <FlatList
+          data={prefsupervisors}
+          renderItem={({item, index}) => (
+            <TouchableOpacity
+              style={[styles.itemContainer, {marginTop: index === 0 ? 10 : 0}]}>
+              <View style={styles.itemContent}>
+                <View style={styles.column}>
+                  <Text style={styles.boldText}>{item.supervisorName}</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -104,11 +229,11 @@ const ProjectAllocation = () => {
             Select FYP Project
           </Text>
           <SelectList
-            setSelected={val => setSelectedproject(val)}
+            setSelected={val => setSelectedProject(val)}
             data={ProjectList}
-            save="value"
+            save="key"
             onSelect={() => {
-              console.warn(selectedproject);
+              console.warn(selectedProject);
             }}
             searchPlaceholder="Search Project"
             dropdownTextStyles={{color: 'black'}}
@@ -123,8 +248,8 @@ const ProjectAllocation = () => {
           </Text>
           <SelectList
             setSelected={val => setSelectedSupervisor(val)}
-            data={SupervisorList}
-            save="value"
+            data={Supervisorlist}
+            save="key"
             onSelect={() => {
               console.warn(selectedSupervisor);
             }}
@@ -136,7 +261,9 @@ const ProjectAllocation = () => {
           />
         </View>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleProjectAllocation}>
           <Text style={styles.buttonText}>ASSIGN</Text>
         </TouchableOpacity>
       </View>
@@ -155,7 +282,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgrey',
     borderRadius: 10,
     marginBottom: 10,
-    width: '100%',
+    width: 300,
   },
   selectContainer: {
     marginTop: 10,

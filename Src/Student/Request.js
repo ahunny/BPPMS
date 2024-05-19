@@ -23,8 +23,8 @@ const Request_Details = ({route}) => {
       );
       const data = await response.json();
       console.log(data);
-      const filteredData = data.filter(item => item.user_id !== userid);
-      setRequestList(filteredData);
+      //const filteredData = data.filter(item => item.user_id !== userid);
+      setRequestList(data);
     } catch (error) {
       ToastAndroid.show('Error fetching Requests', ToastAndroid.SHORT);
       console.error('Error fetching Requests:', error);
@@ -64,10 +64,10 @@ const Request_Details = ({route}) => {
               elevation: 5,
               backgroundColor: 'lightgrey',
               borderRadius: 10,
-              width: 370,
+              width: '90%',
               marginBottom: 10,
+              marginLeft: 18,
               marginTop: index === 0 ? 50 : 0,
-              marginLeft: 20,
             }}>
             <View
               style={{

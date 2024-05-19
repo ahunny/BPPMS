@@ -11,7 +11,10 @@ import {
 } from 'react-native';
 import API_URL from '../../apiConfig';
 
-const StudentMeeting = props => {
+const StudentMeeting = ({route}) => {
+  const {roles} = route.params;
+  const {groupid} = route.params;
+
   const [MeetingList, setMeetingList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -19,7 +22,7 @@ const StudentMeeting = props => {
   const fetchMeetings = async () => {
     try {
       const response = await fetch(
-        `${API_URL}/Meeting/GetMeetings?groupId=1&isForStudent=true`,
+        `${API_URL}/Meeting/GetMeetings?groupId=${groupid}&isForStudent=true`,
       );
       const data = await response.json();
       setMeetingList(data);
@@ -40,7 +43,7 @@ const StudentMeeting = props => {
   );
 
   return (
-    <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
+    <View style={{flex: 1, backgroundColor: '#74A2A8', alignItems: 'center'}}>
       <FlatList
         data={MeetingList}
         renderItem={({item, index}) => (
@@ -49,10 +52,9 @@ const StudentMeeting = props => {
               elevation: 5,
               backgroundColor: 'lightgrey',
               borderRadius: 10,
-              width: 370,
+              width: '100%',
               marginBottom: 10,
               marginTop: index === 0 ? 50 : 0,
-              marginLeft: 20,
             }}>
             <View
               style={{
@@ -93,7 +95,7 @@ const StudentMeeting = props => {
                       textAlign: 'center',
                       color: 'black',
                       fontSize: 16,
-                    }}>{`${item.meeting_date.split('T')[0]}`}</Text>
+                    }}>{`${item.meeting_date}`}</Text>
                 </View>
                 <View
                   style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>

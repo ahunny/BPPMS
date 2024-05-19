@@ -13,6 +13,9 @@ import API_URL from '../../apiConfig';
 
 const Tasklist = ({route}) => {
   const {roles} = route.params;
+  const {groupid} = route.params;
+
+  console.log(roles);
 
   const [TaskList, setTaskList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +25,7 @@ const Tasklist = ({route}) => {
   const fetchTasks = async () => {
     try {
       const response = await fetch(
-        `${API_URL}/Tasks/GetTask?groupId=1&role=${roles}`,
+        `${API_URL}/Tasks/GetTask?groupId=${groupid}&role=${roles}`,
       );
       const data = await response.json();
       setTaskList(data);
@@ -50,7 +53,7 @@ const Tasklist = ({route}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
+    <View style={{flex: 1, backgroundColor: '#74A2A8', alignItems: 'center'}}>
       <FlatList
         data={TaskList}
         renderItem={({item, index}) => (
@@ -59,10 +62,9 @@ const Tasklist = ({route}) => {
               elevation: 5,
               backgroundColor: 'lightgrey',
               borderRadius: 10,
-              width: 370,
+              width: '100%',
               marginBottom: 10,
               marginTop: index === 0 ? 50 : 0,
-              marginLeft: 20,
             }}
             onPress={() => handleTaskPress(item)}>
             <View

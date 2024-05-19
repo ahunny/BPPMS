@@ -24,6 +24,7 @@ import ScheduleMeeting from './ScheduleMeeting';
 
 import CommitteeMeetings from './CommitteeMeetings';
 const Stack = createNativeStackNavigator();
+
 const Dashboardscreens = props => {
   return (
     <View
@@ -50,9 +51,13 @@ const Dashboardscreens = props => {
             borderRadius: 20,
             width: '90%',
             height: '14%',
-            marginTop: 22,
+            marginTop: 10,
           }}
-          onPress={() => props.navigation.navigate('FypGroups')}>
+          onPress={() =>
+            props.navigation.navigate('FypGroups', {
+              fyptype: 'fyp-0',
+            })
+          }>
           <View
             style={{
               flexDirection: 'row',
@@ -62,7 +67,7 @@ const Dashboardscreens = props => {
               style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
               <Image
                 source={require('./Assets/icons8-group-30.png')} // Provide the local image path
-                style={{width: 50, height: 50, marginTop: 10}} // Set the width and height of the image
+                style={{width: 50, height: 40}} // Set the width and height of the image
               />
               <Text style={{color: 'black', fontSize: 16}}>
                 {' '}
@@ -80,7 +85,11 @@ const Dashboardscreens = props => {
             height: '14%',
             marginTop: 15,
           }}
-          onPress={() => props.navigation.navigate('FypGroups')}>
+          onPress={() =>
+            props.navigation.navigate('FypGroups', {
+              fyptype: 'fyp-1',
+            })
+          }>
           <View
             style={{
               flexDirection: 'row',
@@ -90,7 +99,7 @@ const Dashboardscreens = props => {
               style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
               <Image
                 source={require('./Assets/icons8-group-30.png')} // Provide the local image path
-                style={{width: 50, height: 50, marginTop: 10}} // Set the width and height of the image
+                style={{width: 50, height: 40}} // Set the width and height of the image
               />
               <Text style={{color: 'black', fontSize: 16}}>
                 {' '}
@@ -109,7 +118,11 @@ const Dashboardscreens = props => {
             height: '14%',
             marginTop: 15,
           }}
-          onPress={() => props.navigation.navigate('FypGroups')}>
+          onPress={() =>
+            props.navigation.navigate('FypGroups', {
+              fyptype: 'fyp-2',
+            })
+          }>
           <View
             style={{
               flexDirection: 'row',
@@ -119,7 +132,7 @@ const Dashboardscreens = props => {
               style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
               <Image
                 source={require('./Assets/icons8-group-30.png')} // Provide the local image path
-                style={{width: 50, height: 50, marginTop: 10}} // Set the width and height of the image
+                style={{width: 50, height: 40}} // Set the width and height of the image
               />
               <Text style={{color: 'black', fontSize: 16}}>
                 {' '}
@@ -147,7 +160,7 @@ const Dashboardscreens = props => {
               style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
               <Image
                 source={require('./Assets/icons8-refresh-50.png')} // Provide the local image path
-                style={{width: 50, height: 50, marginTop: 10}} // Set the width and height of the image
+                style={{width: 50, height: 40}} // Set the width and height of the image
               />
               <Text style={{color: 'black', fontSize: 16}}>
                 {' '}
@@ -176,7 +189,7 @@ const Dashboardscreens = props => {
               style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
               <Image
                 source={require('./Assets/icons8-grades-48.png')} // Provide the local image path
-                style={{width: 50, height: 50, marginTop: 10}} // Set the width and height of the image
+                style={{width: 50, height: 40}} // Set the width and height of the image
               />
               <Text style={{color: 'black', fontSize: 16}}> {'Grading'}</Text>
             </View>
@@ -201,7 +214,7 @@ const Dashboardscreens = props => {
               style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
               <Image
                 source={require('./Assets/icons8-block-user-48.png')} // Provide the local image path
-                style={{width: 50, height: 50, marginTop: 10}} // Set the width and height of the image
+                style={{width: 50, height: 40}} // Set the width and height of the image
               />
               <Text style={{color: 'black', fontSize: 16}}>
                 {'Restricted Students'}

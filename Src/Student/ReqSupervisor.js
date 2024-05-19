@@ -1,5 +1,5 @@
 import {useFocusEffect} from '@react-navigation/native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -14,33 +14,52 @@ import {SelectList} from 'react-native-dropdown-select-list';
 import API_URL from '../../apiConfig';
 
 const ReqSupervisor = props => {
-  const [firstpreference, setfirstpreference] = useState('');
-  const [secondpreference, setsecondpreference] = useState('');
-  const [thirdpreference, setthirdpreference] = useState('');
+  const [supervisorPreferences, setSupervisorPreferences] = useState({
+    user_id: props.route.params.userid,
+    prefferedSupervisors: [], // Initialize empty array for supervisor IDs
+  });
   const [SupervisorList, setsupervisorlist] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const {userid} = props.route.params;
 
-  const [selectedSupervisors, setSelectedSupervisors] = useState([
-    firstpreference,
-    secondpreference,
-    thirdpreference,
-  ]);
+  const handleFirstPreferenceChange = val => {
+    setSupervisorPreferences({
+      ...supervisorPreferences,
+      prefferedSupervisors: [
+        val,
+        ...supervisorPreferences.prefferedSupervisors.slice(1),
+      ],
+    });
+  };
 
-  useEffect(() => {
-    setSelectedSupervisors([
-      firstpreference,
-      secondpreference,
-      thirdpreference,
-    ]);
-  }, [firstpreference, secondpreference, thirdpreference]);
+  const handleSecondPreferenceChange = val => {
+    setSupervisorPreferences({
+      ...supervisorPreferences,
+      prefferedSupervisors: [
+        supervisorPreferences.prefferedSupervisors[0],
+        val,
+        ...supervisorPreferences.prefferedSupervisors.slice(2),
+      ],
+    });
+  };
+
+  const handleThirdPreferenceChange = val => {
+    setSupervisorPreferences({
+      ...supervisorPreferences,
+      prefferedSupervisors: [
+        supervisorPreferences.prefferedSupervisors[0],
+        supervisorPreferences.prefferedSupervisors[1],
+        val,
+      ],
+    });
+  };
+
   const fetchSupervisors = async () => {
     try {
       const response = await fetch(`${API_URL}/Student/GetAllSupervisors`);
       const data = await response.json();
       const formattedData = data.map(item => ({
-        key: item.supervisor_id.toString(),
+        key: item.supervisor_id.toString(), // Extract supervisor ID as string
         value: item.name,
       }));
 
@@ -53,81 +72,20 @@ const ReqSupervisor = props => {
     }
   };
 
-  // const HandleCreateSupervisorsRequest = async () => {
-  //   if (loading) {
-  //     Alert.alert('Please wait', 'Supervisors are being loaded...');
-  //     return;
-  //   }
-
-  //   try {
-  //     const filteredSupervisors = selectedSupervisors.filter(
-  //       supervisorId => supervisorId,
-  //     ); // Ensure valid supervisor IDs
-
-  //     const data = filteredSupervisors.map(supervisorId => ({
-  //       supervisor_id: supervisorId,
-  //       user_id: userid,
-  //     }));
-
-  //     setLoading(true); // Set loading state for API call feedback
-  //     const response = await fetch(
-  //       `${API_URL}/Auth/SupervisorPreferences?pref=${selectedSupervisors}`,
-  //       {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify(data),
-  //       },
-  //     );
-
-  //     if (!response.ok) {
-  //       console.error('Request failed with status:', response.status);
-  //       setLoading(false); // Reset loading state on error
-  //       const errorData = await response.json(); // Attempt to extract error message
-  //       ToastAndroid.show(
-  //         errorData?.message ||
-  //           'Error submitting preferences. Please try again.',
-  //         ToastAndroid.SHORT,
-  //       );
-  //       return;
-  //     }
-
-  //     const responseData = await response.json();
-  //     console.log('Response data:', responseData);
-  //     Alert.alert(
-  //       'Supervisors Request Sent',
-  //       'Your preferred supervisors have been submitted.',
-  //     );
-
-  //     // Optionally, navigate to another screen or show success message
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //     setLoading(false); // Reset loading state on error
-  //     Alert.alert('Error', 'An unexpected error occurred. Please try again.');
-  //   } finally {
-  //     setLoading(false); // Reset loading state regardless of success or failure
-  //   }
-  // };
   const handleCreateSupervisorsRequest = async () => {
     if (loading) {
-      Alert.alert('Please wait', 'Supervisors are being loaded...');
+      Alert.alert('Please wait', 'Supervisors are being submitted...');
       return;
     }
 
+    const data = {
+      user_id: supervisorPreferences.user_id,
+      prefferedSupervisors: supervisorPreferences.prefferedSupervisors, // Send supervisor IDs
+    };
+
+    setLoading(true); // Set loading state
+
     try {
-      const filteredSupervisors = [
-        firstpreference,
-        secondpreference,
-        thirdpreference,
-      ].filter(supervisorId => supervisorId); // Ensure valid supervisor IDs
-
-      const data = {
-        user_id: userid,
-        prefferedSupervisors: filteredSupervisors,
-      };
-
-      setLoading(true); // Set loading state for API call feedback
       const response = await fetch(`${API_URL}/Auth/SupervisorPreferences`, {
         method: 'POST',
         headers: {
@@ -137,9 +95,8 @@ const ReqSupervisor = props => {
       });
 
       if (!response.ok) {
-        console.error('Request failed with status:', response.status);
-        const errorData = await response.json(); // Attempt to extract error message
-        console.error('Error data:', errorData);
+        const errorData = await response.json();
+        console.error('Error submitting preferences:', errorData);
         setLoading(false); // Reset loading state on error
         ToastAndroid.show(
           errorData?.message ||
@@ -155,16 +112,20 @@ const ReqSupervisor = props => {
         'Supervisors Request Sent',
         'Your preferred supervisors have been submitted.',
       );
-
-      // Optionally, navigate to another screen or show success message
+      setLoading(false); // Reset loading state on success
     } catch (error) {
       console.error('Error:', error);
       setLoading(false); // Reset loading state on error
       Alert.alert('Error', 'An unexpected error occurred. Please try again.');
-    } finally {
-      setLoading(false); // Reset loading state regardless of success or failure
     }
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchSupervisors();
+    }, []),
+  );
+
   useFocusEffect(
     useCallback(() => {
       fetchSupervisors();
@@ -231,11 +192,11 @@ const ReqSupervisor = props => {
       <View style={styles.selectContainer}>
         <Text style={styles.boldText}>Supervisor Preferences</Text>
         <SelectList
-          setSelected={val => setfirstpreference(val)}
+          setSelected={handleFirstPreferenceChange}
           data={SupervisorList}
-          save="value"
+          save="key"
           onSelect={() => {
-            console.log(selectedSupervisors);
+            console.log(supervisorPreferences);
           }}
           searchPlaceholder="Search Supervisor"
           dropdownTextStyles={{color: 'black'}}
@@ -246,11 +207,11 @@ const ReqSupervisor = props => {
       </View>
       <View style={styles.selectContainer}>
         <SelectList
-          setSelected={val => setsecondpreference(val)}
+          setSelected={handleSecondPreferenceChange}
           data={SupervisorList}
-          save="value"
+          save="key"
           onSelect={() => {
-            console.log(selectedSupervisors);
+            console.log(supervisorPreferences);
           }}
           searchPlaceholder="Search Supervisor"
           dropdownTextStyles={{color: 'black'}}
@@ -261,11 +222,11 @@ const ReqSupervisor = props => {
       </View>
       <View style={styles.selectContainer}>
         <SelectList
-          setSelected={val => setthirdpreference(val)}
+          setSelected={handleThirdPreferenceChange}
           data={SupervisorList}
-          save="value"
+          save="key"
           onSelect={() => {
-            console.log(selectedSupervisors);
+            console.log(supervisorPreferences);
           }}
           searchPlaceholder="Search Supervisor"
           dropdownTextStyles={{color: 'black'}}

@@ -67,7 +67,7 @@ const ScheduleMeeting = () => {
           <TextInput
             style={[
               styles.input,
-              {height: 120, width: 360, alignSelf: 'center', color: 'black'},
+              {height: 120, width: 320, alignSelf: 'center', color: 'black'},
             ]}
             value={MeetingNotes}
             onChangeText={setNotes}

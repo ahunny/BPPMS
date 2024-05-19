@@ -28,23 +28,16 @@ var userid;
 var roles;
 
 const Dashboardscreens = props => {
-  // return(
-  //     <multiplescreen.Navigator>
-  //         <multiplescreen.Screen name="profile" component={Project_details}   options={{ headerShown: false }}/>
-  //         <multiplescreen.Screen name="Grades" component={Grades}   options={{ headerShown: false }}/>
-  //     </multiplescreen.Navigator>
-  // )
   return (
-    <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
+    <View style={{flex: 1, backgroundColor: '#74A2A8', alignItems: 'center'}}>
       <TouchableOpacity
         style={{
           elevation: 5,
           backgroundColor: 'lightgrey',
           borderRadius: 10,
-          width: 370,
-          height: 120,
+          width: '95%',
+          height: '15%',
           marginTop: 50,
-          marginLeft: 20,
         }}>
         <View
           style={{
@@ -57,7 +50,7 @@ const Dashboardscreens = props => {
             style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
             <Image
               source={require('./Assets/icons8-more-details-50.png')} // Provide the local image path
-              style={{width: 40, height: 40, marginTop: 10}} // Set the width and height of the image
+              style={{width: 40, height: 40, marginTop: 5}} // Set the width and height of the image
             />
             <Text style={{marginLeft: -10, color: 'black', fontSize: 20}}>
               {'Project Details'}
@@ -70,10 +63,9 @@ const Dashboardscreens = props => {
           elevation: 5,
           backgroundColor: 'lightgrey',
           borderRadius: 10,
-          width: 370,
-          height: 120,
+          width: '95%',
+          height: '15%',
           marginTop: 30,
-          marginLeft: 20,
         }}
         onPress={() => props.navigation.navigate('Grades')}>
         <View
@@ -87,7 +79,7 @@ const Dashboardscreens = props => {
             style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
             <Image
               source={require('./Assets/icons8-grades-48.png')} // Provide the local image path
-              style={{width: 40, height: 40, marginTop: 10}} // Set the width and height of the image
+              style={{width: 40, height: 40, marginTop: 5}} // Set the width and height of the image
             />
             <Text style={{marginLeft: -10, color: 'black', fontSize: 20}}>
               {' '}
@@ -101,10 +93,9 @@ const Dashboardscreens = props => {
           elevation: 5,
           backgroundColor: 'lightgrey',
           borderRadius: 10,
-          width: 370,
-          height: 120,
+          width: '95%',
+          height: '15%',
           marginTop: 30,
-          marginLeft: 20,
         }}
         onPress={() => props.navigation.navigate('creategroup', {userid})}>
         <View
@@ -118,7 +109,7 @@ const Dashboardscreens = props => {
             style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
             <Image
               source={require('./Assets/icons8-add-male-user-group-50.png')} // Provide the local image path
-              style={{width: 40, height: 40, marginTop: 10}}
+              style={{width: 40, height: 40, marginTop: 5}}
               // Set the width and height of the image
             />
             <Text style={{marginLeft: -10, color: 'black', fontSize: 20}}>
@@ -132,10 +123,9 @@ const Dashboardscreens = props => {
           elevation: 5,
           backgroundColor: 'lightgrey',
           borderRadius: 10,
-          width: 370,
-          height: 120,
+          width: '95%',
+          height: '15%',
           marginTop: 30,
-          marginLeft: 20,
         }}
         onPress={() => props.navigation.navigate('reqsupervisor', {userid})}>
         <View
@@ -149,7 +139,7 @@ const Dashboardscreens = props => {
             style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
             <Image
               source={require('./Assets/icons8-add-administrator-50.png')} // Provide the local image path
-              style={{width: 40, height: 40, marginTop: 10}} // Set the width and height of the image
+              style={{width: 40, height: 40, marginTop: 5}} // Set the width and height of the image
             />
             <Text style={{marginLeft: -10, color: 'black', fontSize: 20}}>
               {'Request Supervisor'}
@@ -166,7 +156,8 @@ const StudentDashboard = props => {
   console.log(data.user_id);
   userid = data.user_id;
   roles = data.role;
-  console.log(userid, roles);
+  groupid = data.group_id;
+  console.log(userid, roles, groupid);
 
   return (
     <Tab.Navigator
@@ -210,6 +201,7 @@ const StudentDashboard = props => {
       <Tab.Screen
         name="Meeting"
         component={StudentMeeting}
+        initialParams={{userid: userid, roles: roles, groupid: groupid}} // Pass userid as initial parameter
         options={{
           title: 'Meetings',
           tabBarIcon: () => (
@@ -223,7 +215,7 @@ const StudentDashboard = props => {
       <Tab.Screen
         name="Task"
         component={Tasklist}
-        initialParams={{userid: userid, roles: roles}} // Pass userid as initial parameter
+        initialParams={{userid: userid, roles: roles, groupid: groupid}} // Pass userid as initial parameter
         options={{
           title: 'Tasks',
           tabBarIcon: () => (

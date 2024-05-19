@@ -77,7 +77,7 @@ const UploadTasks = ({route}) => {
         <TextInput
           style={[
             styles.input,
-            {height: 200, width: 380, alignSelf: 'center', color: 'black'},
+            {height: 200, width: '95%', alignSelf: 'center', color: 'black'},
           ]}
           value={description}
           onChangeText={setDescription}

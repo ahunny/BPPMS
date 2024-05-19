@@ -1,72 +1,71 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, FlatList, TextInput} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  TextInput,
+  ToastAndroid,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import API_URL from '../../apiConfig';
 
 const FypGroups = props => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState([]);
+  const [FilteredProjects, setFilteredProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const data = [
-    {
-      id: '1',
-      Project: 'BIIT PROJECT PROGRESS MONITORING',
-      Supervisor: 'Sir Azeem',
-    },
-    {
-      id: '2',
-      Project: 'KIDS ALPHABET Tutor',
-      Supervisor: 'Sir Azeem',
-    },
-    {
-      id: '3',
-      Project: 'BUS PASS QR SCAN',
-      Supervisor: 'Sir Azeem',
-    },
-    {
-      id: '4',
-      Project: 'ADVENTURE PLANNER',
-      Supervisor: 'Sir Azeem',
-    },
-    {
-      id: '5',
-      Project: 'SECRET MESSAGE',
-      Supervisor: 'Sir Azeem',
-    },
-    {
-      id: '6',
-      Project: 'KIDS ALPHABET Tutor',
-      Supervisor: 'Sir Azeem',
-    },
-    {
-      id: '7',
-      Project: 'BUS PASS QR SCAN',
-      Supervisor: 'Sir Azeem',
-    },
-    {
-      id: '8',
-      Project: 'ADVENTURE PLANNER',
-      Supervisor: 'Sir Azeem',
-    },
-    {
-      id: '9',
-      Project: 'SECRET MESSAGE',
-      Supervisor: 'Sir Azeem',
-    },
-    {
-      id: '10',
-      Project: 'ADVENTURE PLANNER',
-      Supervisor: 'Sir Azeem',
-    },
-    {
-      id: '11',
-      Project: 'SECRET MESSAGE',
-      Supervisor: 'Sir Azeem',
-    },
-  ];
+  const {fyptype} = props.route.params;
+
+  const fetchProjectsWithFyptype = async fyptype => {
+    try {
+      const response = await fetch(
+        `${API_URL}/Groups/GetFyp1Projects?fyptype=${fyptype}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        var details = data;
+        console.log('Details', details);
+        const formattedData = data.map(item => ({
+          key: item.GroupId.toString(), // Extract supervisor ID as string
+          value: item.ProjectTitle,
+        }));
+        setFilteredProjects(data);
+      }
+    } catch (error) {
+      ToastAndroid.show(
+        'Error fetching FYP-',
+        fyptype,
+        'Projects',
+        ToastAndroid.SHORT,
+      );
+      console.error('Error fetching Projects:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchProjectsWithFyptype(fyptype);
+    };
+
+    fetchData();
+  }, [fyptype]);
 
   const handleSearch = text => {
     setSearchQuery(text);
-    const filtered = data.filter(item =>
+    const filtered = FilteredProjects.filter(item =>
       item.Project.toLowerCase().includes(text.toLowerCase()),
     );
     setFilteredData(filtered);
@@ -106,14 +105,14 @@ const FypGroups = props => {
           borderRadius: 20,
         }}>
         <FlatList
-          data={searchQuery.length > 0 ? filteredData : data}
+          data={searchQuery.length > 0 ? filteredData : FilteredProjects}
           renderItem={({item, index}) => (
             <TouchableOpacity
               style={{
                 elevation: 5,
                 backgroundColor: 'lightgrey',
                 borderRadius: 10,
-                width: 360,
+                width: 300,
                 marginBottom: 10,
                 marginTop: index === 0 ? 20 : 0,
               }}
@@ -141,30 +140,14 @@ const FypGroups = props => {
                         color: 'black',
                         fontSize: 16,
                       }}>
-                      {item.Project}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      flex: 1,
-                    }}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        color: 'black',
-                        fontSize: 16,
-                      }}>
-                      {' '}
-                      {`Supervisor: ${item.Supervisor}`}
+                      {item.ProjectTitle}
                     </Text>
                   </View>
                 </View>
               </View>
             </TouchableOpacity>
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.GroupId}
         />
       </View>
     </View>
