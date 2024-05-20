@@ -150,7 +150,7 @@ const Dashboardscreens = props => {
             height: '14%',
             marginTop: 15,
           }}
-          onPress={() => props.navigation.navigate('FypGroups')}>
+          onPress={() => props.navigation.navigate('ReAllocation')}>
           <View
             style={{
               flexDirection: 'row',
@@ -160,7 +160,7 @@ const Dashboardscreens = props => {
               style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
               <Image
                 source={require('./Assets/icons8-refresh-50.png')} // Provide the local image path
-                style={{width: 50, height: 40}} // Set the width and height of the image
+                style={{width: 40, height: 40}} // Set the width and height of the image
               />
               <Text style={{color: 'black', fontSize: 16}}>
                 {' '}
@@ -189,7 +189,7 @@ const Dashboardscreens = props => {
               style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
               <Image
                 source={require('./Assets/icons8-grades-48.png')} // Provide the local image path
-                style={{width: 50, height: 40}} // Set the width and height of the image
+                style={{width: 40, height: 40}} // Set the width and height of the image
               />
               <Text style={{color: 'black', fontSize: 16}}> {'Grading'}</Text>
             </View>
@@ -214,7 +214,7 @@ const Dashboardscreens = props => {
               style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
               <Image
                 source={require('./Assets/icons8-block-user-48.png')} // Provide the local image path
-                style={{width: 50, height: 40}} // Set the width and height of the image
+                style={{width: 40, height: 40}} // Set the width and height of the image
               />
               <Text style={{color: 'black', fontSize: 16}}>
                 {'Restricted Students'}
@@ -257,7 +257,7 @@ const CommitteeDashborad = () => {
         name="Groups"
         component={Groups}
         options={{
-          title: 'Project Allocation',
+          title: 'Groups',
           tabBarIcon: () => (
             <Image
               source={require('./Assets/icons8-person-64.png')}

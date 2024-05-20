@@ -24,6 +24,10 @@ import StudentDashboard from './Src/Student/StudentDashbord';
 import StudentGrading from './Src/Student/Grading';
 import SupervisorDashboard from './Src/Committee&Supervisor/SupervisorDashboard';
 import SupervisorGrading from './Src/Committee&Supervisor/SupervisorGrading';
+import ReAllocationScreen from './Src/Committee&Supervisor/Re-Allocation';
+import ProjectReAllocation from './Src/Committee&Supervisor/ProjectRe-Allocation';
+import ReAllocateSupervisor from './Src/Committee&Supervisor/Re-AllocateSupervisor';
+import ProjectDetails from './Src/Committee&Supervisor/Re-AllocateSupervisorScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -65,9 +69,21 @@ const App = () => {
           component={StudentMeeting}
           options={{title: 'Meetings'}}
         />
-        <Stack.Screen name="creategroup" component={Creategroup} />
-        <Stack.Screen name="reqsupervisor" component={ReqSupervisor} />
-        <Stack.Screen name="uploadtask" component={UploadTasks} />
+        <Stack.Screen
+          name="creategroup"
+          component={Creategroup}
+          options={{title: 'Create Group'}}
+        />
+        <Stack.Screen
+          name="reqsupervisor"
+          component={ReqSupervisor}
+          options={{title: 'Request Supervisor'}}
+        />
+        <Stack.Screen
+          name="uploadtask"
+          component={UploadTasks}
+          options={{title: 'Upload Task'}}
+        />
         <Stack.Screen name="Grades" component={StudentGrading} />
 
         {/*Committee Screen Navigation Stack*/}
@@ -85,17 +101,66 @@ const App = () => {
           }}
         />
         <Stack.Screen name="Groups" component={Groups} />
-        <Stack.Screen name="ProjectAllocation" component={ProjectAllocation} />
-        <Stack.Screen name="ScheduleMeeting" component={ScheduleMeeting} />
-        <Stack.Screen name="CommiteMeetings" component={CommitteeMeetings} />
-        <Stack.Screen name="FypGroups" component={FypGroups} />
+        <Stack.Screen
+          name="ProjectAllocation"
+          component={ProjectAllocation}
+          options={{title: 'Project Allocation'}}
+        />
+        <Stack.Screen
+          name="ScheduleMeeting"
+          component={ScheduleMeeting}
+          options={{title: 'Schedule Meeting'}}
+        />
+        <Stack.Screen
+          name="CommiteMeetings"
+          component={CommitteeMeetings}
+          options={{title: 'Scheduled Meetings'}}
+        />
+        <Stack.Screen
+          name="FypGroups"
+          component={FypGroups}
+          options={{title: 'FYP GROUPS'}}
+        />
         <Stack.Screen
           name="CommitteeProjectDetails"
           component={CommitteeProjectDetails}
+          options={{title: 'Details'}}
         />
-        <Stack.Screen name="Addtask" component={Addtask} />
-        <Stack.Screen name="Uploaded Tasks" component={ViewUploadedTasks} />
-        <Stack.Screen name="View Task" component={Viewtask} />
+        <Stack.Screen
+          name="Addtask"
+          component={Addtask}
+          options={{title: 'Add Task'}}
+        />
+        <Stack.Screen
+          name="ReAllocation"
+          component={ReAllocationScreen}
+          options={{title: 'Re-Allocation'}}
+        />
+        <Stack.Screen
+          name="ProjectReAllocation"
+          component={ProjectReAllocation}
+          options={{title: 'Project Re-Allocation'}}
+        />
+        <Stack.Screen
+          name="SupervisorReAllocation"
+          component={ReAllocateSupervisor}
+          options={{title: 'Supervisor Re-Allocation'}}
+        />
+        <Stack.Screen
+          name="SupervisorReAllocationScreen"
+          component={ProjectDetails}
+          options={{title: 'Supervisor Re-Allocation'}}
+        />
+        <Stack.Screen
+          name="Uploaded Tasks"
+          component={ViewUploadedTasks}
+          options={{title: 'Tasks'}}
+        />
+        <Stack.Screen
+          name="View Task"
+          component={Viewtask}
+          options={{title: 'View Task'}}
+        />
         <Stack.Screen name="Add Remarks" component={AddRemarks} />
         <Stack.Screen name="Grading" component={Grading} />
 
