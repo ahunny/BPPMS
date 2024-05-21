@@ -6,7 +6,7 @@ import API_URL from '../../apiConfig';
 
 const CommitteeProjectDetails = ({route}) => {
   const [students, setStudents] = useState([]);
-  const [Supervisors, setSupervisor] = useState([]);
+  const [supervisor, setSupervisor] = useState([]);
 
   const {projectData} = route.params;
   groupid = projectData.GroupId;
@@ -33,9 +33,11 @@ const CommitteeProjectDetails = ({route}) => {
           cgpa: member.user.student.cgpa,
           platform: member.user.platform,
         }));
-
+        const supervisor = data.supervisors[0];
         setStudents(students);
+        setSupervisor(supervisor);
         console.log(students);
+        console.log(supervisor);
       } else {
         throw new Error('Failed to fetch student data');
       }
@@ -91,6 +93,19 @@ const CommitteeProjectDetails = ({route}) => {
           )}
           keyExtractor={item => item.id}
         />
+
+        <TouchableOpacity style={[styles.itemContainer]}>
+          <View style={styles.itemContent}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                color: 'black',
+              }}>
+              Supervisor: {supervisor.SupervisorName}
+            </Text>
+          </View>
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={{

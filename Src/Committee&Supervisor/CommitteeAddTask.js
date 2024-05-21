@@ -62,7 +62,7 @@ const Addtask = () => {
           <TextInput
             style={[
               styles.input,
-              {height: 50, width: 360, alignSelf: 'center', color: 'black'},
+              {height: 50, width: 320, alignSelf: 'center', color: 'black'},
             ]}
             value={Title}
             onChangeText={setTitle}
@@ -74,7 +74,7 @@ const Addtask = () => {
           <TextInput
             style={[
               styles.input,
-              {height: 180, width: 360, alignSelf: 'center', color: 'black'},
+              {height: 180, width: 320, alignSelf: 'center', color: 'black'},
             ]}
             value={TaskNotes}
             onChangeText={setNotes}
@@ -98,7 +98,9 @@ const Addtask = () => {
             <Text style={styles.buttonText}>Choose File</Text>
           </TouchableOpacity>
 
-          <Text style={[styles.boldText, {marginTop: 20}]}>Due Date</Text>
+          <Text style={[styles.boldText, {marginTop: 20, marginLeft: 20}]}>
+            Due Date
+          </Text>
           <TouchableOpacity
             style={styles.datePickerButton}
             onPress={showDatepicker}>
@@ -140,6 +142,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     width: '50%',
+    marginLeft: 20,
   },
   label: {
     fontSize: 16,
@@ -189,6 +192,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     marginBottom: 15,
+    marginLeft: 20,
     width: '50%',
   },
   radioButton: {
@@ -212,7 +216,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     marginTop: 40,
-    marginLeft: 250,
+    marginLeft: 220,
     width: 100,
   },
   buttonText: {

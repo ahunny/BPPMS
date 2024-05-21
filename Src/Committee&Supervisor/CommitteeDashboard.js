@@ -204,7 +204,7 @@ const Dashboardscreens = props => {
             height: '14%',
             marginTop: 15,
           }}
-          onPress={() => props.navigation.navigate('FypGroups')}>
+          onPress={() => props.navigation.navigate('RestrictedStudents')}>
           <View
             style={{
               flexDirection: 'row',
@@ -257,7 +257,7 @@ const CommitteeDashborad = () => {
         name="Groups"
         component={Groups}
         options={{
-          title: 'Groups',
+          title: 'Project Allocation',
           tabBarIcon: () => (
             <Image
               source={require('./Assets/icons8-person-64.png')}

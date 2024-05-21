@@ -28,7 +28,7 @@ const Viewtask = props => {
           marginTop: 10,
           borderRadius: 20,
         }}>
-        <View style={{marginTop: 50}}>
+        <View style={{marginTop: 50, width: 300}}>
           <Text style={[styles.label]}>Task Subject</Text>
           <View
             style={{
@@ -37,6 +37,7 @@ const Viewtask = props => {
               height: 50,
               borderRadius: 10,
               alignSelf: 'center',
+              width: 300,
             }}>
             <Text style={[styles.label, {marginLeft: 15, marginTop: 10}]}>
               Mockups
@@ -51,6 +52,7 @@ const Viewtask = props => {
               height: 50,
               borderRadius: 10,
               alignSelf: 'center',
+              width: 300,
             }}>
             <Text style={[styles.label, {marginLeft: 15, marginTop: 10}]}>
               Mockups.pptx

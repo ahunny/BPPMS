@@ -89,9 +89,9 @@ const AddRemarks = () => {
           keyExtractor={item => item.id}
         />
 
-        <Text style={[styles.label, {marginLeft: -270}]}>Remarks:</Text>
+        <Text style={[styles.label, {marginLeft: -250}]}>Remarks:</Text>
         <TextInput
-          style={[styles.input, {height: 180, width: 360, alignSelf: 'center'}]}
+          style={[styles.input, {height: 180, width: 320, alignSelf: 'center'}]}
           placeholder="Enter Remarks"
           placeholderTextColor={'grey'}
           value={TaskRemarks}

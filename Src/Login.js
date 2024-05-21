@@ -53,6 +53,8 @@ const Login = props => {
         props.navigation.navigate('SupervisorDashboard');
       } else if (role == 'Committee') {
         props.navigation.navigate('CommitteeDashboard');
+      } else if (role == 'datacell') {
+        props.navigation.navigate('Datacell Dashboard');
       } else {
         ToastAndroid.show(
           'Incorrect credentials. Please try again.',

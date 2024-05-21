@@ -28,6 +28,10 @@ import ReAllocationScreen from './Src/Committee&Supervisor/Re-Allocation';
 import ProjectReAllocation from './Src/Committee&Supervisor/ProjectRe-Allocation';
 import ReAllocateSupervisor from './Src/Committee&Supervisor/Re-AllocateSupervisor';
 import ProjectDetails from './Src/Committee&Supervisor/Re-AllocateSupervisorScreen';
+import DatacellDashboard from './Src/datacell/Dashboard';
+import StudentDetails from './Src/datacell/StudentDetails';
+import DropStudent from './Src/datacell/DropStudents';
+import RestrictedStudent from './Src/Committee&Supervisor/RestrictedStudents';
 
 const Stack = createNativeStackNavigator();
 
@@ -122,6 +126,11 @@ const App = () => {
           options={{title: 'FYP GROUPS'}}
         />
         <Stack.Screen
+          name="RestrictedStudents"
+          component={RestrictedStudent}
+          options={{title: 'Restricted Students'}}
+        />
+        <Stack.Screen
           name="CommitteeProjectDetails"
           component={CommitteeProjectDetails}
           options={{title: 'Details'}}
@@ -179,6 +188,9 @@ const App = () => {
           }}
         />
         <Stack.Screen name="Supervisor Grading" component={SupervisorGrading} />
+        <Stack.Screen name="Datacell Dashboard" component={DatacellDashboard} />
+        <Stack.Screen name="StudentDetail" component={StudentDetails} />
+        <Stack.Screen name="DropStudents" component={DropStudent} />
       </Stack.Navigator>
     </NavigationContainer>
   );

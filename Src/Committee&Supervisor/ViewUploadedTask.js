@@ -56,7 +56,7 @@ const ViewUploadedTasks = props => {
                 elevation: 5,
                 backgroundColor: 'lightgrey',
                 borderRadius: 10,
-                width: 360,
+                width: 320,
                 marginBottom: 10,
                 marginTop: index === 0 ? 20 : 0,
               }}
