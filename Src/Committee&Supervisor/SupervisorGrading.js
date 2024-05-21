@@ -39,7 +39,7 @@ const SupervisorGrading = () => {
       <View
         style={{
           backgroundColor: '#C0C0C0',
-          width: '93%',
+          width: '97%',
           height: '97%',
           alignSelf: 'center',
           alignItems: 'center',

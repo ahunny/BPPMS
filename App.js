@@ -22,8 +22,6 @@ import AddRemarks from './Src/Committee&Supervisor/AddRemarks';
 import Grading from './Src/Committee&Supervisor/Grading1';
 import StudentDashboard from './Src/Student/StudentDashbord';
 import StudentGrading from './Src/Student/Grading';
-import SupervisorDashboard from './Src/Committee&Supervisor/SupervisorDashboard';
-import SupervisorGrading from './Src/Committee&Supervisor/SupervisorGrading';
 import ReAllocationScreen from './Src/Committee&Supervisor/Re-Allocation';
 import ProjectReAllocation from './Src/Committee&Supervisor/ProjectRe-Allocation';
 import ReAllocateSupervisor from './Src/Committee&Supervisor/Re-AllocateSupervisor';
@@ -32,6 +30,13 @@ import DatacellDashboard from './Src/datacell/Dashboard';
 import StudentDetails from './Src/datacell/StudentDetails';
 import DropStudent from './Src/datacell/DropStudents';
 import RestrictedStudent from './Src/Committee&Supervisor/RestrictedStudents';
+import SupervisorDashboard from './Src/Committee&Supervisor/SupervisorDashboard';
+import SupervisorGrading from './Src/Committee&Supervisor/SupervisorGrading';
+import SupervisorMeetings from './Src/Committee&Supervisor/SupervisorMeetings';
+import SupervisorScheduleMeeting from './Src/Committee&Supervisor/SupervisorScheduleMeetings';
+import SupervisorFypGroups from './Src/Committee&Supervisor/Sup FYP-Groups';
+import SupervisorAddtask from './Src/Committee&Supervisor/SupervisorAddTask';
+import SupervisorProjectDetails from './Src/Committee&Supervisor/SupervisorProjectDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -188,6 +193,27 @@ const App = () => {
           }}
         />
         <Stack.Screen name="Supervisor Grading" component={SupervisorGrading} />
+        <Stack.Screen
+          name="Supervisor Meetings"
+          component={SupervisorMeetings}
+        />
+        <Stack.Screen
+          name="Supervisor Schedule Meetings"
+          component={SupervisorScheduleMeeting}
+          options={{title: 'Schedule Meeting'}}
+        />
+        <Stack.Screen
+          name="SupervisorProjectDetails"
+          component={SupervisorProjectDetails}
+          options={{title: 'Members'}}
+        />
+        <Stack.Screen name="Fyp Groups" component={SupervisorFypGroups} />
+        <Stack.Screen
+          name="Sup Add Task"
+          component={SupervisorAddtask}
+          options={{title: 'Add Task'}}
+        />
+
         <Stack.Screen name="Datacell Dashboard" component={DatacellDashboard} />
         <Stack.Screen name="StudentDetail" component={StudentDetails} />
         <Stack.Screen name="DropStudents" component={DropStudent} />

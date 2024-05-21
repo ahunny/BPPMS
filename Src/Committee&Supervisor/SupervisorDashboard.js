@@ -15,14 +15,12 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import SupervisorScheduleMeeting from './SupervisorScheduleMeetings';
+import SupervisorMeetings from './SupervisorMeetings';
 
 const Tab = createBottomTabNavigator();
 const multiplescreen = createNativeStackNavigator();
 
-import Groups from './Groups';
-import ScheduleMeeting from './ScheduleMeeting';
-
-import CommitteeMeetings from './CommitteeMeetings';
 const Stack = createNativeStackNavigator();
 const Dashboardscreens = props => {
   return (
@@ -52,7 +50,7 @@ const Dashboardscreens = props => {
             height: '15%',
             marginTop: 20,
           }}
-          onPress={() => props.navigation.navigate('FypGroups')}>
+          onPress={() => props.navigation.navigate('Fyp Groups')}>
           <View
             style={{
               flexDirection: 'row',
@@ -80,7 +78,7 @@ const Dashboardscreens = props => {
             height: '15%',
             marginTop: 15,
           }}
-          onPress={() => props.navigation.navigate('FypGroups')}>
+          onPress={() => props.navigation.navigate('Fyp Groups')}>
           <View
             style={{
               flexDirection: 'row',
@@ -109,7 +107,7 @@ const Dashboardscreens = props => {
             height: '15%',
             marginTop: 15,
           }}
-          onPress={() => props.navigation.navigate('FypGroups')}>
+          onPress={() => props.navigation.navigate('Fyp Groups')}>
           <View
             style={{
               flexDirection: 'row',
@@ -163,7 +161,7 @@ const Dashboardscreens = props => {
             height: '15%',
             marginTop: 15,
           }}
-          onPress={() => props.navigation.navigate('FypGroups')}>
+          onPress={() => props.navigation.navigate('Fyp Groups')}>
           <View
             style={{
               flexDirection: 'row',
@@ -215,7 +213,7 @@ const SupervisorDashboard = () => {
 
       <Tab.Screen
         name="ScheduleMeeting"
-        component={ScheduleMeeting}
+        component={SupervisorScheduleMeeting}
         options={{
           title: 'Schedule Meeting',
           tabBarIcon: () => (
@@ -227,8 +225,8 @@ const SupervisorDashboard = () => {
         }}
       />
       <Tab.Screen
-        name="Meeting"
-        component={CommitteeMeetings}
+        name="Supervisor Meetings"
+        component={SupervisorMeetings}
         options={{
           title: 'Meetings',
           tabBarIcon: () => (

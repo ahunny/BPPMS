@@ -6,22 +6,26 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Alert,
 } from 'react-native';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DocumentPicker from 'react-native-document-picker';
-import API_URL from '../../apiConfig';
 
-const Addtask = ({route}) => {
-  const [TaskDescription, setDescription] = useState('');
+const SupervisorAddtask = ({route}) => {
+  const [Title, setTitle] = useState('');
+  const [TaskNotes, setNotes] = useState('');
   const [DueDate, setduedate] = useState(new Date());
   const [fileResponse, setFileResponse] = useState([]);
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const {Groupdata} = route.params;
-  groupid = Groupdata.GroupId;
-  console.log('GroupID:', groupid);
+  //   const {Groupdata} = route.params;
+  //   groupid = Groupdata.GroupId;
+  //   console.log('GroupID:', groupid);
+
+  const handleSubmit = () => {
+    // Implement form submission logic here
+    console.log('Form submitted');
+  };
 
   const handleDocumentSelection = useCallback(async () => {
     try {
@@ -45,49 +49,6 @@ const Addtask = ({route}) => {
     setShowDatePicker(true);
   };
 
-  const handleSubmit = async () => {
-    const isFromSupervisor = false; // As per your requirement
-
-    const formData = new FormData();
-    formData.append('group_id', groupid.toString());
-    formData.append('deadline', DueDate.toString());
-    formData.append('task_desc', TaskDescription);
-    formData.append('isFromSupervisor', isFromSupervisor.toString());
-    formData.append('toSupervisor', true); // Assuming all tasks are directed to supervisor
-
-    if (fileResponse[0]) {
-      formData.append('fileUrl', fileResponse[0]); // Include the entire file object
-    }
-
-    try {
-      const response = await fetch(`${API_URL}/Tasks/AddTask`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        body: formData,
-      });
-
-      if (!response.ok) {
-        // Handle non-200 OK responses gracefully
-        const errorData = await response.json(); // Try to parse error details
-        const errorMessage =
-          errorData?.message ||
-          'Request failed with status: ' + response.status;
-        console.error('Error:', errorMessage);
-        Alert.alert('Error', errorMessage);
-        return; // Exit the function after handling the error
-      }
-
-      const data = await response.json();
-      console.log('Response data:', data);
-      Alert.alert('Task uploaded successfully');
-    } catch (error) {
-      console.error('Error:', error);
-      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
-    }
-  };
-
   return (
     <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
       <View
@@ -101,16 +62,26 @@ const Addtask = ({route}) => {
           borderRadius: 20,
         }}>
         <View style={{marginTop: 20}}>
-          <Text style={[styles.label, {marginLeft: 15}]}>
-            Task Description:
-          </Text>
+          <Text style={[styles.label, {marginLeft: 15}]}>Title</Text>
           <TextInput
             style={[
               styles.input,
-              {height: 120, width: 320, alignSelf: 'center', color: 'black'},
+              {height: 50, width: 320, alignSelf: 'center', color: 'black'},
             ]}
-            value={TaskDescription}
-            onChangeText={setDescription}
+            value={Title}
+            onChangeText={setTitle}
+            placeholder="Enter Title"
+            placeholderTextColor={'grey'}
+          />
+
+          <Text style={[styles.label, {marginLeft: 15}]}>Task Details:</Text>
+          <TextInput
+            style={[
+              styles.input,
+              {height: 180, width: 320, alignSelf: 'center', color: 'black'},
+            ]}
+            value={TaskNotes}
+            onChangeText={setNotes}
             multiline
           />
 
@@ -146,7 +117,7 @@ const Addtask = ({route}) => {
             <DateTimePicker
               testID="dateTimePicker"
               value={DueDate}
-              mode="date"
+              mode="time"
               is24Hour={true}
               display="default"
               onChange={handleDateChange}
@@ -259,4 +230,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Addtask;
+export default SupervisorAddtask;
