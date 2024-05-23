@@ -1,4 +1,5 @@
-import React from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import React, {useCallback, useState} from 'react';
 import {
   View,
   Text,
@@ -7,34 +8,46 @@ import {
   Alert,
   Image,
 } from 'react-native';
+import API_URL from '../../apiConfig';
 
-const ViewUploadedTasks = props => {
-  const data = [
-    {
-      id: '1',
-      title: 'Project Outline',
-      time: '12-12-2023',
-      image: require('./Assets/icons8-person-50.png'),
-      imageclock: require('./Assets/icons8-clock-50.png'),
-      imagedoor: require('./Assets/icons8-person-50.png'),
-    },
-    {
-      id: '2',
-      title: 'Mockups',
-      time: '12-12-2023',
-      image: require('./Assets/icons8-add-male-user-64.png'),
-      imageclock: require('./Assets/icons8-clock-50.png'),
-      imagedoor: require('./Assets/icons8-person-50.png'),
-    },
-    {
-      id: '3',
-      title: 'Features',
-      time: '12-12-2023',
-      image: require('./Assets/icons8-add-male-user-64.png'),
-      imageclock: require('./Assets/icons8-clock-50.png'),
-      imagedoor: require('./Assets/icons8-person-50.png'),
-    },
-  ];
+const ViewUploadedTasks = ({route}) => {
+  const {Groupdata} = route.params;
+  groupid = Groupdata.GroupId;
+  console.log('GroupID:', groupid);
+
+  const [TaskList, setTaskList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const navigation = useNavigation();
+
+  const fetchTasks = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/Tasks/GetTask?groupId=${groupid}&role=Committee`,
+      );
+      const data = await response.json();
+      duedate = data.deadline;
+      console.log(duedate);
+      setTaskList(data);
+      console.log(TaskList);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Tasks', ToastAndroid.SHORT);
+      console.error('Error fetching Tasks:', error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+  const handleViewTaskPress = item => {
+    // Navigate to 'uploadtask' screen and pass item data
+    navigation.navigate('View Task', {Taskdata: item});
+  };
+  useFocusEffect(
+    // useCallback prevent unnecessary re-renders caused by creating a newfunction instance on every render.
+    useCallback(() => {
+      fetchTasks();
+    }, []),
+  );
 
   return (
     <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
@@ -49,7 +62,7 @@ const ViewUploadedTasks = props => {
           borderRadius: 20,
         }}>
         <FlatList
-          data={data}
+          data={TaskList}
           renderItem={({item, index}) => (
             <TouchableOpacity
               style={{
@@ -60,7 +73,7 @@ const ViewUploadedTasks = props => {
                 marginBottom: 10,
                 marginTop: index === 0 ? 20 : 0,
               }}
-              onPress={() => props.navigation.navigate('View Task')}>
+              onPress={() => handleViewTaskPress(item)}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -82,7 +95,7 @@ const ViewUploadedTasks = props => {
                         color: 'black',
                         fontSize: 16,
                       }}>
-                      {item.title}
+                      {item.task_description}
                     </Text>
                   </View>
 
@@ -99,25 +112,24 @@ const ViewUploadedTasks = props => {
                         borderRadius: 25,
                         marginRight: 5,
                       }}
-                      source={item.imageclock}
+                      source={require('./Assets/icons8-clock-50.png')}
                     />
                     <Text
                       style={{
                         textAlign: 'center',
                         color: 'black',
                         fontSize: 16,
-                      }}>{`Due Date: ${item.time}`}</Text>
-                    <Image
-                      source={require('./Assets/icons8-pending-30.png')} // Provide the local image path
+                      }}>{`Due Date: ${item.deadline
+                      .toString()
+                      .substring(0, 10)}`}</Text>
+
+                    <Text
                       style={{
-                        width: 20,
-                        height: 20,
-                        marginLeft: 100,
-                        marginTop: -50,
-                      }} // Set the width and height of the image
-                    />
-                    <Text style={{marginLeft: -40, color: 'black'}}>
-                      pending{' '}
+                        marginLeft: 60,
+                        marginBottom: 20,
+                        color: 'black',
+                      }}>
+                      {item.task_status}
                     </Text>
                   </View>
                 </View>

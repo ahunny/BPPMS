@@ -7,13 +7,75 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-
+import RNFetchBlob from 'rn-fetch-blob';
 import DocumentPicker from 'react-native-document-picker';
+import API_URL from '../../apiConfig';
 
-const Viewtask = props => {
-  const handleSubmit = () => {
-    // Implement form submission logic here
-    console.log('Form submitted');
+const Viewtask = ({route}) => {
+  const {Taskdata} = route.params;
+  console.log(Taskdata);
+
+  const downloadFile = async () => {
+    const fileName = Taskdata.submittedFile;
+    const dirs = RNFetchBlob.fs.dirs;
+    const downloadDir = dirs.DownloadDir;
+    const getMimeType = fileName => {
+      const extension = fileName.split('.').pop().toLowerCase();
+      switch (extension) {
+        case 'pdf':
+          return 'application/pdf';
+        case 'ppt':
+          return 'application/vnd.ms-powerpoint';
+        case 'pptx':
+          return 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+        case 'zip':
+          return 'application/zip';
+        default:
+          return 'application/octet-stream'; // Default for binary data
+      }
+    };
+    const mimeType = getMimeType(fileName);
+
+    try {
+      const folderPath = `${downloadDir}/TaskFiles`;
+
+      // Check if the folder exists, create it if not
+      const isFolderExists = await RNFetchBlob.fs.isDir(folderPath);
+      if (!isFolderExists) {
+        await RNFetchBlob.fs.mkdir(folderPath); // Create the folder
+      }
+
+      // Construct the file path within the folder
+      const filePath = `${folderPath}/${encodeURIComponent(fileName)}`;
+
+      RNFetchBlob.config({
+        addAndroidDownloads: {
+          useDownloadManager: true,
+          notification: true,
+          mime: mimeType,
+          title: 'Task File',
+          description: 'Downloading Task File',
+          path: filePath,
+        },
+        fileCache: true,
+      })
+        .fetch(
+          'GET',
+          `${API_URL.split('/api')[0]}/TasksFiles/${encodeURIComponent(
+            fileName,
+          )}`,
+          {
+            // 'Content-Type': 'application/zip',
+          },
+        )
+        .then(res => {
+          ToastAndroid.show('Download Successful.', ToastAndroid.SHORT);
+          console.log('The file saved to ', res.path());
+        });
+    } catch (error) {
+      console.error('Download failed:', error);
+      ToastAndroid.show('Download Failed.', ToastAndroid.SHORT);
+    }
   };
 
   return (
@@ -29,7 +91,7 @@ const Viewtask = props => {
           borderRadius: 20,
         }}>
         <View style={{marginTop: 50, width: 300}}>
-          <Text style={[styles.label]}>Task Subject</Text>
+          <Text style={[styles.label]}>Task Description</Text>
           <View
             style={{
               backgroundColor: '#D9D9D9',
@@ -40,7 +102,7 @@ const Viewtask = props => {
               width: 300,
             }}>
             <Text style={[styles.label, {marginLeft: 15, marginTop: 10}]}>
-              Mockups
+              {Taskdata.task_description}
             </Text>
           </View>
 
@@ -55,12 +117,12 @@ const Viewtask = props => {
               width: 300,
             }}>
             <Text style={[styles.label, {marginLeft: 15, marginTop: 10}]}>
-              Mockups.pptx
+              {Taskdata.submittedFile}
             </Text>
           </View>
 
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>View</Text>
+          <TouchableOpacity style={styles.submitButton} onPress={downloadFile}>
+            <Text style={styles.buttonText}>Downlaod File</Text>
           </TouchableOpacity>
 
           <TouchableOpacity

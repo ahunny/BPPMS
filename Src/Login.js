@@ -16,8 +16,8 @@ import {useNavigation} from '@react-navigation/native';
 import API_URL from '../apiConfig';
 
 const Login = props => {
-  const [username, setusername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setusername] = useState('Umer');
+  const [password, setPassword] = useState('123');
 
   const navigation = useNavigation();
 

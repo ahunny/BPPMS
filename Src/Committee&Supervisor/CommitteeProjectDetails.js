@@ -58,6 +58,10 @@ const CommitteeProjectDetails = ({route}) => {
     // Navigate to 'uploadtask' screen and pass item data
     navigation.navigate('Addtask', {Groupdata: supervisor});
   };
+  const handleViewTaskPress = item => {
+    // Navigate to 'uploadtask' screen and pass item data
+    navigation.navigate('Uploaded Tasks', {Groupdata: supervisor});
+  };
 
   const navigation = useNavigation();
 
@@ -139,7 +143,7 @@ const CommitteeProjectDetails = ({route}) => {
             alignContent: 'center',
             alignSelf: 'center',
           }}
-          onPress={() => navigation.navigate('Uploaded Tasks')}>
+          onPress={() => handleViewTaskPress(supervisor)}>
           <Text style={styles.buttonText}>View Task</Text>
         </TouchableOpacity>
       </View>

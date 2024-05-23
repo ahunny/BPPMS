@@ -46,14 +46,18 @@ const Addtask = ({route}) => {
   };
 
   const handleSubmit = async () => {
+    const isStudentSubmitting = false; // This is set to true as per your requirement
     const isFromSupervisor = false; // As per your requirement
+    const toSupervisor = false; // As per your requirement
+    console.log(DueDate.toString().substring(0, 10));
 
     const formData = new FormData();
+    formData.append('isStudent', isStudentSubmitting.toString());
     formData.append('group_id', groupid.toString());
-    formData.append('deadline', DueDate.toString());
+    formData.append('deadline', DueDate.toString().substring(0, 10));
     formData.append('task_desc', TaskDescription);
     formData.append('isFromSupervisor', isFromSupervisor.toString());
-    formData.append('toSupervisor', true); // Assuming all tasks are directed to supervisor
+    formData.append('toSupervisor', toSupervisor.toString()); // Assuming all tasks are directed to supervisor
 
     if (fileResponse[0]) {
       formData.append('fileUrl', fileResponse[0]); // Include the entire file object

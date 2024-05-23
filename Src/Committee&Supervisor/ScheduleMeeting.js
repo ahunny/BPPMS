@@ -5,10 +5,11 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from 'react-native';
-
 import {SelectList} from 'react-native-dropdown-select-list';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import API_URL from '../../apiConfig';
 
 const ScheduleMeeting = () => {
   const [Title, setTitle] = useState('');
@@ -20,26 +21,69 @@ const ScheduleMeeting = () => {
   const [showTimePicker, setShowTimePicker] = useState(false);
 
   const FypGroupList = [
-    {key: '1', value: 'FYP-0 Groups'},
-    {key: '2', value: 'FYP-I Groups'},
-    {key: '3', value: 'FYP-II Groups'},
+    {key: 'fyp-0', value: 'FYP-0 Groups'},
+    {key: 'fyp-1', value: 'FYP-I Groups'},
+    {key: 'fyp-2', value: 'FYP-II Groups'},
   ];
 
-  const handleSubmit = () => {
-    // Implement form submission logic here
-    console.log('Form submitted');
+  const handleSubmit = async () => {
+    const is_with_supervisor = false; // This is set to true as per your requirement
+
+    // Format the date and time
+    const formattedDate = selectedDate.toISOString().split('T')[0];
+    const hours = selectedTime.getHours().toString().padStart(2, '0');
+    const minutes = selectedTime.getMinutes().toString().padStart(2, '0');
+    const seconds = selectedTime.getSeconds().toString().padStart(2, '0');
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+
+    const formData = new FormData();
+    formData.append('fyp_type', FypGroup);
+    formData.append('meeting_starttime', formattedTime);
+    formData.append('description', MeetingNotes.toString());
+    formData.append('is_with_supervisor', is_with_supervisor.toString());
+    formData.append('meeting_date', formattedDate);
+    console.log(formData);
+    try {
+      const response = await fetch(`${API_URL}/Meeting/AddMeetingsSchedule`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        // Handle non-200 OK responses gracefully
+        const errorData = await response.json(); // Try to parse error details
+        const errorMessage =
+          errorData?.message ||
+          'Request failed with status: ' + response.status;
+        console.error('Error:', errorMessage);
+        Alert.alert('Error', errorMessage);
+        return; // Exit the function after handling the error
+      }
+
+      const data = await response.json();
+      console.log('Response data:', data);
+      Alert.alert('New Meeting Scheduled');
+    } catch (error) {
+      console.error('Error:', error);
+      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
+    }
   };
 
-  const handleDateChange = (event, selectedDate) => {
+  const handleDateChange = (event, date) => {
     setShowDatePicker(false);
-    const currentDate = selectedDate || date;
-    setSelectedDate(currentDate);
+    if (date !== undefined) {
+      setSelectedDate(date);
+    }
   };
 
-  const handleTimeChange = (event, selectedTime) => {
+  const handleTimeChange = (event, time) => {
     setShowTimePicker(false);
-    const currentTime = selectedTime || selectedTime;
-    setSelectedTime(currentTime);
+    if (time !== undefined) {
+      setSelectedTime(time);
+    }
   };
 
   const showDatepicker = () => {
@@ -81,7 +125,7 @@ const ScheduleMeeting = () => {
             <SelectList
               setSelected={val => setFypGroup(val)}
               data={FypGroupList}
-              save="value"
+              save="key"
               onSelect={() => {
                 console.warn(FypGroup);
               }}
@@ -97,7 +141,7 @@ const ScheduleMeeting = () => {
             style={styles.datePickerButton}
             onPress={showDatepicker}>
             <Text style={styles.buttonText}>
-              {selectedDate.toLocaleDateString()}
+              {selectedDate.toISOString().split('T')[0]}
             </Text>
           </TouchableOpacity>
 
@@ -117,7 +161,16 @@ const ScheduleMeeting = () => {
             style={styles.datePickerButton}
             onPress={showTimepicker}>
             <Text style={styles.buttonText}>
-              {selectedTime.toLocaleTimeString()}
+              {`${selectedTime
+                .getHours()
+                .toString()
+                .padStart(2, '0')}:${selectedTime
+                .getMinutes()
+                .toString()
+                .padStart(2, '0')}:${selectedTime
+                .getSeconds()
+                .toString()
+                .padStart(2, '0')}`}
             </Text>
           </TouchableOpacity>
 
