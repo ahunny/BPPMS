@@ -95,7 +95,9 @@ const StudentMeeting = ({route}) => {
                       textAlign: 'center',
                       color: 'black',
                       fontSize: 16,
-                    }}>{`${item.meeting_date}`}</Text>
+                    }}>{`${item.meeting_date
+                    .toString()
+                    .substring(0, 10)}`}</Text>
                 </View>
                 <View
                   style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>

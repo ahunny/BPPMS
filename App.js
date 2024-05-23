@@ -37,6 +37,7 @@ import SupervisorScheduleMeeting from './Src/Committee&Supervisor/SupervisorSche
 import SupervisorFypGroups from './Src/Committee&Supervisor/Sup FYP-Groups';
 import SupervisorAddtask from './Src/Committee&Supervisor/SupervisorAddTask';
 import SupervisorProjectDetails from './Src/Committee&Supervisor/SupervisorProjectDetails';
+import SupervisorViewUploadedTasks from './Src/Committee&Supervisor/SupervisorViewUploadTasks';
 
 const Stack = createNativeStackNavigator();
 
@@ -211,6 +212,11 @@ const App = () => {
         <Stack.Screen
           name="Sup Add Task"
           component={SupervisorAddtask}
+          options={{title: 'Add Task'}}
+        />
+        <Stack.Screen
+          name="Sup view Uploaded Task"
+          component={SupervisorViewUploadedTasks}
           options={{title: 'Add Task'}}
         />
 

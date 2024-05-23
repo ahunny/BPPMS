@@ -19,72 +19,67 @@ const SupervisorFypGroups = props => {
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
 
-  //   const {fyptype} = props.route.params;
-  //   console.log(fyptype);
+  const {fyptype} = props.route.params;
+  console.log(fyptype);
+  const {userid} = props.route.params;
+  console.log(userid);
 
-  //   const fetchProjectsWithFyptype = async fyptype => {
-  //     try {
-  //       const response = await fetch(
-  //         `${API_URL}/Groups/GetFyp1Projects?fyptype=${fyptype}`,
-  //         {
-  //           method: 'GET',
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //           },
-  //         },
-  //       );
+  const fetchProjectsWithFyptype = async fyptype => {
+    try {
+      const response = await fetch(
+        `${API_URL}/Groups/GetProjectsbyFYPandsupervisor?fyptype=${fyptype}&userid=${userid}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
 
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         console.log(data);
-  //         var details = data;
-  //         console.log('Details', details);
-  //         const formattedData = data.map(item => ({
-  //           key: item.GroupId.toString(), // Extract supervisor ID as string
-  //           value: item.ProjectTitle,
-  //         }));
-  //         setFilteredProjects(data);
-  //       }
-  //     } catch (error) {
-  //       ToastAndroid.show(
-  //         'Error fetching FYP-',
-  //         fyptype,
-  //         'Projects',
-  //         ToastAndroid.SHORT,
-  //       );
-  //       console.error('Error fetching Projects:', error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       await fetchProjectsWithFyptype(fyptype);
-  //     };
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        var details = data;
+        console.log('Details', details);
+        const formattedData = data.map(item => ({
+          key: item.GroupId.toString(), // Extract supervisor ID as string
+          value: item.ProjectTitle,
+        }));
+        setFilteredProjects(data);
+      }
+    } catch (error) {
+      ToastAndroid.show(
+        'Error fetching FYP-',
+        fyptype,
+        'Projects',
+        ToastAndroid.SHORT,
+      );
+      console.error('Error fetching Projects:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchProjectsWithFyptype(fyptype);
+    };
 
-  //     fetchData();
-  //   }, [fyptype]);
+    fetchData();
+  }, [fyptype]);
 
-  //   // const handleSearch = text => {
-  //   //   setSearchQuery(text);
-  //   //   const filtered = FilteredProjects.filter(item =>
-  //   //     item.Project.toLowerCase().includes(text.toLowerCase()),
-  //   //   );
-  //   //   setFilteredData(filtered);
-  //   // };
   const handleSearch = text => {
-    //     setSearchQuery(text); // Update search input state
-    //     // Case-insensitive search with optional chaining and default value
-    //     const filtered = FilteredProjects.filter(
-    //       project =>
-    //         project?.ProjectTitle?.toLowerCase()?.includes(text.toLowerCase()) ||
-    //         '',
-    //     );
-    //     setFilteredData(filtered); // Update filtered projects for display
+    setSearchQuery(text); // Update search input state
+    // Case-insensitive search with optional chaining and default value
+    const filtered = FilteredProjects.filter(
+      project =>
+        project?.ProjectTitle?.toLowerCase()?.includes(text.toLowerCase()) ||
+        '',
+    );
+    setFilteredData(filtered); // Update filtered projects for display
   };
   const handleProjectPress = item => {
     // Navigate to 'uploadtask' screen and pass item data
-    navigation.navigate('Members', {projectData: item});
+    navigation.navigate('SupervisorProjectDetails', {projectData: item});
   };
 
   return (

@@ -122,7 +122,7 @@ const Viewtask = ({route}) => {
           </View>
 
           <TouchableOpacity style={styles.submitButton} onPress={downloadFile}>
-            <Text style={styles.buttonText}>Downlaod File</Text>
+            <Text style={styles.buttonText}>Download File</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -223,8 +223,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     marginTop: 40,
-    marginLeft: 200,
-    width: '40%',
+    marginLeft: 160,
+    width: '50%',
   },
   buttonText: {
     color: 'black',

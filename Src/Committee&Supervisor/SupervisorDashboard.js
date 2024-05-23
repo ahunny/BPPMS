@@ -20,7 +20,7 @@ import SupervisorMeetings from './SupervisorMeetings';
 
 const Tab = createBottomTabNavigator();
 const multiplescreen = createNativeStackNavigator();
-
+var userid;
 const Stack = createNativeStackNavigator();
 const Dashboardscreens = props => {
   return (
@@ -50,7 +50,12 @@ const Dashboardscreens = props => {
             height: '15%',
             marginTop: 20,
           }}
-          onPress={() => props.navigation.navigate('Fyp Groups')}>
+          onPress={() =>
+            props.navigation.navigate('Fyp Groups', {
+              fyptype: 'fyp-0',
+              userid: userid,
+            })
+          }>
           <View
             style={{
               flexDirection: 'row',
@@ -78,7 +83,12 @@ const Dashboardscreens = props => {
             height: '15%',
             marginTop: 15,
           }}
-          onPress={() => props.navigation.navigate('Fyp Groups')}>
+          onPress={() =>
+            props.navigation.navigate('Fyp Groups', {
+              fyptype: 'fyp-1',
+              userid: userid,
+            })
+          }>
           <View
             style={{
               flexDirection: 'row',
@@ -107,7 +117,12 @@ const Dashboardscreens = props => {
             height: '15%',
             marginTop: 15,
           }}
-          onPress={() => props.navigation.navigate('Fyp Groups')}>
+          onPress={() =>
+            props.navigation.navigate('Fyp Groups', {
+              fyptype: 'fyp-2',
+              userid: userid,
+            })
+          }>
           <View
             style={{
               flexDirection: 'row',
@@ -184,7 +199,11 @@ const Dashboardscreens = props => {
   );
 };
 
-const SupervisorDashboard = () => {
+const SupervisorDashboard = props => {
+  const {data} = props.route.params;
+  console.log(data.user_id);
+  userid = data.user_id;
+
   return (
     <Tab.Navigator
       screenOptions={{

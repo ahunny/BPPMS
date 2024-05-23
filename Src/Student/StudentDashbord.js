@@ -25,7 +25,6 @@ import StudentMeeting from './Meeting';
 import API_URL from '../../apiConfig';
 const Stack = createNativeStackNavigator();
 var userid;
-var roles;
 
 const Dashboardscreens = props => {
   return (

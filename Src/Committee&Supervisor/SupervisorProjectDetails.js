@@ -8,57 +8,60 @@ const SupervisorProjectDetails = ({route}) => {
   const [students, setStudents] = useState([]);
   const [supervisor, setSupervisor] = useState([]);
 
-  // const {projectData} = route.params;
-  // groupid = projectData.GroupId;
-  // console.log('details', projectData);
-  // console.log('id', groupid);
+  const {projectData} = route.params;
+  groupid = projectData.GroupId;
+  console.log('details', projectData);
+  console.log('id', groupid);
 
-  // const fetchStudents = async groupid => {
-  //   try {
-  //     const response = await fetch(
-  //       `${API_URL}/AssignProject/GetGroupdetailsByProject?group_id=${groupid}`,
-  //       {
-  //         method: 'GET',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //       },
-  //     );
+  const fetchStudents = async groupid => {
+    try {
+      const response = await fetch(
+        `${API_URL}/AssignProject/GetGroupdetailsByProject?group_id=${groupid}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
 
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       const students = data.members.map(member => ({
-  //         student_name: member.user.student.student_name,
-  //         arid_no: member.user.student.arid_no,
-  //         cgpa: member.user.student.cgpa,
-  //         platform: member.user.platform,
-  //       }));
-  //       const supervisor = data.supervisors[0];
-  //       setStudents(students);
-  //       setSupervisor(supervisor);
-  //       console.log(students);
-  //       console.log(supervisor);
-  //     } else {
-  //       throw new Error('Failed to fetch student data');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching student data:', error);
-  //   }
-  // };
+      if (response.ok) {
+        const data = await response.json();
+        const students = data.members.map(member => ({
+          student_name: member.user.student.student_name,
+          arid_no: member.user.student.arid_no,
+          cgpa: member.user.student.cgpa,
+          platform: member.user.platform,
+        }));
+        const supervisor = data.supervisors[0];
+        setStudents(students);
+        setSupervisor(supervisor);
+        console.log(students);
+        console.log(supervisor);
+      } else {
+        throw new Error('Failed to fetch student data');
+      }
+    } catch (error) {
+      console.error('Error fetching student data:', error);
+    }
+  };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     await fetchStudents(groupid);
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchStudents(groupid);
+    };
 
-  //   fetchData();
-  // }, [groupid]);
+    fetchData();
+  }, [groupid]);
 
   const handleAddTaskPress = item => {
     // Navigate to 'uploadtask' screen and pass item data
     navigation.navigate('Sup Add Task', {Groupdata: supervisor});
   };
-
+  const handleViewTaskPress = item => {
+    // Navigate to 'uploadtask' screen and pass item data
+    navigation.navigate('Sup view Uploaded Task', {Groupdata: supervisor});
+  };
   const navigation = useNavigation();
 
   return (
@@ -139,7 +142,7 @@ const SupervisorProjectDetails = ({route}) => {
             alignContent: 'center',
             alignSelf: 'center',
           }}
-          onPress={() => navigation.navigate('Uploaded Tasks')}>
+          onPress={() => handleViewTaskPress(supervisor)}>
           <Text style={styles.buttonText}>View Task</Text>
         </TouchableOpacity>
       </View>

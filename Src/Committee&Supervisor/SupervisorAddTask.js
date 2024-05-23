@@ -6,26 +6,22 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Alert,
 } from 'react-native';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DocumentPicker from 'react-native-document-picker';
+import API_URL from '../../apiConfig';
 
 const SupervisorAddtask = ({route}) => {
-  const [Title, setTitle] = useState('');
-  const [TaskNotes, setNotes] = useState('');
+  const [TaskDescription, setDescription] = useState('');
   const [DueDate, setduedate] = useState(new Date());
   const [fileResponse, setFileResponse] = useState([]);
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  //   const {Groupdata} = route.params;
-  //   groupid = Groupdata.GroupId;
-  //   console.log('GroupID:', groupid);
-
-  const handleSubmit = () => {
-    // Implement form submission logic here
-    console.log('Form submitted');
-  };
+  const {Groupdata} = route.params;
+  groupid = Groupdata.GroupId;
+  console.log('GroupID:', groupid);
 
   const handleDocumentSelection = useCallback(async () => {
     try {
@@ -49,6 +45,53 @@ const SupervisorAddtask = ({route}) => {
     setShowDatePicker(true);
   };
 
+  const handleSubmit = async () => {
+    const isStudentSubmitting = false; // This is set to true as per your requirement
+    const isFromSupervisor = true; // As per your requirement
+    const toSupervisor = true; // As per your requirement
+    console.log(DueDate.toString().substring(0, 10));
+
+    const formData = new FormData();
+    formData.append('isStudent', isStudentSubmitting.toString());
+    formData.append('group_id', groupid.toString());
+    formData.append('deadline', DueDate.toString().substring(0, 10));
+    formData.append('task_desc', TaskDescription);
+    formData.append('isFromSupervisor', isFromSupervisor.toString());
+    formData.append('toSupervisor', toSupervisor.toString()); // Assuming all tasks are directed to supervisor
+
+    if (fileResponse[0]) {
+      formData.append('fileUrl', fileResponse[0]); // Include the entire file object
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/Tasks/AddTask`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        // Handle non-200 OK responses gracefully
+        const errorData = await response.json(); // Try to parse error details
+        const errorMessage =
+          errorData?.message ||
+          'Request failed with status: ' + response.status;
+        console.error('Error:', errorMessage);
+        Alert.alert('Error', errorMessage);
+        return; // Exit the function after handling the error
+      }
+
+      const data = await response.json();
+      console.log('Response data:', data);
+      Alert.alert('Task uploaded successfully');
+    } catch (error) {
+      console.error('Error:', error);
+      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
+    }
+  };
+
   return (
     <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
       <View
@@ -62,26 +105,16 @@ const SupervisorAddtask = ({route}) => {
           borderRadius: 20,
         }}>
         <View style={{marginTop: 20}}>
-          <Text style={[styles.label, {marginLeft: 15}]}>Title</Text>
+          <Text style={[styles.label, {marginLeft: 15}]}>
+            Task Description:
+          </Text>
           <TextInput
             style={[
               styles.input,
-              {height: 50, width: 320, alignSelf: 'center', color: 'black'},
+              {height: 120, width: 320, alignSelf: 'center', color: 'black'},
             ]}
-            value={Title}
-            onChangeText={setTitle}
-            placeholder="Enter Title"
-            placeholderTextColor={'grey'}
-          />
-
-          <Text style={[styles.label, {marginLeft: 15}]}>Task Details:</Text>
-          <TextInput
-            style={[
-              styles.input,
-              {height: 180, width: 320, alignSelf: 'center', color: 'black'},
-            ]}
-            value={TaskNotes}
-            onChangeText={setNotes}
+            value={TaskDescription}
+            onChangeText={setDescription}
             multiline
           />
 
@@ -117,7 +150,7 @@ const SupervisorAddtask = ({route}) => {
             <DateTimePicker
               testID="dateTimePicker"
               value={DueDate}
-              mode="time"
+              mode="date"
               is24Hour={true}
               display="default"
               onChange={handleDateChange}

@@ -16,7 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 import API_URL from '../apiConfig';
 
 const Login = props => {
-  const [username, setusername] = useState('Umer');
+  const [username, setusername] = useState('Azeem');
   const [password, setPassword] = useState('123');
 
   const navigation = useNavigation();
@@ -50,7 +50,7 @@ const Login = props => {
       if (role == 'Student') {
         props.navigation.navigate('StudentDashboard', {data});
       } else if (role == 'Supervisor') {
-        props.navigation.navigate('SupervisorDashboard');
+        props.navigation.navigate('SupervisorDashboard', {data});
       } else if (role == 'Committee') {
         props.navigation.navigate('CommitteeDashboard');
       } else if (role == 'datacell') {

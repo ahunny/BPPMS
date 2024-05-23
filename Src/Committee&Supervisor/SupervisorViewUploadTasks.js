@@ -1,4 +1,4 @@
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
 import {
   View,
@@ -11,33 +11,44 @@ import {
 } from 'react-native';
 import API_URL from '../../apiConfig';
 
-const CommitteeMeetings = props => {
-  const [MeetingList, setMeetingList] = useState([]);
+const SupervisorViewUploadedTasks = ({route}) => {
+  const {Groupdata} = route.params;
+  groupid = Groupdata.GroupId;
+  console.log('GroupID:', groupid);
+
+  const [TaskList, setTaskList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const navigation = useNavigation();
 
-  const fetchMeetings = async () => {
+  const fetchTasks = async () => {
     try {
-      const response = await fetch(`${API_URL}/Meeting/GetCommitteeMeetings?`);
+      const response = await fetch(
+        `${API_URL}/Tasks/GetTask?groupId=${groupid}&role=Supervisor`,
+      );
       const data = await response.json();
-      setMeetingList(data);
-      console.log(data);
+      duedate = data.deadline;
+      console.log(duedate);
+      setTaskList(data);
+      console.log(TaskList);
     } catch (error) {
-      ToastAndroid.show('Error fetching Students', ToastAndroid.SHORT);
-      console.error('Error fetching Students:', error);
+      ToastAndroid.show('Error fetching Tasks', ToastAndroid.SHORT);
+      console.error('Error fetching Tasks:', error);
     } finally {
       setLoading(false);
       setRefreshing(false);
     }
   };
+  const handleViewTaskPress = item => {
+    // Navigate to 'uploadtask' screen and pass item data
+    navigation.navigate('View Task', {Taskdata: item});
+  };
   useFocusEffect(
     // useCallback prevent unnecessary re-renders caused by creating a newfunction instance on every render.
     useCallback(() => {
-      fetchMeetings();
+      fetchTasks();
     }, []),
   );
-
-  const data = [];
 
   return (
     <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
@@ -52,7 +63,7 @@ const CommitteeMeetings = props => {
           borderRadius: 20,
         }}>
         <FlatList
-          data={MeetingList}
+          data={TaskList}
           renderItem={({item, index}) => (
             <TouchableOpacity
               style={{
@@ -62,7 +73,8 @@ const CommitteeMeetings = props => {
                 width: 320,
                 marginBottom: 10,
                 marginTop: index === 0 ? 20 : 0,
-              }}>
+              }}
+              onPress={() => handleViewTaskPress(item)}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -70,55 +82,24 @@ const CommitteeMeetings = props => {
                   justifyContent: 'flex-start',
                   padding: 10,
                 }}>
-                <View style={{flexDirection: 'column'}}>
+                <View style={{flexDirection: 'column', width: 200}}>
                   <View
                     style={{
                       flexDirection: 'row',
                       alignItems: 'center',
                       flex: 1,
                     }}>
-                    <Image
-                      style={{
-                        width: 20,
-                        height: 20,
-                        borderRadius: 25,
-                        marginRight: 5,
-                      }}
-                      source={require('./Assets/icons8-group-30.png')}
-                    />
                     <Text
                       style={{
+                        fontWeight: 'bold',
                         textAlign: 'center',
                         color: 'black',
                         fontSize: 16,
                       }}>
-                      {item.fyp_type + ' Groups'}
+                      {item.task_description}
                     </Text>
                   </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      flex: 1,
-                    }}>
-                    <Image
-                      style={{
-                        width: 20,
-                        height: 20,
-                        borderRadius: 5,
-                        marginRight: 5,
-                      }}
-                      source={require('./Assets/icons8-schedule-64.png')}
-                    />
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        color: 'black',
-                        fontSize: 16,
-                      }}>{`${item.meeting_date
-                      .toString()
-                      .substring(0, 10)}`}</Text>
-                  </View>
+
                   <View
                     style={{
                       flexDirection: 'row',
@@ -139,18 +120,17 @@ const CommitteeMeetings = props => {
                         textAlign: 'center',
                         color: 'black',
                         fontSize: 16,
-                      }}>{`${item.meeting_starttime}`}</Text>
-                    <Image
-                      source={require('./Assets/icons8-upcoming-event-24.png')} // Provide the local image path
+                      }}>{`Due Date: ${item.deadline
+                      .toString()
+                      .substring(0, 10)}`}</Text>
+
+                    <Text
                       style={{
-                        width: 20,
-                        height: 20,
-                        marginLeft: 150,
-                        marginTop: -50,
-                      }} // Set the width and height of the image
-                    />
-                    <Text style={{marginLeft: -65, color: 'black'}}>
-                      upcoming event
+                        marginLeft: 60,
+                        marginBottom: 20,
+                        color: 'black',
+                      }}>
+                      {item.task_status}
                     </Text>
                   </View>
                 </View>
@@ -164,4 +144,4 @@ const CommitteeMeetings = props => {
   );
 };
 
-export default CommitteeMeetings;
+export default SupervisorViewUploadedTasks;
