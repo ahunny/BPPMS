@@ -23,8 +23,8 @@ const CommitteeMeetings = props => {
       setMeetingList(data);
       console.log(data);
     } catch (error) {
-      ToastAndroid.show('Error fetching Students', ToastAndroid.SHORT);
-      console.error('Error fetching Students:', error);
+      ToastAndroid.show('Error fetching Meetings', ToastAndroid.SHORT);
+      console.error('Error fetching meetings:', error);
     } finally {
       setLoading(false);
       setRefreshing(false);

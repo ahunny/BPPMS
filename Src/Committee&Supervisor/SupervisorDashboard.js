@@ -231,8 +231,9 @@ const SupervisorDashboard = props => {
       />
 
       <Tab.Screen
-        name="ScheduleMeeting"
+        name="Schedule Meeting"
         component={SupervisorScheduleMeeting}
+        initialParams={{userid: userid}}
         options={{
           title: 'Schedule Meeting',
           tabBarIcon: () => (

@@ -197,6 +197,7 @@ const App = () => {
         <Stack.Screen
           name="Supervisor Meetings"
           component={SupervisorMeetings}
+          options={{title: 'Meetings'}}
         />
         <Stack.Screen
           name="Supervisor Schedule Meetings"

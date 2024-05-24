@@ -1,45 +1,118 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
+  ToastAndroid,
 } from 'react-native';
-
 import {SelectList} from 'react-native-dropdown-select-list';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import API_URL from '../../apiConfig';
+import {useFocusEffect} from '@react-navigation/native';
 
-const SupervisorScheduleMeeting = () => {
+const SupervisorScheduleMeeting = props => {
   const [Title, setTitle] = useState('');
   const [MeetingNotes, setNotes] = useState('');
   const [FypGroup, setFypGroup] = useState(null);
+  const [FypGrouplist, setFypGrouplist] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const {userid} = props.route.params;
+  console.log(userid);
 
-  const FypGroupList = [
-    {key: '1', value: 'FYP-0 Groups'},
-    {key: '2', value: 'FYP-I Groups'},
-    {key: '3', value: 'FYP-II Groups'},
-  ];
-
-  const handleSubmit = () => {
-    // Implement form submission logic here
-    console.log('Form submitted');
+  const fetchProjectsOfSupervisor = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/Groups/GetProjectsbySpervisor?&userid=${userid}`,
+      );
+      const data = await response.json();
+      const formattedData = data.map(item => ({
+        key: item.GroupId.toString(), // Extract supervisor ID as string
+        value: item.ProjectTitle,
+      }));
+      setFypGrouplist(formattedData);
+      console.log(FypGrouplist);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Projects', ToastAndroid.SHORT);
+      console.error('Error fetching Projects:', error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
   };
 
-  const handleDateChange = (event, selectedDate) => {
+  useFocusEffect(
+    // useCallback prevent unnecessary re-renders caused by creating a new
+    // function instance on every render.
+    useCallback(() => {
+      fetchProjectsOfSupervisor();
+    }, []),
+  );
+
+  const handleSubmit = async () => {
+    const is_with_supervisor = true; // This is set to true as per your requirement
+    // Format the date and time
+    const formattedDate = selectedDate.toISOString().split('T')[0];
+    const hours = selectedTime.getHours().toString().padStart(2, '0');
+    const minutes = selectedTime.getMinutes().toString().padStart(2, '0');
+    const seconds = selectedTime.getSeconds().toString().padStart(2, '0');
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+    const formData = new FormData();
+    formData.append('group_id', FypGroup);
+    formData.append('meeting_starttime', formattedTime);
+    formData.append('description', MeetingNotes.toString());
+    formData.append('is_with_supervisor', is_with_supervisor.toString());
+    formData.append('meeting_date', formattedDate);
+    console.log(formData);
+    try {
+      const response = await fetch(
+        `${API_URL}/Meeting/AddSupervisorMeetingsSchedule`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          body: formData,
+        },
+      );
+      if (!response.ok) {
+        // Handle non-200 OK responses gracefully
+        const errorData = await response.json(); // Try to parse error details
+        const errorMessage =
+          errorData?.message ||
+          'Request failed with status: ' + response.status;
+        console.error('Error:', errorMessage);
+        Alert.alert('Error', errorMessage);
+        return; // Exit the function after handling the error
+      }
+      const data = await response.json();
+      console.log('Response data:', data);
+      Alert.alert('New Meeting Scheduled');
+    } catch (error) {
+      console.error('Error:', error);
+      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
+    }
+  };
+
+  const handleDateChange = (event, date) => {
     setShowDatePicker(false);
-    const currentDate = selectedDate || date;
-    setSelectedDate(currentDate);
+    if (date !== undefined) {
+      setSelectedDate(date);
+    }
   };
 
-  const handleTimeChange = (event, selectedTime) => {
+  const handleTimeChange = (event, time) => {
     setShowTimePicker(false);
-    const currentTime = selectedTime || selectedTime;
-    setSelectedTime(currentTime);
+    if (time !== undefined) {
+      setSelectedTime(time);
+    }
   };
 
   const showDatepicker = () => {
@@ -80,8 +153,8 @@ const SupervisorScheduleMeeting = () => {
             <Text style={styles.boldText}>Select FYP Group:</Text>
             <SelectList
               setSelected={val => setFypGroup(val)}
-              data={FypGroupList}
-              save="value"
+              data={FypGrouplist}
+              save="key"
               onSelect={() => {
                 console.warn(FypGroup);
               }}
@@ -97,7 +170,7 @@ const SupervisorScheduleMeeting = () => {
             style={styles.datePickerButton}
             onPress={showDatepicker}>
             <Text style={styles.buttonText}>
-              {selectedDate.toLocaleDateString()}
+              {selectedDate.toISOString().split('T')[0]}
             </Text>
           </TouchableOpacity>
 
@@ -106,7 +179,7 @@ const SupervisorScheduleMeeting = () => {
               testID="dateTimePicker"
               value={selectedDate}
               mode="date"
-              is24Hour={true}
+              is24Hour={false}
               display="default"
               onChange={handleDateChange}
             />
@@ -117,7 +190,16 @@ const SupervisorScheduleMeeting = () => {
             style={styles.datePickerButton}
             onPress={showTimepicker}>
             <Text style={styles.buttonText}>
-              {selectedTime.toLocaleTimeString()}
+              {`${selectedTime
+                .getHours()
+                .toString()
+                .padStart(2, '0')}:${selectedTime
+                .getMinutes()
+                .toString()
+                .padStart(2, '0')}:${selectedTime
+                .getSeconds()
+                .toString()
+                .padStart(2, '0')}`}
             </Text>
           </TouchableOpacity>
 
