@@ -38,6 +38,8 @@ import SupervisorFypGroups from './Src/Committee&Supervisor/Sup FYP-Groups';
 import SupervisorAddtask from './Src/Committee&Supervisor/SupervisorAddTask';
 import SupervisorProjectDetails from './Src/Committee&Supervisor/SupervisorProjectDetails';
 import SupervisorViewUploadedTasks from './Src/Committee&Supervisor/SupervisorViewUploadTasks';
+import FailGroups from './Src/Committee&Supervisor/FailGroups&Students';
+import Addmembers from './Src/Committee&Supervisor/AddMembers(Failures)';
 
 const Stack = createNativeStackNavigator();
 
@@ -45,7 +47,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="login"
+        initialRouteName="Addmember"
         screenOptions={{
           headerStyle: {
             backgroundColor: '#D9D9D9',
@@ -165,6 +167,16 @@ const App = () => {
           name="SupervisorReAllocationScreen"
           component={ProjectDetails}
           options={{title: 'Supervisor Re-Allocation'}}
+        />
+        <Stack.Screen
+          name="FailGroupsScreen"
+          component={FailGroups}
+          options={{title: 'Groups'}}
+        />
+        <Stack.Screen
+          name="Addmember"
+          component={Addmembers}
+          options={{title: 'Select Members'}}
         />
         <Stack.Screen
           name="Uploaded Tasks"

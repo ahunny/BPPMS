@@ -75,20 +75,12 @@ const SupervisorMeetings = props => {
                       alignItems: 'center',
                       flex: 1,
                     }}>
-                    <Image
-                      style={{
-                        width: 20,
-                        height: 20,
-                        borderRadius: 25,
-                        marginRight: 5,
-                      }}
-                      source={require('./Assets/icons8-group-30.png')}
-                    />
                     <Text
                       style={{
                         textAlign: 'center',
                         color: 'black',
                         fontSize: 16,
+                        fontWeight: 'bold',
                       }}>
                       {item.projectTitle}
                     </Text>
