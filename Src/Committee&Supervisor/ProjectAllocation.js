@@ -12,6 +12,7 @@ import {SelectList} from 'react-native-dropdown-select-list';
 import API_URL from '../../apiConfig';
 import {black} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 import {useFocusEffect} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const ProjectAllocation = props => {
   const [loading, setLoading] = useState(true);
@@ -22,6 +23,7 @@ const ProjectAllocation = props => {
   const [prefsupervisors, setprefSupervisors] = useState([]);
   const [ProjectList, setProjectList] = useState([]);
   const [Supervisorlist, setsupervisorlist] = useState([]);
+  const navigation = useNavigation();
 
   const [allocatedProject, setAllocatedProject] = useState([
     selectedProject,
@@ -100,7 +102,7 @@ const ProjectAllocation = props => {
       const data = await response.json();
       const formattedData = data.map(item => ({
         key: item.supervisor_id.toString(), // Extract supervisor ID as string
-        value: item.name,
+        value: item.name + ' (' + item.groupCount + ')',
       }));
 
       setsupervisorlist(formattedData);
@@ -153,6 +155,7 @@ const ProjectAllocation = props => {
         // Clear selections after successful allocation (optional)
         setSelectedProject('');
         setSelectedSupervisor('');
+        navigation.goBack();
       } else {
         const error = await response.text();
         console.error('Error allocating project:', error);

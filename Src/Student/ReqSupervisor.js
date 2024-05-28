@@ -239,7 +239,7 @@ const ReqSupervisor = props => {
       <TouchableOpacity
         style={styles.button}
         onPress={handleCreateSupervisorsRequest}>
-        <Text style={styles.buttonText}>Send Request</Text>
+        <Text style={styles.buttonText}>Send Preference</Text>
       </TouchableOpacity>
     </View>
   );
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 40,
     height: 40,
-    width: 130,
+    width: 140,
     alignItems: 'center',
     alignSelf: 'flex-end',
     marginTop: 50,

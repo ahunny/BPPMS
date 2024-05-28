@@ -141,7 +141,7 @@ const Dashboardscreens = props => {
               style={{width: 40, height: 40, marginTop: 5}} // Set the width and height of the image
             />
             <Text style={{marginLeft: -10, color: 'black', fontSize: 20}}>
-              {'Request Supervisor'}
+              {'Prefer Supervisor'}
             </Text>
           </View>
         </View>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -7,31 +7,42 @@ import {
   FlatList,
   TextInput,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
 import {SelectList} from 'react-native-dropdown-select-list';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import API_URL from '../../apiConfig';
 
-const FailGroups = () => {
-  const data = [
-    {
-      id: '1',
-      ProjectName: 'ProjectName',
-      StdName: 'Bilal Ahmed (2020-Arid-3609)',
-      supervisor: 'Sir Azeem',
-      Platform: 'React-Native',
-    },
-    {
-      id: '2',
-      ProjectName: 'ProjectName',
-      StdName: 'Bilal Ahmed (2020-Arid-3609)',
-      supervisor: 'Sir Azeem',
-      Platform: 'IOS',
-    },
-  ];
+const FailGroups = props => {
+  const [GroupList, setGroupList] = useState([]);
+  console.log(GroupList);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchFailGroups = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/Groups/GetFailProjectAndMembers`,
+      );
+      const data = await response.json();
+      setGroupList(data);
+      console.log(data);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Students', ToastAndroid.SHORT);
+      console.error('Error fetching Students:', error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+  useFocusEffect(
+    // useCallback prevent unnecessary re-renders caused by creating a newfunction instance on every render.
+    useCallback(() => {
+      fetchFailGroups();
+    }, []),
+  );
 
   const navigation = useNavigation();
-
-  const [TaskRemarks, setremarks] = useState('');
 
   return (
     <View
@@ -48,83 +59,65 @@ const FailGroups = () => {
           marginTop: 10,
           borderRadius: 20,
         }}>
-        <FlatList
-          data={data}
-          renderItem={({item, index}) => (
-            <ScrollView>
-              <TouchableOpacity
-                style={[
-                  styles.itemContainer,
-                  {marginTop: index === 0 ? 20 : 0},
-                ]}>
-                <View style={styles.itemContent}>
-                  <View style={styles.column}>
-                    <Text style={styles.boldText}>{item.ProjectName}</Text>
-
-                    <Text style={{color: 'black'}}>
-                      {'Supervisor By : ' + item.supervisor}
-                    </Text>
-                    <Text style={{color: 'black', fontWeight: 'bold'}}>
-                      {'Failed Members:'}
-                    </Text>
-                    <FlatList
-                      data={data}
-                      renderItem={({item, index}) => (
-                        <ScrollView>
-                          <TouchableOpacity
-                            style={[
-                              styles.itemContainer2,
-                              {marginTop: index === 0 ? 20 : 0},
-                            ]}>
-                            <View style={styles.itemContent}>
-                              <View style={{flexDirection: 'row'}}>
-                                <Text style={{color: 'black'}}>
-                                  {item.StdName}
-                                </Text>
-                                <Text style={{color: 'black', marginLeft: 20}}>
-                                  {item.Platform}
-                                </Text>
-                              </View>
-                            </View>
-                          </TouchableOpacity>
-                        </ScrollView>
-                      )}
-                      keyExtractor={item => item.id}
-                    />
+        {Array.isArray(GroupList) ? (
+          <FlatList
+            data={GroupList}
+            renderItem={({item, index}) => (
+              <ScrollView>
+                <View
+                  style={[
+                    styles.itemContainer,
+                    {marginTop: index === 0 ? 20 : 0},
+                  ]}>
+                  <View style={styles.itemContent}>
+                    <View style={styles.column}>
+                      <Text style={styles.boldText}>
+                        {item.ProjectName + ' (' + item.Fyp_Type + ')'}{' '}
+                      </Text>
+                      <Text style={{color: 'black'}}>
+                        {'Supervisor By : ' + item.SupervisorName}
+                      </Text>
+                      <Text style={{color: 'red', fontWeight: 'bold'}}>
+                        {'\n'}
+                        {'Failed Members: '}
+                        {item.Students?.length || 0}
+                      </Text>
+                      {item.Students?.map((student, index) => (
+                        <Text style={{color: 'black'}} key={index}>
+                          {student.StudentName}
+                          {' ('}
+                          {student.AridNumber}
+                          {')'}
+                          {'\n'}
+                          {'Platform: '}
+                          {student.Platform}
+                          {index !== item.Students.length - 1 && '\n'}
+                        </Text>
+                      ))}
+                    </View>
+                  </View>
+                  <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() =>
+                        props.navigation.navigate('Addmember', {
+                          groupsList: GroupList,
+                          selectedGroup: item,
+                        })
+                      }>
+                      <Text style={styles.buttonText}>Re-Allocate</Text>
+                    </TouchableOpacity>
                   </View>
                 </View>
-
-                <TouchableOpacity
-                  style={{
-                    marginBottom: 10,
-                    backgroundColor: '#C0C0C0',
-                    borderRadius: 40,
-                    height: 40,
-                    width: 120,
-                    alignItems: 'center',
-                    alignContent: 'center',
-                    marginLeft: 20,
-                  }}>
-                  <Text style={styles.buttonText}>Re-Allocate</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    marginBottom: 10,
-                    backgroundColor: '#C0C0C0',
-                    borderRadius: 40,
-                    height: 40,
-                    width: 120,
-                    alignItems: 'center',
-                    alignContent: 'center',
-                    marginLeft: 20,
-                  }}>
-                  <Text style={styles.buttonText}>Add Member</Text>
-                </TouchableOpacity>
-              </TouchableOpacity>
-            </ScrollView>
-          )}
-          keyExtractor={item => item.id}
-        />
+              </ScrollView>
+            )}
+            keyExtractor={item => item.id.toString()}
+            refreshing={refreshing}
+            onRefresh={fetchFailGroups}
+          />
+        ) : (
+          <Text style={styles.errorText}>No Failed Student Found!</Text>
+        )}
       </View>
     </View>
   );
@@ -157,6 +150,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 10,
   },
+  itemContent1: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   boldText: {
     fontWeight: 'bold',
     color: 'black',
@@ -183,6 +180,12 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 15,
     marginTop: 10,
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginTop: 20,
+    fontSize: 16,
   },
 });
 

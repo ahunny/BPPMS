@@ -47,7 +47,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Addmember"
+        initialRouteName="login"
         screenOptions={{
           headerStyle: {
             backgroundColor: '#D9D9D9',
@@ -176,7 +176,7 @@ const App = () => {
         <Stack.Screen
           name="Addmember"
           component={Addmembers}
-          options={{title: 'Select Members'}}
+          options={{title: 'Add More Members'}}
         />
         <Stack.Screen
           name="Uploaded Tasks"

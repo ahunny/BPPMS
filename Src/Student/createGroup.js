@@ -26,19 +26,12 @@ const Creategroup = props => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [StudentList, setStudentList] = useState([]);
-  const [selectedStudents, setSelectedStudents] = useState([
-    IosStudent,
-    FlutterStudent,
-    ReactNativeStudent,
-    AndroidStudent,
-    WebStudent,
-  ]);
   const {userid} = props.route.params;
   console.log('ok id', userid);
 
-  const HandleCreatGroup = async () => {
+  const HandleCreatGroup = async students => {
     try {
-      const data = selectedStudents
+      const data = students
         .map(student => ({
           student_id: student.id,
           technology: student.Technology,
@@ -101,15 +94,15 @@ const Creategroup = props => {
   );
 
   const sendRequest = () => {
-    setSelectedStudents([
+    const updatedStudents = [
       IosStudent,
       FlutterStudent,
       ReactNativeStudent,
       AndroidStudent,
       WebStudent,
-    ]);
-    console.log(selectedStudents);
-    HandleCreatGroup();
+    ];
+    console.log(updatedStudents);
+    HandleCreatGroup(updatedStudents);
   };
 
   const navigation = useNavigation();

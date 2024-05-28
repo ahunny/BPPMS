@@ -7,52 +7,74 @@ import {
   FlatList,
   TextInput,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-const Addmembers = () => {
-  const data = [
-    {
-      id: '1',
-      StdName: 'Bilal Ahmed (2020-Arid-3609)',
-      supervisor: 'Sir Azeem',
-      Platform: 'React-Native',
-    },
-    {
-      id: '2',
-      StdName: 'Bilal Ahmed (2020-Arid-3609)',
-      supervisor: 'Sir Azeem',
-      Platform: 'IOS',
-    },
-  ];
+const Addmembers = props => {
+  const groupsList = props.route.params.groupsList;
+  const selectedGroup = props.route.params.selectedGroup;
+  const [updatedGroup, setUpdatedGroup] = useState(selectedGroup);
+  const [studentsToAdd, setStudentsToAdd] = useState(() =>
+    groupsList.reduce((acc, item) => {
+      if (
+        item.ProjectName !== selectedGroup.ProjectName &&
+        item.Fyp_Type === selectedGroup.Fyp_Type
+      ) {
+        item.Students.forEach(student => {
+          if (
+            !selectedGroup.Students.some(s => s.Platform === student.Platform)
+          ) {
+            acc.push(student);
+          }
+        });
+      }
+      return acc;
+    }, []),
+  );
 
   const navigation = useNavigation();
 
-  const [TaskRemarks, setremarks] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredData = data.filter(
+  const addNewMember = newMember => {
+    const platformExists = updatedGroup.Students.some(
+      student => student.Platform === newMember.Platform,
+    );
+
+    if (platformExists) {
+      Alert.alert(
+        'Error',
+        'A student with this platform already exists in the group.',
+      );
+      return;
+    }
+
+    if (updatedGroup.Students.length >= 5) {
+      Alert.alert('Error', 'You cannot add more than 5 students to the group.');
+      return;
+    }
+
+    setUpdatedGroup(prevGroup => ({
+      ...prevGroup,
+      Students: [...prevGroup.Students, newMember],
+    }));
+
+    setStudentsToAdd(prevStudents =>
+      prevStudents.filter(student => student.Platform !== newMember.Platform),
+    );
+  };
+
+  const filteredData = studentsToAdd.filter(
     item =>
-      item.StdName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.supervisor.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.Platform.toLowerCase().includes(searchTerm.toLowerCase()),
+      item.StudentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.Platform.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.AridNumber.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: '#74A2A8',
-      }}>
-      <View
-        style={{
-          backgroundColor: '#C0C0C0',
-          width: '97%',
-          height: '97%',
-          alignSelf: 'center',
-          marginTop: 10,
-          borderRadius: 20,
-        }}>
+    <View style={styles.container}>
+      <View style={styles.innerContainer}>
         <TextInput
           style={styles.searchInput}
           placeholder="Search by Name, Platform, Supervisor"
@@ -62,42 +84,44 @@ const Addmembers = () => {
         <FlatList
           data={filteredData}
           renderItem={({item, index}) => (
-            <ScrollView>
-              <TouchableOpacity
-                style={[
-                  styles.itemContainer,
-                  {marginTop: index === 0 ? 20 : 0},
-                ]}>
-                <View style={styles.itemContent}>
-                  <View style={styles.column}>
-                    <Text style={styles.boldText}>{item.StdName}</Text>
-                    <Text style={{color: 'black', fontWeight: 'bold'}}>
-                      {'Platform : ' + item.Platform}
-                    </Text>
-                    <Text style={{color: 'black'}}>
-                      {'Supervisor By : ' + item.supervisor}
-                    </Text>
-                  </View>
+            <View
+              style={[styles.itemContainer, {marginTop: index === 0 ? 20 : 0}]}>
+              <View style={styles.itemContent}>
+                <View style={styles.column}>
+                  <Text style={styles.boldText}>
+                    {'Name : ' +
+                      item.StudentName +
+                      ' (' +
+                      item.AridNumber +
+                      ') '}
+                  </Text>
+                  <Text style={{color: 'black', fontWeight: 'bold'}}>
+                    {'Platform : ' + item.Platform}
+                  </Text>
                 </View>
+              </View>
+              <View style={styles.buttonWrapper}>
                 <TouchableOpacity
-                  style={{
-                    marginBottom: 10,
-                    backgroundColor: '#C0C0C0',
-                    borderRadius: 40,
-                    height: 40,
-                    width: 80,
-                    alignItems: 'center',
-                    alignContent: 'center',
-                    marginLeft: 10,
-                  }}>
+                  style={styles.addButton}
+                  onPress={() => addNewMember(item)}>
                   <Text style={styles.buttonText}>Add</Text>
                 </TouchableOpacity>
-              </TouchableOpacity>
-            </ScrollView>
+              </View>
+            </View>
           )}
           keyExtractor={item => item.id}
         />
       </View>
+      <TouchableOpacity
+        style={styles.floatingButton}
+        onPress={() => {
+          //console.log(updatedGroup);
+          navigation.navigate('ProjectReAllocation', {
+            updatedGroup: updatedGroup,
+          });
+        }}>
+        <Text style={styles.buttonText}>Next</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -106,7 +130,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#74A2A8',
-    paddingHorizontal: 20,
+  },
+  innerContainer: {
+    backgroundColor: '#C0C0C0',
+    width: '97%',
+    height: '90%', // Reduced height to accommodate floating button
+    alignSelf: 'center',
+    marginTop: 10,
+    borderRadius: 20,
   },
   itemContainer: {
     elevation: 5,
@@ -115,13 +146,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: '95%',
     marginLeft: 9,
-  },
-  itemContainer2: {
-    elevation: 5,
-    backgroundColor: '#C0C0C0',
-    borderRadius: 10,
-    marginBottom: 10,
-    width: 310,
   },
   itemContent: {
     flexDirection: 'row',
@@ -135,6 +159,20 @@ const styles = StyleSheet.create({
   },
   column: {
     flexDirection: 'column',
+  },
+  buttonWrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  addButton: {
+    marginBottom: 10,
+    backgroundColor: '#C0C0C0',
+    borderRadius: 40,
+    height: 40,
+    width: 100,
+    alignItems: 'center',
+    alignContent: 'center',
   },
   input: {
     borderRadius: 10,
@@ -161,6 +199,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: '#D9D9D9',
     margin: 10,
+  },
+  floatingButton: {
+    backgroundColor: 'lightgrey',
+    borderRadius: 40,
+    height: 40,
+    width: 100,
+    alignItems: 'center',
+    alignContent: 'center',
+    elevation: 5,
+    position: 'absolute',
+    bottom: 10,
+    alignSelf: 'center',
   },
 });
 

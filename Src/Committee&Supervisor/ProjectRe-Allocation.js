@@ -10,14 +10,21 @@ import {
   Image,
   TouchableOpacity,
   ToastAndroid,
+  FlatList,
 } from 'react-native';
 import API_URL from '../../apiConfig';
 
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {SelectList} from 'react-native-dropdown-select-list';
 import {Alert} from 'react-native';
+import {shadow} from 'react-native-paper';
 
 const ProjectReAllocation = props => {
+  const [updatedGroup, setUpdatedGroup] = useState(
+    props.route.params.updatedGroup,
+  );
+  const [selectedSupervisor, setSelectedSupervisor] = useState('');
+  const [selectedProject, setSelectedProject] = useState('');
   const [IosStudent, setIosStudent] = useState('');
   const [FlutterStudent, setFlutterStudent] = useState('');
   const [ReactNativeStudent, setReactNativeStudent] = useState('');
@@ -82,31 +89,24 @@ const ProjectReAllocation = props => {
       fetchSupervisors();
     }, []),
   );
-  const HandleCreatGroup = async () => {
+  const CreateFailedMembersGroup = async () => {
+    console.log(updatedGroup);
     try {
-      const data = selectedStudents
-        .map(student => ({
-          student_id: student.id,
-          technology: student.Technology,
-          user_id: userid,
-        }))
-        .filter(
-          item =>
-            item.student_id !== undefined && item.technology !== undefined,
-        );
-
-      const response = await fetch(`${API_URL}/Auth/CreateGroup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${API_URL}/Groups/CreateFailedMembersGroup`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedGroup),
         },
-        body: JSON.stringify(data),
-      });
+      );
 
       if (response.ok) {
         const data = await response.json();
         console.log('Response data:', data);
-        Alert.alert('Group Added');
+        ToastAndroid.show(data, ToastAndroid.SHORT);
 
         // Optionally, navigate to another screen or show success message
       } else {
@@ -146,253 +146,53 @@ const ProjectReAllocation = props => {
     }, []),
   );
 
-  const sendRequest = () => {
-    setSelectedStudents([
-      IosStudent,
-      FlutterStudent,
-      ReactNativeStudent,
-      AndroidStudent,
-      WebStudent,
-    ]);
-    console.log(selectedStudents);
-    HandleCreatGroup();
-  };
-
-  const HandleAssignProject = () => {
-    ToastAndroid.show('Project Assigned', ToastAndroid.SHORT);
-  };
-
   const navigation = useNavigation();
+  console.log(updatedGroup);
 
   return (
-    <ScrollView style={{backgroundColor: '#74A2A8'}}>
+    <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View
           style={{flex: 1, backgroundColor: '#74A2A8', alignItems: 'center'}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginTop: 20,
-            }}>
-            <SelectList
-              setSelected={val => {
-                setIosStudent({
-                  id: StudentList.find(student => student.value.includes(val))
-                    .key,
-                  Technology: 'IOS',
-                });
-                setStudentList(
-                  StudentList.filter(student => student.value !== val),
-                );
-              }}
-              data={StudentList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(IosStudent);
-              }}
-              searchPlaceholder="Search Student"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.selectListStyle}
-              placeholder="Select Student"
-              inputStyles={styles.selectListInput}
-            />
-            <Text
-              style={{
-                backgroundColor: '#D9D9D9',
-                width: '30%',
-                height: 50,
-                borderRadius: 20,
-                fontSize: 18,
-                color: 'black',
-                textAlign: 'center',
-                verticalAlign: 'middle',
-                marginLeft: -40,
-              }}>
-              IOS
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginTop: 20,
-            }}>
-            <SelectList
-              setSelected={val => {
-                setFlutterStudent({
-                  id: StudentList.find(student => student.value.includes(val))
-                    .key,
-                  Technology: 'Flutter',
-                });
-                setStudentList(
-                  StudentList.filter(student => student.value !== val),
-                );
-              }}
-              data={StudentList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(FlutterStudent);
-              }}
-              searchPlaceholder="Search Student"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.selectListStyle}
-              placeholder="Select Student"
-              inputStyles={styles.selectListInput}
-            />
-            <Text
-              style={{
-                backgroundColor: '#D9D9D9',
-                width: '30%',
-                height: 50,
-                borderRadius: 20,
-                fontSize: 18,
-                color: 'black',
-                textAlign: 'center',
-                verticalAlign: 'middle',
-                marginLeft: -40,
-              }}>
-              Flutter
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginTop: 20,
-            }}>
-            <SelectList
-              setSelected={val => {
-                setReactNativeStudent({
-                  id: StudentList.find(student => student.value.includes(val))
-                    .key,
-                  Technology: 'React-Native',
-                });
-                setStudentList(
-                  StudentList.filter(student => student.value !== val),
-                );
-              }}
-              data={StudentList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(ReactNativeStudent);
-              }}
-              searchPlaceholder="Search Student"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.selectListStyle}
-              placeholder="Select Student"
-              inputStyles={styles.selectListInput}
-            />
-            <Text
-              style={{
-                backgroundColor: '#D9D9D9',
-                width: '30%',
-                height: 50,
-                borderRadius: 20,
-                fontSize: 18,
-                color: 'black',
-                textAlign: 'center',
-                verticalAlign: 'middle',
-                marginLeft: -40,
-              }}>
-              React-Native
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginTop: 20,
-            }}>
-            <SelectList
-              setSelected={val => {
-                setAndroidStudent({
-                  id: StudentList.find(student => student.value.includes(val))
-                    .key,
-                  Technology: 'Android',
-                });
-                setStudentList(
-                  StudentList.filter(student => student.value !== val),
-                );
-              }}
-              data={StudentList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(AndroidStudent);
-              }}
-              searchPlaceholder="Search Student"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.selectListStyle}
-              placeholder="Select Student"
-              inputStyles={styles.selectListInput}
-            />
-            <Text
-              style={{
-                backgroundColor: '#D9D9D9',
-                width: '30%',
-                height: 50,
-                borderRadius: 20,
-                fontSize: 18,
-                color: 'black',
-                textAlign: 'center',
-                verticalAlign: 'middle',
-                marginLeft: -40,
-              }}>
-              Android
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginTop: 20,
-            }}>
-            <SelectList
-              setSelected={val => {
-                setWebStudent({
-                  id: StudentList.find(student => student.value.includes(val))
-                    .key,
-                  Technology: 'WEB',
-                });
-                setStudentList(
-                  StudentList.filter(student => student.value !== val),
-                );
-              }}
-              data={StudentList}
-              save="value" // also set save to key.
-              onSelect={() => {
-                console.warn(WebStudent);
-              }}
-              searchPlaceholder="Search Student"
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.selectListStyle}
-              placeholder="Select Student"
-              inputStyles={styles.selectListInput}
-            />
-            <Text
-              style={{
-                backgroundColor: '#D9D9D9',
-                width: '30%',
-                height: 50,
-                borderRadius: 20,
-                fontSize: 18,
-                color: 'black',
-                textAlign: 'center',
-                verticalAlign: 'middle',
-                marginLeft: -40,
-              }}>
-              Web
-            </Text>
-          </View>
+          <FlatList
+            data={updatedGroup.Students}
+            renderItem={({item, index}) => (
+              <View
+                style={[
+                  styles.itemContainer,
+                  {marginTop: index === 0 ? 20 : 0},
+                ]}>
+                <View style={styles.itemContent}>
+                  <View style={styles.column}>
+                    <Text style={styles.boldText}>{item.StudentName}</Text>
+                    <Text style={{color: 'black'}}>{item.AridNumber}</Text>
+                  </View>
+                  <View style={styles.column}>
+                    <Text style={{color: 'black'}}>
+                      {'Platform: ' + item.Platform}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            )}
+            keyExtractor={item => item.id}
+          />
 
           <View style={[styles.selectContainer]}>
             <Text style={[styles.boldText, {marginLeft: 40}]}>
               Select FYP Project
             </Text>
             <SelectList
-              setSelected={val => setSelectedProject(val)}
+              setSelected={val => {
+                temp = ProjectList.find(project => project.value === val);
+                setUpdatedGroup(prevGroup => ({
+                  ...prevGroup,
+                  ProjectId: temp.key,
+                  ProjectName: temp.value,
+                }));
+              }}
               data={ProjectList}
-              save="key"
+              save="value"
               onSelect={() => {
                 console.warn(selectedProject);
               }}
@@ -408,9 +208,18 @@ const ProjectReAllocation = props => {
               Assign Supervisor
             </Text>
             <SelectList
-              setSelected={val => setSelectedSupervisor(val)}
+              setSelected={val => {
+                temp = Supervisorlist.find(
+                  supervisor => supervisor.value === val,
+                );
+                setUpdatedGroup(prevGroup => ({
+                  ...prevGroup,
+                  SupervisorId: temp.key,
+                  SupervisorName: temp.value,
+                }));
+              }}
               data={Supervisorlist}
-              save="key"
+              save="value"
               onSelect={() => {
                 console.warn(selectedSupervisor);
               }}
@@ -421,12 +230,14 @@ const ProjectReAllocation = props => {
               inputStyles={styles.selectListInput}
             />
           </View>
-          <TouchableOpacity style={styles.Button} onPress={HandleAssignProject}>
+          <TouchableOpacity
+            style={styles.Button}
+            onPress={CreateFailedMembersGroup}>
             <Text style={styles.buttonText}>Allocate Project</Text>
           </TouchableOpacity>
         </View>
       </TouchableWithoutFeedback>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -467,6 +278,7 @@ const styles = StyleSheet.create({
   },
   column: {
     flexDirection: 'column',
+    justifyContent: 'center',
   },
 
   selectListStyle: {
@@ -503,6 +315,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-end',
     marginTop: 50,
+    marginBottom: 50,
     marginRight: 40,
   },
 
