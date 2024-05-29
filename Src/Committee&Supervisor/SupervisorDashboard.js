@@ -176,7 +176,8 @@ const Dashboardscreens = props => {
             height: '15%',
             marginTop: 15,
           }}
-          onPress={() => props.navigation.navigate('Fyp Groups')}>
+          // onPress={() => props.navigation.navigate('Fyp Groups')}
+        >
           <View
             style={{
               flexDirection: 'row',

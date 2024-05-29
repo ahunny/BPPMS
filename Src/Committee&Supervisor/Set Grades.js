@@ -15,9 +15,18 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {SelectList} from 'react-native-dropdown-select-list';
 
-const SupervisorGrading = () => {
+const SetGrades = () => {
+  const [selectedProject, setSelectedProject] = useState('');
   const [selectedStudent, setSelectedStudent] = useState('');
   const [selectedCriteria, setSelectedCriteria] = useState('');
+
+  const ProjectList = [
+    {key: '1', value: 'Industrial Watch'},
+    {key: '2', value: 'Lost Child'},
+    {key: '3', value: 'Project Progress Monitoring'},
+    {key: '4', value: 'Hakeem Hikmat'},
+    {key: '5', value: 'Virtual Eye'},
+  ];
 
   const StudentList = [
     {key: '1', value: 'Armughan Ul Haq'},
@@ -46,6 +55,26 @@ const SupervisorGrading = () => {
           marginTop: 10,
           borderRadius: 20,
         }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            marginTop: 20,
+          }}>
+          <SelectList
+            setSelected={val => setSelectedProject(val)}
+            data={ProjectList}
+            save="value" // also set save to key.
+            onSelect={() => {
+              console.warn(selectedProject);
+            }}
+            searchPlaceholder="Search Project"
+            dropdownTextStyles={{color: 'black'}}
+            boxStyles={styles.selectListStyle}
+            placeholder="Select Project"
+            inputStyles={styles.selectListInput}
+          />
+        </View>
         <View
           style={{
             flexDirection: 'row',
@@ -95,6 +124,25 @@ const SupervisorGrading = () => {
               marginLeft: 20,
             }}></TextInput>
         </View>
+
+        <Text
+          style={{
+            color: 'black',
+            fontSize: 20,
+            marginTop: 20,
+            marginLeft: -170,
+          }}>
+          Cumulative Grade:
+        </Text>
+        <Text
+          style={{
+            backgroundColor: '#D9D9D9',
+            width: 100,
+            height: 50,
+            borderRadius: 10,
+            color: 'black',
+            marginLeft: -250,
+          }}></Text>
 
         <TouchableOpacity
           style={[
@@ -179,4 +227,4 @@ const styles = StyleSheet.create({
     top: 35,
   },
 });
-export default SupervisorGrading;
+export default SetGrades;

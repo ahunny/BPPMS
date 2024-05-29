@@ -40,6 +40,9 @@ import SupervisorProjectDetails from './Src/Committee&Supervisor/SupervisorProje
 import SupervisorViewUploadedTasks from './Src/Committee&Supervisor/SupervisorViewUploadTasks';
 import FailGroups from './Src/Committee&Supervisor/FailGroups&Students';
 import Addmembers from './Src/Committee&Supervisor/AddMembers(Failures)';
+import SetGrades from './Src/Committee&Supervisor/Set Grades';
+import Grades from './Src/Committee&Supervisor/Grades';
+import StudentGrades from './Src/Committee&Supervisor/Grades';
 
 const Stack = createNativeStackNavigator();
 
@@ -190,6 +193,16 @@ const App = () => {
         />
         <Stack.Screen name="Add Remarks" component={AddRemarks} />
         <Stack.Screen name="Grading" component={Grading} />
+        <Stack.Screen
+          name="SetGrading"
+          component={SetGrades}
+          options={{title: 'Set Grades'}}
+        />
+        <Stack.Screen
+          name="StudentGrades"
+          component={StudentGrades}
+          options={{title: 'Students Grades'}}
+        />
 
         {/*Supervisor Screen Navigation Stack*/}
         <Stack.Screen

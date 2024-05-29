@@ -204,7 +204,8 @@ const Dashboardscreens = props => {
             height: '14%',
             marginTop: 15,
           }}
-          onPress={() => props.navigation.navigate('RestrictedStudents')}>
+          //onPress={() => props.navigation.navigate('RestrictedStudents')}
+        >
           <View
             style={{
               flexDirection: 'row',

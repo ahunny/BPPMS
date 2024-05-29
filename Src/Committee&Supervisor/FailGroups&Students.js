@@ -111,7 +111,7 @@ const FailGroups = props => {
                 </View>
               </ScrollView>
             )}
-            keyExtractor={item => item.id.toString()}
+            keyExtractor={item => item.id}
             refreshing={refreshing}
             onRefresh={fetchFailGroups}
           />
@@ -144,7 +144,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: 310,
   },
-
+  button: {
+    backgroundColor: '#C0C0C0',
+    padding: 8,
+    borderRadius: 40,
+    height: 40,
+    width: 110,
+    alignItems: 'center',
+    marginLeft: 110,
+    marginBottom: 20,
+  },
   itemContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -179,7 +188,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
     fontSize: 15,
-    marginTop: 10,
   },
   errorText: {
     color: 'red',
