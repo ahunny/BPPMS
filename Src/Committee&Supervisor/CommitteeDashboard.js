@@ -25,6 +25,9 @@ import ScheduleMeeting from './ScheduleMeeting';
 import CommitteeMeetings from './CommitteeMeetings';
 const Stack = createNativeStackNavigator();
 
+var userid;
+var roles;
+
 const Dashboardscreens = props => {
   return (
     <View
@@ -179,7 +182,7 @@ const Dashboardscreens = props => {
             height: '14%',
             marginTop: 15,
           }}
-          onPress={() => props.navigation.navigate('Grading')}>
+          onPress={() => props.navigation.navigate('Grading', {userid, roles})}>
           <View
             style={{
               flexDirection: 'row',
@@ -228,7 +231,13 @@ const Dashboardscreens = props => {
   );
 };
 
-const CommitteeDashborad = () => {
+const CommitteeDashborad = props => {
+  const {data} = props.route.params;
+  console.log(data.user_id);
+  userid = data.user_id;
+  roles = data.role;
+  groupid = data.group_id;
+  console.log(userid, roles, groupid);
   return (
     <Tab.Navigator
       screenOptions={{

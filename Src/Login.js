@@ -51,8 +51,8 @@ const Login = props => {
         props.navigation.navigate('StudentDashboard', {data});
       } else if (role == 'Supervisor') {
         props.navigation.navigate('SupervisorDashboard', {data});
-      } else if (role == 'Committee') {
-        props.navigation.navigate('CommitteeDashboard');
+      } else if (role == 'Committee' || role == 'Director') {
+        props.navigation.navigate('CommitteeDashboard', {data});
       } else if (role == 'datacell') {
         props.navigation.navigate('Datacell Dashboard');
       } else {

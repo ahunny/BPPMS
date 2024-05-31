@@ -19,10 +19,13 @@ const ProjectAllocation = props => {
   const [refreshing, setRefreshing] = useState(false);
   const [selectedSupervisor, setSelectedSupervisor] = useState('');
   const [selectedProject, setSelectedProject] = useState('');
+  const [selectedSession, setSelectedSession] = useState('');
   const [students, setStudents] = useState([]);
   const [prefsupervisors, setprefSupervisors] = useState([]);
   const [ProjectList, setProjectList] = useState([]);
   const [Supervisorlist, setsupervisorlist] = useState([]);
+  const [Sessionlist, setsessionlist] = useState([]);
+
   const navigation = useNavigation();
 
   const [allocatedProject, setAllocatedProject] = useState([
@@ -115,12 +118,32 @@ const ProjectAllocation = props => {
     }
   };
 
+  const fetchSessions = async () => {
+    try {
+      const response = await fetch(`${API_URL}/AssignProject/GetAllSessions`);
+      const data = await response.json();
+      const formattedData = data.map(item => ({
+        key: item.session_id.toString(), // Extract supervisor ID as string
+        value: item.session_name,
+      }));
+
+      setsessionlist(formattedData);
+      console.log(formattedData);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Supervisors', ToastAndroid.SHORT);
+      console.error('Error fetching Supervisors:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useFocusEffect(
     // useCallback prevent unnecessary re-renders caused by creating a new
     // function instance on every render.
     useCallback(() => {
       fetchProjects();
       fetchSupervisors();
+      fetchSessions();
     }, []),
   );
 
@@ -138,7 +161,7 @@ const ProjectAllocation = props => {
       const supervisorId = parseInt(selectedSupervisor, 10); // Parse supervisor ID to integer
 
       const response = await fetch(
-        `${API_URL}/AssignProject/ProjectAllocation?project_id=${projectId}&supervisor_id=${supervisorId}&group_id=${groupId}`,
+        `${API_URL}/AssignProject/ProjectAllocation?project_id=${projectId}&supervisor_id=${supervisorId}&group_id=${groupId}&session_id=${selectedSession}`,
         {
           method: 'POST',
           headers: {
@@ -260,6 +283,24 @@ const ProjectAllocation = props => {
             dropdownTextStyles={{color: 'black'}}
             boxStyles={styles.selectListStyle}
             placeholder="Select Supervisor"
+            inputStyles={styles.selectListInput}
+          />
+        </View>
+        <View style={[styles.selectContainer]}>
+          <Text style={[styles.boldText, {marginLeft: 40}]}>
+            Select Session
+          </Text>
+          <SelectList
+            setSelected={val => setSelectedSession(val)}
+            data={Sessionlist}
+            save="key"
+            onSelect={() => {
+              console.warn(selectedSession);
+            }}
+            searchPlaceholder="Search Session"
+            dropdownTextStyles={{color: 'black'}}
+            boxStyles={styles.selectListStyle}
+            placeholder="Select Session"
             inputStyles={styles.selectListInput}
           />
         </View>

@@ -102,19 +102,6 @@ const SupervisorProjectDetails = ({route}) => {
           keyExtractor={item => item.id}
         />
 
-        <TouchableOpacity style={[styles.itemContainer]}>
-          <View style={styles.itemContent}>
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 'bold',
-                color: 'black',
-              }}>
-              Supervisor: {supervisor.SupervisorName}
-            </Text>
-          </View>
-        </TouchableOpacity>
-
         <TouchableOpacity
           style={{
             marginBottom: 20,

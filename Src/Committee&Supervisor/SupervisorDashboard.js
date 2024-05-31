@@ -21,6 +21,8 @@ import SupervisorMeetings from './SupervisorMeetings';
 const Tab = createBottomTabNavigator();
 const multiplescreen = createNativeStackNavigator();
 var userid;
+var roles;
+
 const Stack = createNativeStackNavigator();
 const Dashboardscreens = props => {
   return (
@@ -151,7 +153,9 @@ const Dashboardscreens = props => {
             height: '15%',
             marginTop: 15,
           }}
-          onPress={() => props.navigation.navigate('Supervisor Grading')}>
+          onPress={() =>
+            props.navigation.navigate('Supervisor Grading', {userid, roles})
+          }>
           <View
             style={{
               flexDirection: 'row',
@@ -204,6 +208,7 @@ const SupervisorDashboard = props => {
   const {data} = props.route.params;
   console.log(data.user_id);
   userid = data.user_id;
+  roles = data.role;
 
   return (
     <Tab.Navigator
