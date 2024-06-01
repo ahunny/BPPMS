@@ -1,40 +1,80 @@
-import React, {useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  TouchableWithoutFeedback,
-  Keyboard,
-  ScrollView,
-  Text,
-  Button,
-  Image,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View, Text, ToastAndroid} from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
 import {SelectList} from 'react-native-dropdown-select-list';
+import API_URL from '../../apiConfig';
 
 const StudentGrades = () => {
-  const [selectedStudent, setSelectedStudent] = useState('');
   const [selectedProject, setSelectedProject] = useState('');
+  const [selectedStudent, setSelectedStudent] = useState('');
+  const [ProjectList, setProjectList] = useState([]);
+  const [StudentList, setStudentList] = useState([]);
+  const [grades, setGrades] = useState('');
+  const [scores, setScores] = useState([]);
 
-  const ProjectList = [
-    {key: '1', value: 'Industrial Watch'},
-    {key: '2', value: 'Lost Child'},
-    {key: '3', value: 'Project Progress Monitoring'},
-    {key: '4', value: 'Hakeem Hikmat'},
-    {key: '5', value: 'Virtual Eye'},
-  ];
-  const StudentList = [
-    {key: '1', value: 'Armughan Ul Haq'},
-    {key: '2', value: 'Muhammad Ruhab Qureshi'},
-    {key: '3', value: 'Areej Sajid'},
-    {key: '4', value: 'Malik Umer Aziz'},
-    {key: '5', value: 'Abdullah Faheem'},
-  ];
+  const fetchProjects = async () => {
+    try {
+      const response = await fetch(`${API_URL}/Groups/GetProjects?`);
+      const data = await response.json();
+      const formattedData = data.map(item => ({
+        key: item.project_id.toString(),
+        value: item.project_title,
+      }));
+      setProjectList(formattedData);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Projects', ToastAndroid.SHORT);
+      console.error('Error fetching Projects:', error);
+    }
+  };
 
-  const navigation = useNavigation();
+  const fetchStudents = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/Groups/GetStudentsbyProjectID?projectid=${selectedProject}`,
+      );
+      const data = await response.json();
+      const students = data.map(item => ({
+        key: item.StudentId.toString(),
+        value: `${item.StudentName} (${item.AridNo})`,
+      }));
+      setStudentList(students);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Students', ToastAndroid.SHORT);
+      console.error('Error fetching Students:', error);
+    }
+  };
+
+  const fetchGrades = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/Grading/GetCalculatedGrades?student_id=${selectedStudent}`,
+      );
+      const data = await response.json();
+      setGrades(data.Grades);
+      setScores(data.Scores);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Grades', ToastAndroid.SHORT);
+      console.error('Error fetching Grades:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  useEffect(() => {
+    if (selectedProject) {
+      fetchStudents();
+    }
+  }, [selectedProject]);
+
+  useEffect(() => {
+    if (selectedStudent) {
+      fetchGrades();
+    }
+  }, [selectedStudent]);
+
   return (
     <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
       <View
@@ -56,10 +96,7 @@ const StudentGrades = () => {
           <SelectList
             setSelected={val => setSelectedProject(val)}
             data={ProjectList}
-            save="value" // also set save to key.
-            onSelect={() => {
-              console.warn(selectedProject);
-            }}
+            save="key"
             searchPlaceholder="Search Project"
             dropdownTextStyles={{color: 'black'}}
             boxStyles={styles.selectListStyle}
@@ -76,10 +113,7 @@ const StudentGrades = () => {
           <SelectList
             setSelected={val => setSelectedStudent(val)}
             data={StudentList}
-            save="value" // also set save to key.
-            onSelect={() => {
-              console.warn(selectedStudent);
-            }}
+            save="key"
             searchPlaceholder="Search Student"
             dropdownTextStyles={{color: 'black'}}
             boxStyles={styles.selectListStyle}
@@ -87,144 +121,51 @@ const StudentGrades = () => {
             inputStyles={styles.selectListInput}
           />
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: 20,
-          }}>
+        {scores.map((scoreItem, index) => (
           <View
+            key={scoreItem.ScoreId}
             style={{
-              backgroundColor: '#D9D9D9',
-              width: 200,
-              height: 50,
-              borderRadius: 10,
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginTop: 20,
             }}>
+            <View
+              style={{
+                backgroundColor: '#D9D9D9',
+                width: 200,
+                height: 50,
+                borderRadius: 10,
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  color: 'black',
+                  fontSize: 20,
+                  alignSelf: 'center',
+                }}>
+                {scoreItem.Criteria}
+              </Text>
+            </View>
             <Text
               style={{
+                backgroundColor: '#D9D9D9',
+                width: 100,
+                height: 50,
+                borderRadius: 10,
                 color: 'black',
-                fontSize: 20,
-                alignSelf: 'center',
-                margin: 10,
+                textAlign: 'center',
+                textAlignVertical: 'center',
+                marginLeft: 10,
               }}>
-              Supervisor
+              {scoreItem.AverageScore + '/' + scoreItem.ScoreWeight}
             </Text>
           </View>
-          <Text
-            style={{
-              backgroundColor: '#D9D9D9',
-              width: 100,
-              height: 50,
-              borderRadius: 10,
-              color: 'black',
-              marginLeft: 20,
-            }}></Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            marginTop: 20,
-          }}>
-          <View
-            style={{
-              backgroundColor: '#D9D9D9',
-              width: 200,
-              height: 50,
-              borderRadius: 10,
-            }}>
-            <Text
-              style={{
-                color: 'black',
-                fontSize: 20,
-                alignSelf: 'center',
-                margin: 10,
-              }}>
-              Web API Demo
-            </Text>
-          </View>
-          <Text
-            style={{
-              backgroundColor: '#D9D9D9',
-              width: 100,
-              height: 50,
-              borderRadius: 10,
-              color: 'black',
-              marginLeft: 20,
-            }}></Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            marginTop: 20,
-          }}>
-          <View
-            style={{
-              backgroundColor: '#D9D9D9',
-              width: 200,
-              height: 50,
-              borderRadius: 10,
-            }}>
-            <Text
-              style={{
-                color: 'black',
-                fontSize: 20,
-                alignSelf: 'center',
-                margin: 10,
-              }}>
-              Pitching
-            </Text>
-          </View>
-          <TextInput
-            style={{
-              backgroundColor: '#D9D9D9',
-              width: 100,
-              height: 50,
-              borderRadius: 10,
-              color: 'black',
-              marginLeft: 20,
-            }}></TextInput>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            marginTop: 20,
-          }}>
-          <View
-            style={{
-              backgroundColor: '#D9D9D9',
-              width: 200,
-              height: 50,
-              borderRadius: 10,
-            }}>
-            <Text
-              style={{
-                color: 'black',
-                fontSize: 20,
-                alignSelf: 'center',
-                margin: 10,
-              }}>
-              Documentation
-            </Text>
-          </View>
-          <Text
-            style={{
-              backgroundColor: '#D9D9D9',
-              width: 100,
-              height: 50,
-              borderRadius: 10,
-              color: 'black',
-              marginLeft: 20,
-            }}></Text>
-        </View>
-
+        ))}
         <Text
           style={{
             color: 'black',
             fontSize: 20,
             marginTop: 20,
-            marginLeft: -150,
           }}>
           Cumulative Grade:
         </Text>
@@ -235,8 +176,12 @@ const StudentGrades = () => {
             height: 50,
             borderRadius: 10,
             color: 'black',
-            marginLeft: -200,
-          }}></Text>
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            marginTop: 10,
+          }}>
+          {grades}
+        </Text>
       </View>
     </View>
   );
