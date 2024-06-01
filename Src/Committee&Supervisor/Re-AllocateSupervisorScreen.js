@@ -14,18 +14,18 @@ import API_URL from '../../apiConfig';
 const ProjectDetails = ({route}) => {
   const [students, setStudents] = useState([]);
   const [Supervisorlist, setsupervisorlist] = useState([]);
+  const [SelectedSupervisor, setSelectedSupervisor] = useState('');
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const {projectData} = route.params;
-  groupid = projectData.GroupId;
-  console.log('details', projectData);
-  console.log('id', groupid);
+  const projectid = projectData.project_id;
+  console.log(projectid);
 
-  const fetchStudents = async groupid => {
+  const fetchStudents = async projectid => {
     try {
       const response = await fetch(
-        `${API_URL}/AssignProject/GetGroupdetailsByProject?group_id=${groupid}`,
+        `${API_URL}/Groups/GetStudentsbyProjectID?projectid=${projectid}`,
         {
           method: 'GET',
           headers: {
@@ -36,29 +36,30 @@ const ProjectDetails = ({route}) => {
 
       if (response.ok) {
         const data = await response.json();
-        const students = data.members.map(member => ({
-          student_name: member.user.student.student_name,
-          arid_no: member.user.student.arid_no,
-          cgpa: member.user.student.cgpa,
-          platform: member.user.platform,
-        }));
-
-        setStudents(students);
-        console.log(students);
+        setStudents(data);
       } else {
         throw new Error('Failed to fetch student data');
       }
     } catch (error) {
-      console.error('Error fetching student data:', error);
+      //console.error('Error fetching student data sux:', error);
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchStudents(projectid);
+    };
+
+    fetchData();
+  }, [projectid]);
+
   const fetchSupervisors = async () => {
     try {
       const response = await fetch(`${API_URL}/Student/GetAllSupervisors`);
       const data = await response.json();
       const formattedData = data.map(item => ({
         key: item.supervisor_id.toString(), // Extract supervisor ID as string
-        value: item.name,
+        value: item.name + ' (' + item.groupCount + ')',
       }));
 
       setsupervisorlist(formattedData);
@@ -85,10 +86,51 @@ const ProjectDetails = ({route}) => {
 
     fetchData();
   }, [groupid]);
-  const HandleAssignSupervisor = () => {
-    ToastAndroid.show('New Supervisor Assigned', ToastAndroid.SHORT);
-  };
+  // const HandleAssignSupervisor = () => {
+  //   ToastAndroid.show('New Supervisor Assigned', ToastAndroid.SHORT);
+  // };
   const navigation = useNavigation();
+
+  const HandleAssignSupervisor = async () => {
+    if (!SelectedSupervisor) {
+      ToastAndroid.show('Please select Supervisor', ToastAndroid.SHORT);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${API_URL}/AssignProject/RelocateSupervisor?project_id=${projectid}&supervsior_id=${SelectedSupervisor}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      if (response.ok) {
+        ToastAndroid.show(
+          'Supervisor ReAllocated successfully!',
+          ToastAndroid.SHORT,
+        );
+
+        navigation.goBack();
+      } else {
+        const error = await response.text();
+        console.error('Error While ReAllocating:', error);
+        ToastAndroid.show(
+          'Error While ReAllocating. Please try again.',
+          ToastAndroid.SHORT,
+        );
+      }
+    } catch (error) {
+      console.error('Error While ReAllocating:', error);
+      ToastAndroid.show(
+        'Error While ReAllocating. Please try again.',
+        ToastAndroid.SHORT,
+      );
+    }
+  };
 
   return (
     <View
@@ -113,13 +155,12 @@ const ProjectDetails = ({route}) => {
               style={[styles.itemContainer, {marginTop: index === 0 ? 20 : 0}]}>
               <View style={styles.itemContent}>
                 <View style={styles.column}>
-                  <Text style={styles.boldText}>{item.student_name}</Text>
-                  <Text style={{color: 'black'}}>{item.arid_no}</Text>
+                  <Text style={styles.boldText}>{item.StudentName}</Text>
+                  <Text style={{color: 'black'}}>{item.AridNo}</Text>
                 </View>
                 <View style={styles.column}>
-                  <Text style={{color: 'black'}}>{'Cgpa: ' + item.cgpa}</Text>
                   <Text style={{color: 'black'}}>
-                    {'Platform: ' + item.platform}
+                    {'Platform: ' + item.Platform}
                   </Text>
                 </View>
               </View>
@@ -136,7 +177,7 @@ const ProjectDetails = ({route}) => {
             data={Supervisorlist}
             save="key"
             onSelect={() => {
-              console.warn(selectedSupervisor);
+              console.warn(SelectedSupervisor);
             }}
             searchPlaceholder="Search Supervisor"
             dropdownTextStyles={{color: 'black'}}

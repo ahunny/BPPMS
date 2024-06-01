@@ -73,7 +73,7 @@ const ReAllocationScreen = props => {
             height: '15%',
             marginTop: 20,
           }}
-          onPress={() => props.navigation.navigate('ProjectReAllocation')}>
+          onPress={() => props.navigation.navigate('vacantgroups')}>
           <View
             style={{
               flexDirection: 'row',

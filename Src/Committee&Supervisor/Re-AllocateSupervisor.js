@@ -1,129 +1,78 @@
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   FlatList,
-  TextInput,
   ToastAndroid,
+  TextInput,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import API_URL from '../../apiConfig';
+import SearchBarComponent from './SearchComponent';
 
-const ReAllocateSupervisor = props => {
+const ReAllocateSupervisor = ({navigation}) => {
+  const [projectList, setProjectList] = useState([]);
+  const [filteredProjectList, setFilteredProjectList] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredData, setFilteredData] = useState([]);
-  const [FilteredProjects, setFilteredProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const navigation = useNavigation();
 
-  const fyptype = 'fyp-1';
-  console.log(fyptype);
-
-  const fetchProjectsWithFyptype = async fyptype => {
+  const fetchProjects = async () => {
     try {
-      const response = await fetch(
-        `${API_URL}/Groups/GetFyp1Projects?fyptype=${fyptype}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        var details = data;
-        console.log('Details', details);
-        const formattedData = data.map(item => ({
-          key: item.GroupId.toString(), // Extract supervisor ID as string
-          value: item.ProjectTitle,
-        }));
-        setFilteredProjects(data);
-      }
+      const response = await fetch(`${API_URL}/Groups/GetProjects?`);
+      const data = await response.json();
+      console.log(data);
+      setProjectList(data);
+      setFilteredProjectList(data); // Initialize filtered list with all projects
     } catch (error) {
-      ToastAndroid.show(
-        'Error fetching FYP-',
-        fyptype,
-        'Projects',
-        ToastAndroid.SHORT,
-      );
+      ToastAndroid.show('Error fetching Projects', ToastAndroid.SHORT);
       console.error('Error fetching Projects:', error);
-    } finally {
-      setLoading(false);
     }
   };
+
   useEffect(() => {
-    const fetchData = async () => {
-      await fetchProjectsWithFyptype(fyptype);
-    };
+    fetchProjects();
+  }, []);
 
-    fetchData();
-  }, [fyptype]);
-
-  // const handleSearch = text => {
-  //   setSearchQuery(text);
-  //   const filtered = FilteredProjects.filter(item =>
-  //     item.Project.toLowerCase().includes(text.toLowerCase()),
-  //   );
-  //   setFilteredData(filtered);
-  // };
-  const handleSearch = text => {
-    setSearchQuery(text); // Update search input state
-
-    // Case-insensitive search with optional chaining and default value
-    const filtered = FilteredProjects.filter(
-      project =>
-        project?.ProjectTitle?.toLowerCase()?.includes(text.toLowerCase()) ||
-        '',
-    );
-
-    setFilteredData(filtered); // Update filtered projects for display
-  };
   const handleProjectPress = item => {
-    // Navigate to 'uploadtask' screen and pass item data
     navigation.navigate('SupervisorReAllocationScreen', {projectData: item});
+  };
+
+  const handleSearch = text => {
+    setSearchQuery(text);
+    // Filter project list based on search query
+    const filteredProjects = projectList.filter(project =>
+      project.project_title.toLowerCase().includes(text.toLowerCase()),
+    );
+    setFilteredProjectList(filteredProjects);
   };
 
   return (
     <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
       <View
         style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          margin: 10,
-          borderColor: 'gray',
-          borderWidth: 1,
-          borderRadius: 10,
-          backgroundColor: 'lightgrey',
-          padding: 5,
-        }}>
-        <Icon name="search" size={20} color="black" style={{marginRight: 5}} />
-        <TextInput
-          style={{flex: 1, height: 40}}
-          placeholder="Search Projects"
-          placeholderTextColor="gray"
-          color="black"
-          onChangeText={handleSearch}
-          value={searchQuery}
-        />
-      </View>
-      <View
-        style={{
           backgroundColor: '#C0C0C0',
           width: '93%',
-          height: '88%',
+          height: '100%',
           alignSelf: 'center',
           alignItems: 'center',
           marginTop: 10,
           borderRadius: 20,
         }}>
+        <TextInput
+          style={{
+            height: 40,
+            width: '90%',
+            borderColor: 'gray',
+            borderWidth: 1,
+            borderRadius: 20,
+            paddingHorizontal: 10,
+            marginVertical: 10,
+          }}
+          onChangeText={handleSearch}
+          value={searchQuery}
+          placeholder="Search Group"
+        />
         <FlatList
-          data={searchQuery.length > 0 ? filteredData : FilteredProjects}
+          data={filteredProjectList}
           renderItem={({item, index}) => (
             <TouchableOpacity
               style={{
@@ -156,7 +105,7 @@ const ReAllocateSupervisor = props => {
                         color: 'black',
                         fontSize: 16,
                       }}>
-                      {item.ProjectTitle}
+                      {item.project_title}
                     </Text>
                   </View>
                 </View>

@@ -25,23 +25,15 @@ const ProjectReAllocation = props => {
   );
   const [selectedSupervisor, setSelectedSupervisor] = useState('');
   const [selectedProject, setSelectedProject] = useState('');
-  const [IosStudent, setIosStudent] = useState('');
-  const [FlutterStudent, setFlutterStudent] = useState('');
-  const [ReactNativeStudent, setReactNativeStudent] = useState('');
-  const [AndroidStudent, setAndroidStudent] = useState('');
-  const [WebStudent, setWebStudent] = useState('');
+
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [StudentList, setStudentList] = useState([]);
   const [ProjectList, setProjectList] = useState([]);
   const [Supervisorlist, setsupervisorlist] = useState([]);
-  const [selectedStudents, setSelectedStudents] = useState([
-    IosStudent,
-    FlutterStudent,
-    ReactNativeStudent,
-    AndroidStudent,
-    WebStudent,
-  ]);
+  const [selectedSession, setSelectedSession] = useState('');
+  const [Sessionlist, setsessionlist] = useState([]);
+
   //const {userid} = props.route.params;
   //console.log('ok id', userid);
   const fetchProjects = async () => {
@@ -68,7 +60,7 @@ const ProjectReAllocation = props => {
       const data = await response.json();
       const formattedData = data.map(item => ({
         key: item.supervisor_id.toString(), // Extract supervisor ID as string
-        value: item.name,
+        value: item.name + ' (' + item.groupCount + ')',
       }));
 
       setsupervisorlist(formattedData);
@@ -90,7 +82,13 @@ const ProjectReAllocation = props => {
     }, []),
   );
   const CreateFailedMembersGroup = async () => {
-    console.log(updatedGroup);
+    // console.log(updatedGroup);
+    const updatedGroupWithSession = {
+      // Include selected session in the JSON object
+      ...updatedGroup,
+      sessionID: selectedSession, // Assuming SessionId is the key for the session in the JSON object
+    };
+    console.log(updatedGroupWithSession);
     try {
       const response = await fetch(
         `${API_URL}/Groups/CreateFailedMembersGroup`,
@@ -99,7 +97,7 @@ const ProjectReAllocation = props => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(updatedGroup),
+          body: JSON.stringify(updatedGroupWithSession),
         },
       );
 
@@ -138,11 +136,31 @@ const ProjectReAllocation = props => {
     }
   };
 
+  const fetchSessions = async () => {
+    try {
+      const response = await fetch(`${API_URL}/AssignProject/GetAllSessions`);
+      const data = await response.json();
+      const formattedData = data.map(item => ({
+        key: item.session_id.toString(), // Extract supervisor ID as string
+        value: item.session_name,
+      }));
+
+      setsessionlist(formattedData);
+      console.log(formattedData);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Supervisors', ToastAndroid.SHORT);
+      console.error('Error fetching Supervisors:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useFocusEffect(
     // useCallback prevent unnecessary re-renders caused by creating a new
     // function instance on every render.
     useCallback(() => {
       fetchStudents();
+      fetchSessions();
     }, []),
   );
 
@@ -227,6 +245,24 @@ const ProjectReAllocation = props => {
               dropdownTextStyles={{color: 'black'}}
               boxStyles={styles.selectListStyle1}
               placeholder="Select Supervisor"
+              inputStyles={styles.selectListInput}
+            />
+          </View>
+          <View style={[styles.selectContainer]}>
+            <Text style={[styles.boldText, {marginLeft: 40}]}>
+              Select Session
+            </Text>
+            <SelectList
+              setSelected={val => setSelectedSession(val)}
+              data={Sessionlist}
+              save="key"
+              onSelect={() => {
+                console.warn(selectedSession);
+              }}
+              searchPlaceholder="Search Session"
+              dropdownTextStyles={{color: 'b1lack'}}
+              boxStyles={styles.selectListStyle1}
+              placeholder="Select Session"
               inputStyles={styles.selectListInput}
             />
           </View>

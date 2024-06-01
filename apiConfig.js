@@ -3,9 +3,9 @@
 //flat
 const API_URL = 'http:/192.168.137.1/api';
 //iPhone
-//const API_URL = 'http:/172.20.10.8/api';
+//const API_URL = 'http:/192.168.137.1/api';
 //Galaxy
-//const API_URL = 'http:/192.168.93.248/api';
+//const API_URL = 'http:/192.168.217.248/api';
 //RuhabHome
 //const API_URL = 'http:/192.168.100.44/api';
 

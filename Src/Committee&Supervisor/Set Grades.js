@@ -36,12 +36,6 @@ const SetGrades = props => {
 
   const [score, setscore] = useState('');
 
-  // const Criteria = [
-  //   {key: '1', value: 'Supervisor'},
-  //   {key: '2', value: 'Web Api Demo'},
-  //   {key: '3', value: 'Documentation'},
-  // ];
-
   const fetchProjects = async () => {
     try {
       const response = await fetch(`${API_URL}/Groups/GetProjects?`);

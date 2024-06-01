@@ -43,6 +43,10 @@ import Addmembers from './Src/Committee&Supervisor/AddMembers(Failures)';
 import SetGrades from './Src/Committee&Supervisor/Set Grades';
 import Grades from './Src/Committee&Supervisor/Grades';
 import StudentGrades from './Src/Committee&Supervisor/Grades';
+import AddmembersInGroup from './Src/Committee&Supervisor/VacantTechGroups';
+import VacantTechGroups from './Src/Committee&Supervisor/VacantTechGroups';
+import VacantGroupDetails from './Src/Committee&Supervisor/VacantGroupDetails';
+import VacantGroupDetail from './Src/Committee&Supervisor/VacantGroupDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -180,6 +184,17 @@ const App = () => {
           name="Addmember"
           component={Addmembers}
           options={{title: 'Add More Members'}}
+        />
+        <Stack.Screen
+          name="vacantgroups"
+          component={VacantTechGroups}
+          options={{title: 'Search For Groups'}}
+        />
+
+        <Stack.Screen
+          name="vacantgroupsdetails"
+          component={VacantGroupDetail}
+          options={{title: 'Group Member'}}
         />
         <Stack.Screen
           name="Uploaded Tasks"
