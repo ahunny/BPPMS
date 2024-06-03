@@ -47,10 +47,16 @@ import AddmembersInGroup from './Src/Committee&Supervisor/VacantTechGroups';
 import VacantTechGroups from './Src/Committee&Supervisor/VacantTechGroups';
 import VacantGroupDetails from './Src/Committee&Supervisor/VacantGroupDetails';
 import VacantGroupDetail from './Src/Committee&Supervisor/VacantGroupDetails';
+import {Button} from 'react-native';
+import SetScoreWeight from './Src/Committee&Supervisor/SetScoreWeightage';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  const handleLogout = () => {
+    // Perform any necessary logout operations here, like clearing user data
+    navigation.navigate('Login'); // Navigate to the Login screen
+  };
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -116,7 +122,11 @@ const App = () => {
             headerTitleStyle: {
               fontWeight: 'bold',
             },
+
             headerStyle: {backgroundColor: '#74A2A8'}, // Custom header style for StudentDashboard
+            headerRight: () => (
+              <Button onPress={handleLogout} title="Logout" color="red" />
+            ),
           }}
         />
         <Stack.Screen name="Groups" component={Groups} />
@@ -217,6 +227,11 @@ const App = () => {
           name="StudentGrades"
           component={StudentGrades}
           options={{title: 'Students Grades'}}
+        />
+        <Stack.Screen
+          name="SetscoreWeight"
+          component={SetScoreWeight}
+          options={{title: 'Score Weight'}}
         />
 
         {/*Supervisor Screen Navigation Stack*/}

@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {
   SafeAreaView,
   ScrollView,
@@ -11,18 +10,20 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  Button,
 } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Tab = createBottomTabNavigator();
 const multiplescreen = createNativeStackNavigator();
 
 import Groups from './Groups';
 import ScheduleMeeting from './ScheduleMeeting';
-
 import CommitteeMeetings from './CommitteeMeetings';
+
 const Stack = createNativeStackNavigator();
 
 var userid;
@@ -221,6 +222,7 @@ const Dashboardscreens = props => {
                 style={{width: 40, height: 40}} // Set the width and height of the image
               />
               <Text style={{color: 'black', fontSize: 16}}>
+                {' '}
                 {'Restricted Students'}
               </Text>
             </View>
@@ -236,8 +238,16 @@ const CommitteeDashborad = props => {
   console.log(data.user_id);
   userid = data.user_id;
   roles = data.role;
-  groupid = data.group_id;
+  const groupid = data.group_id;
   console.log(userid, roles, groupid);
+
+  const navigation = useNavigation();
+
+  const handleLogout = () => {
+    // Perform any necessary logout operations here, like clearing user data
+    navigation.navigate('login'); // Navigate to the Login screen
+  };
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -248,13 +258,17 @@ const CommitteeDashborad = props => {
         headerStyle: {
           backgroundColor: '#D9D9D9',
         },
+        headerRight: () => (
+          <TouchableOpacity onPress={handleLogout} style={{marginRight: 10}}>
+            <Icon name="logout" size={25} color="#74A2A8" />
+          </TouchableOpacity>
+        ),
       }}>
       <Tab.Screen
         name="dashboard"
         component={Dashboardscreens}
         options={{
           title: 'Dashboard',
-          headerShown: true,
           tabBarIcon: () => (
             <Image
               source={require('./Assets/icons8-home-50.png')}
@@ -305,4 +319,5 @@ const CommitteeDashborad = props => {
     </Tab.Navigator>
   );
 };
+
 export default CommitteeDashborad;

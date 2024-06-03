@@ -129,7 +129,7 @@ const ScheduleMeeting = () => {
               data={FypGroupList}
               save="key"
               onSelect={() => {
-                console.warn(FypGroup);
+                // console.warn(FypGroup);
               }}
               dropdownTextStyles={{color: 'black'}}
               boxStyles={styles.selectListStyle}

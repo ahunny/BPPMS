@@ -12,11 +12,12 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SupervisorScheduleMeeting from './SupervisorScheduleMeetings';
 import SupervisorMeetings from './SupervisorMeetings';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Tab = createBottomTabNavigator();
 const multiplescreen = createNativeStackNavigator();
@@ -210,6 +211,12 @@ const SupervisorDashboard = props => {
   userid = data.user_id;
   roles = data.role;
 
+  const navigation = useNavigation();
+
+  const handleLogout = () => {
+    // Perform any necessary logout operations here, like clearing user data
+    navigation.navigate('login'); // Navigate to the Login screen
+  };
   return (
     <Tab.Navigator
       screenOptions={{
@@ -220,6 +227,11 @@ const SupervisorDashboard = props => {
         headerStyle: {
           backgroundColor: '#D9D9D9',
         },
+        headerRight: () => (
+          <TouchableOpacity onPress={handleLogout} style={{marginRight: 10}}>
+            <Icon name="logout" size={25} color="#74A2A8" />
+          </TouchableOpacity>
+        ),
       }}>
       <Tab.Screen
         name="dashboard"

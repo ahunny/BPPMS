@@ -212,7 +212,7 @@ const ProjectReAllocation = props => {
               data={ProjectList}
               save="value"
               onSelect={() => {
-                console.warn(selectedProject);
+                // console.warn(selectedProject);
               }}
               searchPlaceholder="Search Project"
               dropdownTextStyles={{color: 'black'}}
@@ -239,7 +239,7 @@ const ProjectReAllocation = props => {
               data={Supervisorlist}
               save="value"
               onSelect={() => {
-                console.warn(selectedSupervisor);
+                // console.warn(selectedSupervisor);
               }}
               searchPlaceholder="Search Supervisor"
               dropdownTextStyles={{color: 'black'}}
@@ -257,7 +257,7 @@ const ProjectReAllocation = props => {
               data={Sessionlist}
               save="key"
               onSelect={() => {
-                console.warn(selectedSession);
+                // console.warn(selectedSession);
               }}
               searchPlaceholder="Search Session"
               dropdownTextStyles={{color: 'b1lack'}}

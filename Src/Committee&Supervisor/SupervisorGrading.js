@@ -188,7 +188,7 @@ const SupervisorGrading = props => {
             data={ProjectList}
             save="key" // also set save to key.
             onSelect={() => {
-              console.warn(selectedProject);
+              // console.warn(selectedProject);
             }}
             searchPlaceholder="Search Project"
             dropdownTextStyles={{color: 'black'}}
@@ -208,7 +208,7 @@ const SupervisorGrading = props => {
             data={StudentList}
             save="key" // also set save to key.
             onSelect={() => {
-              console.warn(selectedStudent);
+              // console.warn(selectedStudent);
             }}
             searchPlaceholder="Search Student"
             dropdownTextStyles={{color: 'black'}}
@@ -228,7 +228,7 @@ const SupervisorGrading = props => {
             data={CriteriaList}
             save="key" // also set save to key.
             onSelect={() => {
-              console.warn(selectedCriteria);
+              // console.warn(selectedCriteria);
             }}
             dropdownTextStyles={{color: 'black'}}
             boxStyles={styles.selectListStyle}

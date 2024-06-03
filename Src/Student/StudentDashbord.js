@@ -13,7 +13,11 @@ import {
   FlatList,
   ToastAndroid,
 } from 'react-native';
-import {NavigationContainer, useFocusEffect} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Request_Details from './Request';
@@ -23,6 +27,8 @@ const multiplescreen = createNativeStackNavigator();
 import Creategroup from './createGroup';
 import StudentMeeting from './Meeting';
 import API_URL from '../../apiConfig';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 const Stack = createNativeStackNavigator();
 var userid;
 
@@ -158,6 +164,12 @@ const StudentDashboard = props => {
   groupid = data.group_id;
   console.log(userid, roles, groupid);
 
+  const navigation = useNavigation();
+
+  const handleLogout = () => {
+    // Perform any necessary logout operations here, like clearing user data
+    navigation.navigate('login'); // Navigate to the Login screen
+  };
   return (
     <Tab.Navigator
       screenOptions={{
@@ -167,6 +179,11 @@ const StudentDashboard = props => {
         headerStyle: {
           backgroundColor: '#D9D9D9',
         },
+        headerRight: () => (
+          <TouchableOpacity onPress={handleLogout} style={{marginRight: 10}}>
+            <Icon name="logout" size={25} color="#74A2A8" />
+          </TouchableOpacity>
+        ),
       }}>
       <Tab.Screen
         name="dashboard"

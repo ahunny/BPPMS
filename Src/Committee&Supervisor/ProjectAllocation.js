@@ -259,7 +259,7 @@ const ProjectAllocation = props => {
             data={ProjectList}
             save="key"
             onSelect={() => {
-              console.warn(selectedProject);
+              // console.warn(selectedProject);
             }}
             searchPlaceholder="Search Project"
             dropdownTextStyles={{color: 'black'}}
@@ -277,7 +277,7 @@ const ProjectAllocation = props => {
             data={Supervisorlist}
             save="key"
             onSelect={() => {
-              console.warn(selectedSupervisor);
+              // console.warn(selectedSupervisor);
             }}
             searchPlaceholder="Search Supervisor"
             dropdownTextStyles={{color: 'black'}}
@@ -295,7 +295,7 @@ const ProjectAllocation = props => {
             data={Sessionlist}
             save="key"
             onSelect={() => {
-              console.warn(selectedSession);
+              // console.warn(selectedSession);
             }}
             searchPlaceholder="Search Session"
             dropdownTextStyles={{color: 'black'}}

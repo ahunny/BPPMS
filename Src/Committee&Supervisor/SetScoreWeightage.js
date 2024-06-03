@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -11,19 +11,15 @@ import {
   TouchableOpacity,
   TextInput,
   ToastAndroid,
-  Alert,
 } from 'react-native';
 
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {SelectList} from 'react-native-dropdown-select-list';
 import API_URL from '../../apiConfig';
 
-const SetGrades = props => {
-  const {userid} = props.route.params;
-  const {role} = props.route.params;
-
-  console.log(userid, role);
+const SetScoreWeight = () => {
   const [selectedProject, setSelectedProject] = useState('');
+
   const [selectedStudent, setSelectedStudent] = useState('');
   const [selectedCriteria, setSelectedCriteria] = useState('');
   const [GradeRemarks, setGradeRemarks] = useState('');
@@ -40,18 +36,12 @@ const SetGrades = props => {
     try {
       const response = await fetch(`${API_URL}/Groups/GetProjects?`);
       const data = await response.json();
-
-      if (Array.isArray(data) && data.length > 0) {
-        const formattedData = data.map(item => ({
-          key: item.project_id.toString(),
-          value: item.project_title,
-        }));
-        setProjectList(formattedData);
-        console.log(data);
-      } else {
-        setProjectList([]);
-        ToastAndroid.show('No Project Allocated', ToastAndroid.SHORT);
-      }
+      const formattedData = data.map(item => ({
+        key: item.project_id.toString(),
+        value: item.project_title,
+      }));
+      setProjectList(formattedData);
+      console.log(data);
     } catch (error) {
       ToastAndroid.show('Error fetching Projects', ToastAndroid.SHORT);
       console.error('Error fetching Projects:', error);
@@ -67,6 +57,7 @@ const SetGrades = props => {
         `${API_URL}/Groups/GetStudentsbyProjectID?projectid=${selectedProject}`,
       );
       const data = await response.json();
+      console.log(data);
       const students = data.map(item => ({
         key: item.StudentId.toString(),
         value: item.StudentName + ' ' + '(' + item.AridNo + ')',
@@ -82,21 +73,18 @@ const SetGrades = props => {
     }
   };
 
-  const fetchCriteria = async () => {
+  const fetchGrades = async () => {
     try {
       const response = await fetch(
-        `${API_URL}/Grading/GetCriteria?role=${role}`,
+        `${API_URL}/Grading/GetCalculatedGrades?student_id=${selectedStudent}`,
       );
       const data = await response.json();
-      const formattedData = data.map(item => ({
-        key: item.score_id.toString(),
-        value: item.criteria + '  (' + item.score_weight + ')',
-      }));
-      setcriteriaList(formattedData);
+      console.log(data);
+
       console.log(data);
     } catch (error) {
-      ToastAndroid.show('Error fetching Criteria', ToastAndroid.SHORT);
-      console.error('Error fetching Criteria:', error);
+      ToastAndroid.show('Error fetching Students', ToastAndroid.SHORT);
+      console.error('Error fetching Students:', error);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -105,7 +93,6 @@ const SetGrades = props => {
 
   useEffect(() => {
     fetchProjects();
-    fetchCriteria();
   }, []);
 
   useEffect(() => {
@@ -114,54 +101,11 @@ const SetGrades = props => {
     }
   }, [selectedProject]);
 
-  const HandleSetGrades = async () => {
-    if (loading) {
-      Alert.alert('Please wait', 'Supervisors are being submitted...');
-      return;
+  useEffect(() => {
+    if (selectedStudent != '') {
+      fetchGrades();
     }
-
-    const data = {
-      user_id: userid,
-      score: score,
-      student_id: selectedStudent,
-      score_id: selectedCriteria,
-      remarks: GradeRemarks,
-    };
-
-    setLoading(true); // Set loading state
-
-    try {
-      const response = await fetch(`${API_URL}/Grading/AddGrading`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Error submitting preferences:', errorData);
-        setLoading(false); // Reset loading state on error
-        ToastAndroid.show(
-          errorData?.message ||
-            'Error submitting preferences. Please try again.',
-          ToastAndroid.SHORT,
-        );
-        return;
-      }
-
-      const responseData = await response.json();
-      console.log('Response data:', responseData);
-      ToastAndroid.show('Graded Successfully', ToastAndroid.SHORT);
-
-      setLoading(false); // Reset loading state on success
-    } catch (error) {
-      console.error('Error:', error);
-      setLoading(false); // Reset loading state on error
-      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
-    }
-  };
+  }, [selectedStudent]);
 
   const navigation = useNavigation();
   return (
@@ -169,7 +113,7 @@ const SetGrades = props => {
       <View
         style={{
           backgroundColor: '#C0C0C0',
-          width: '97%',
+          width: '93%',
           height: '97%',
           alignSelf: 'center',
           alignItems: 'center',
@@ -187,7 +131,7 @@ const SetGrades = props => {
             data={ProjectList}
             save="key" // also set save to key.
             onSelect={() => {
-              // console.warn(selectedProject);
+              console.warn(selectedProject);
             }}
             searchPlaceholder="Search Project"
             dropdownTextStyles={{color: 'black'}}
@@ -207,7 +151,7 @@ const SetGrades = props => {
             data={StudentList}
             save="key" // also set save to key.
             onSelect={() => {
-              // console.warn(selectedStudent);
+              console.warn(selectedStudent);
             }}
             searchPlaceholder="Search Student"
             dropdownTextStyles={{color: 'black'}}
@@ -219,37 +163,166 @@ const SetGrades = props => {
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-around',
-            marginTop: 30,
+            marginTop: 20,
           }}>
-          <SelectList
-            setSelected={val => setSelectedCriteria(val)}
-            data={CriteriaList}
-            save="key" // also set save to key.
-            onSelect={() => {
-              // console.warn(selectedCriteria);
-            }}
-            dropdownTextStyles={{color: 'black'}}
-            boxStyles={styles.selectListStyle}
-            placeholder="Select Criteria"
-            inputStyles={styles.selectListInput}
-          />
-
-          <TextInput
-            style={[
-              styles.input,
-              {
-                height: 50,
-                width: 80,
-                alignSelf: 'center',
+          <View
+            style={{
+              backgroundColor: '#D9D9D9',
+              width: 200,
+              height: 50,
+              borderRadius: 10,
+            }}>
+            <Text
+              style={{
                 color: 'black',
-                marginLeft: 10,
-              },
-            ]}
-            value={score}
-            onChangeText={setscore}
-            multiline
-          />
+                fontSize: 20,
+                alignSelf: 'center',
+                margin: 10,
+              }}>
+              Supervisor
+            </Text>
+          </View>
+          <Text
+            style={{
+              backgroundColor: '#D9D9D9',
+              width: 100,
+              height: 50,
+              borderRadius: 10,
+              color: 'black',
+              marginLeft: 20,
+            }}></Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            marginTop: 20,
+          }}>
+          <View
+            style={{
+              backgroundColor: '#D9D9D9',
+              width: 200,
+              height: 50,
+              borderRadius: 10,
+            }}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 20,
+                alignSelf: 'center',
+                margin: 10,
+              }}>
+              API Demo
+            </Text>
+          </View>
+          <Text
+            style={{
+              backgroundColor: '#D9D9D9',
+              width: 100,
+              height: 50,
+              borderRadius: 10,
+              color: 'black',
+              marginLeft: 20,
+            }}></Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            marginTop: 20,
+          }}>
+          <View
+            style={{
+              backgroundColor: '#D9D9D9',
+              width: 200,
+              height: 50,
+              borderRadius: 10,
+            }}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 20,
+                alignSelf: 'center',
+                margin: 10,
+              }}>
+              Final Demo
+            </Text>
+          </View>
+          <Text
+            style={{
+              backgroundColor: '#D9D9D9',
+              width: 100,
+              height: 50,
+              borderRadius: 10,
+              color: 'black',
+              marginLeft: 20,
+            }}></Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            marginTop: 20,
+          }}>
+          <View
+            style={{
+              backgroundColor: '#D9D9D9',
+              width: 200,
+              height: 50,
+              borderRadius: 10,
+            }}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 20,
+                alignSelf: 'center',
+                margin: 10,
+              }}>
+              Pitching
+            </Text>
+          </View>
+          <TextInput
+            style={{
+              backgroundColor: '#D9D9D9',
+              width: 100,
+              height: 50,
+              borderRadius: 10,
+              color: 'black',
+              marginLeft: 20,
+            }}></TextInput>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            marginTop: 20,
+          }}>
+          <View
+            style={{
+              backgroundColor: '#D9D9D9',
+              width: 200,
+              height: 50,
+              borderRadius: 10,
+            }}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 20,
+                alignSelf: 'center',
+                margin: 10,
+              }}>
+              Documentation
+            </Text>
+          </View>
+          <Text
+            style={{
+              backgroundColor: '#D9D9D9',
+              width: 100,
+              height: 50,
+              borderRadius: 10,
+              color: 'black',
+              marginLeft: 20,
+            }}></Text>
         </View>
 
         <Text
@@ -257,28 +330,19 @@ const SetGrades = props => {
             color: 'black',
             fontSize: 20,
             marginTop: 20,
-            marginLeft: -200,
+            marginLeft: -150,
           }}>
-          Remarks:
+          Cumulative Grade:
         </Text>
-        <TextInput
-          style={[
-            styles.input,
-            {height: 70, width: 320, alignSelf: 'center', color: 'black'},
-          ]}
-          value={GradeRemarks}
-          onChangeText={setGradeRemarks}
-          multiline
-        />
-
-        <TouchableOpacity
-          style={[
-            styles.Button,
-            {marginTop: 20, alignSelf: 'flex-end', marginRight: 30},
-          ]}
-          onPress={HandleSetGrades}>
-          <Text style={styles.buttonText}>Save</Text>
-        </TouchableOpacity>
+        <Text
+          style={{
+            backgroundColor: '#D9D9D9',
+            width: 100,
+            height: 50,
+            borderRadius: 10,
+            color: 'black',
+            marginLeft: -200,
+          }}></Text>
       </View>
     </View>
   );
@@ -289,7 +353,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E5E5E5',
     borderColor: '#E5E5E5',
     borderRadius: 20,
-    width: 230,
+    width: 220,
     height: 50,
   },
   platFormSelect: {
@@ -309,13 +373,7 @@ const styles = StyleSheet.create({
     width: 130,
     alignItems: 'center',
   },
-  input: {
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    marginBottom: 15,
-    fontSize: 16,
-    backgroundColor: '#D9D9D9',
-  },
+
   buttonText: {
     color: 'black',
     fontSize: 16,
@@ -361,4 +419,4 @@ const styles = StyleSheet.create({
     top: 35,
   },
 });
-export default SetGrades;
+export default SetScoreWeight;

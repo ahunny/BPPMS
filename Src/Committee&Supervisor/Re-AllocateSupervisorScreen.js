@@ -177,7 +177,7 @@ const ProjectDetails = ({route}) => {
             data={Supervisorlist}
             save="key"
             onSelect={() => {
-              console.warn(SelectedSupervisor);
+              // console.warn(SelectedSupervisor);
             }}
             searchPlaceholder="Search Supervisor"
             dropdownTextStyles={{color: 'black'}}

@@ -119,6 +119,46 @@ const Grading = props => {
             </View>
           </View>
         </TouchableOpacity>
+
+        {/* {role === 'Director' && (
+          <TouchableOpacity
+            style={{
+              elevation: 5,
+              backgroundColor: 'lightgrey',
+              borderRadius: 20,
+              width: '90%',
+              height: '15%',
+              marginTop: 20,
+            }}
+            onPress={() => props.navigation.navigate('SetscoreWeight')}>
+            <View
+              style={{
+                flexDirection: 'row',
+                padding: 10,
+              }}>
+              <View
+                style={{
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  flex: 1,
+                }}>
+                <Image
+                  source={require('./Assets/icons8-edit-50.png')} // Provide the local image path
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginTop: 10,
+                    marginLeft: 10,
+                  }} // Set the width and height of the image
+                />
+                <Text style={{color: 'black', fontSize: 16}}>
+                  {' '}
+                  {'Set Score Weightage'}
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        )} */}
         {role === 'Director' && (
           <TouchableOpacity
             style={{
@@ -142,7 +182,7 @@ const Grading = props => {
                   flex: 1,
                 }}>
                 <Image
-                  source={require('./Assets/icons8-report-card-50.png')} // Provide the local image path
+                  source={require('./Assets/icons8-grade-80.png')} // Provide the local image path
                   style={{width: 50, height: 50, marginTop: 10}} // Set the width and height of the image
                 />
                 <Text style={{color: 'black', fontSize: 16}}>

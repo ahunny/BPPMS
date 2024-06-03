@@ -12,7 +12,7 @@ import {
   ScrollView,
   ToastAndroid,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 import API_URL from '../apiConfig';
 
 const Login = props => {
@@ -48,9 +48,19 @@ const Login = props => {
       console.log(data);
 
       if (role == 'Student') {
-        props.navigation.navigate('StudentDashboard', {data});
+        props.navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'StudentDashboard', params: {data: data}}],
+          }),
+        );
       } else if (role == 'Supervisor') {
-        props.navigation.navigate('SupervisorDashboard', {data});
+        props.navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'SupervisorDashboard', params: {data: data}}],
+          }),
+        );
       } else if (role == 'Committee') {
         Alert.alert(
           'LogIn',
@@ -59,20 +69,44 @@ const Login = props => {
             {
               text: 'Committee',
               onPress: () =>
-                props.navigation.navigate('CommitteeDashboard', {data}),
+                props.navigation.dispatch(
+                  CommonActions.reset({
+                    index: 0,
+                    routes: [
+                      {name: 'CommitteeDashboard', params: {data: data}},
+                    ],
+                  }),
+                ),
             },
             {
               text: 'Supervisor',
               onPress: () =>
-                props.navigation.navigate('SupervisorDashboard', {data}),
+                props.navigation.dispatch(
+                  CommonActions.reset({
+                    index: 0,
+                    routes: [
+                      {name: 'SupervisorDashboard', params: {data: data}},
+                    ],
+                  }),
+                ),
             },
           ],
           {cancelable: true},
         );
       } else if (role == 'Director') {
-        props.navigation.navigate('CommitteeDashboard', {data});
+        props.navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'CommitteeDashboard', params: {data: data}}],
+          }),
+        );
       } else if (role == 'datacell') {
-        props.navigation.navigate('Datacell Dashboard');
+        props.navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'Datacell Dashboard', params: {data: data}}],
+          }),
+        );
       } else {
         ToastAndroid.show(
           'Incorrect credentials. Please try again.',
