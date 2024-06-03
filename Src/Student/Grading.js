@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -10,167 +10,115 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  ToastAndroid,
 } from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
 import {SelectList} from 'react-native-dropdown-select-list';
+import API_URL from '../../apiConfig';
 
-const StudentGrading = () => {
+const StudentGrading = props => {
   const navigation = useNavigation();
-  return (
-    <ScrollView style={{backgroundColor: '#74A2A8'}}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginTop: 80,
-            }}>
-            <View
-              style={{
-                backgroundColor: '#D9D9D9',
-                width: 250,
-                height: 50,
-                borderRadius: 10,
-              }}>
-              <Text
-                style={{
-                  color: 'black',
-                  fontSize: 20,
-                  alignSelf: 'center',
-                  margin: 10,
-                }}>
-                Supervisor
-              </Text>
-            </View>
-            <Text
-              style={{
-                backgroundColor: '#D9D9D9',
-                width: 100,
-                height: 50,
-                borderRadius: 10,
-                color: 'black',
-              }}></Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginTop: 20,
-            }}>
-            <View
-              style={{
-                backgroundColor: '#D9D9D9',
-                width: 250,
-                height: 50,
-                borderRadius: 10,
-              }}>
-              <Text
-                style={{
-                  color: 'black',
-                  fontSize: 20,
-                  alignSelf: 'center',
-                  margin: 10,
-                }}>
-                Web API Demo
-              </Text>
-            </View>
-            <Text
-              style={{
-                backgroundColor: '#D9D9D9',
-                width: 100,
-                height: 50,
-                borderRadius: 10,
-                color: 'black',
-              }}></Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginTop: 20,
-            }}>
-            <View
-              style={{
-                backgroundColor: '#D9D9D9',
-                width: 250,
-                height: 50,
-                borderRadius: 10,
-              }}>
-              <Text
-                style={{
-                  color: 'black',
-                  fontSize: 20,
-                  alignSelf: 'center',
-                  margin: 10,
-                }}>
-                Pitching
-              </Text>
-            </View>
-            <Text
-              style={{
-                backgroundColor: '#D9D9D9',
-                width: 100,
-                height: 50,
-                borderRadius: 10,
-                color: 'black',
-              }}></Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginTop: 20,
-            }}>
-            <View
-              style={{
-                backgroundColor: '#D9D9D9',
-                width: 250,
-                height: 50,
-                borderRadius: 10,
-              }}>
-              <Text
-                style={{
-                  color: 'black',
-                  fontSize: 20,
-                  alignSelf: 'center',
-                  margin: 10,
-                }}>
-                Documentation
-              </Text>
-            </View>
-            <Text
-              style={{
-                backgroundColor: '#D9D9D9',
-                width: 100,
-                height: 50,
-                borderRadius: 10,
-                color: 'black',
-              }}></Text>
-          </View>
 
-          <Text
+  const {userid} = props.route.params;
+  console.log(userid);
+
+  const [grades, setGrades] = useState('');
+  const [scores, setScores] = useState([]);
+
+  const fetchGrades = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/Grading/GetCalculatedGradesForStudent?userid=${userid}`,
+      );
+      const data = await response.json();
+      setGrades(data.Grades);
+      setScores(data.Scores);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Grades', ToastAndroid.SHORT);
+      console.error('Error fetching Grades:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchGrades();
+  }, []);
+
+  return (
+    <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
+      <View
+        style={{
+          backgroundColor: '#C0C0C0',
+          width: '93%',
+          height: '97%',
+          alignSelf: 'center',
+          alignItems: 'center',
+          marginTop: 10,
+          borderRadius: 20,
+        }}>
+        {scores.map((scoreItem, index) => (
+          <View
+            key={scoreItem.ScoreId}
             style={{
-              color: 'black',
-              fontSize: 20,
+              flexDirection: 'row',
+              justifyContent: 'space-around',
               marginTop: 20,
-              marginLeft: 15,
             }}>
-            Cumulative Grade:
-          </Text>
-          <Text
-            style={{
-              backgroundColor: '#D9D9D9',
-              width: 100,
-              height: 50,
-              borderRadius: 10,
-              color: 'black',
-              marginLeft: 20,
-            }}></Text>
-        </View>
-      </TouchableWithoutFeedback>
-    </ScrollView>
+            <View
+              style={{
+                backgroundColor: '#D9D9D9',
+                width: 200,
+                height: 50,
+                borderRadius: 10,
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  color: 'black',
+                  fontSize: 20,
+                  alignSelf: 'center',
+                }}>
+                {scoreItem.Criteria}
+              </Text>
+            </View>
+            <Text
+              style={{
+                backgroundColor: '#D9D9D9',
+                width: 100,
+                height: 50,
+                borderRadius: 10,
+                color: 'black',
+                textAlign: 'center',
+                textAlignVertical: 'center',
+                marginLeft: 10,
+              }}>
+              {scoreItem.AverageScore + '/' + scoreItem.ScoreWeight}
+            </Text>
+          </View>
+        ))}
+        <Text
+          style={{
+            color: 'black',
+            fontSize: 20,
+            marginTop: 20,
+          }}>
+          Cumulative Grade:
+        </Text>
+        <Text
+          style={{
+            backgroundColor: '#D9D9D9',
+            width: 100,
+            height: 50,
+            borderRadius: 10,
+            color: 'black',
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            marginTop: 10,
+          }}>
+          {grades}
+        </Text>
+      </View>
+    </View>
   );
 };
 

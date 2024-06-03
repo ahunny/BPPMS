@@ -66,7 +66,7 @@ const Dashboardscreens = props => {
           height: '15%',
           marginTop: 30,
         }}
-        onPress={() => props.navigation.navigate('Grades')}>
+        onPress={() => props.navigation.navigate('Grades', {userid})}>
         <View
           style={{
             flexDirection: 'row',

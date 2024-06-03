@@ -40,12 +40,18 @@ const SetGrades = props => {
     try {
       const response = await fetch(`${API_URL}/Groups/GetProjects?`);
       const data = await response.json();
-      const formattedData = data.map(item => ({
-        key: item.project_id.toString(),
-        value: item.project_title,
-      }));
-      setProjectList(formattedData);
-      console.log(data);
+
+      if (Array.isArray(data) && data.length > 0) {
+        const formattedData = data.map(item => ({
+          key: item.project_id.toString(),
+          value: item.project_title,
+        }));
+        setProjectList(formattedData);
+        console.log(data);
+      } else {
+        setProjectList([]);
+        ToastAndroid.show('No Project Allocated', ToastAndroid.SHORT);
+      }
     } catch (error) {
       ToastAndroid.show('Error fetching Projects', ToastAndroid.SHORT);
       console.error('Error fetching Projects:', error);

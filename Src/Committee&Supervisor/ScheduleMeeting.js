@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  ToastAndroid,
 } from 'react-native';
 import {SelectList} from 'react-native-dropdown-select-list';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -65,7 +66,8 @@ const ScheduleMeeting = () => {
 
       const data = await response.json();
       console.log('Response data:', data);
-      Alert.alert('New Meeting Scheduled');
+      ToastAndroid.show('Meetings Scheduled.', ToastAndroid.SHORT);
+      navigation.goBack();
     } catch (error) {
       console.error('Error:', error);
       Alert.alert('Error', 'An unexpected error occurred. Please try again.');

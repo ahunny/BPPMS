@@ -7,17 +7,20 @@ import {
   StyleSheet,
   Image,
   Alert,
+  ToastAndroid,
 } from 'react-native';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DocumentPicker from 'react-native-document-picker';
 import API_URL from '../../apiConfig';
+import {useNavigation} from '@react-navigation/native';
 
 const Addtask = ({route}) => {
   const [TaskDescription, setDescription] = useState('');
   const [DueDate, setduedate] = useState(new Date());
   const [fileResponse, setFileResponse] = useState([]);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const navigation = useNavigation();
 
   const {Groupdata} = route.params;
   groupid = Groupdata.GroupId;
@@ -85,7 +88,8 @@ const Addtask = ({route}) => {
 
       const data = await response.json();
       console.log('Response data:', data);
-      Alert.alert('Task uploaded successfully');
+      ToastAndroid.show('Task Uploaded.', ToastAndroid.SHORT);
+      navigation.goBack();
     } catch (error) {
       console.error('Error:', error);
       Alert.alert('Error', 'An unexpected error occurred. Please try again.');

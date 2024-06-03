@@ -52,7 +52,23 @@ const Login = props => {
       } else if (role == 'Supervisor') {
         props.navigation.navigate('SupervisorDashboard', {data});
       } else if (role == 'Committee' || role == 'Director') {
-        props.navigation.navigate('CommitteeDashboard', {data});
+        Alert.alert(
+          'LogIn',
+          'Login as Committee or Supervisor?',
+          [
+            {
+              text: 'Committee',
+              onPress: () =>
+                props.navigation.navigate('CommitteeDashboard', {data}),
+            },
+            {
+              text: 'Supervisor',
+              onPress: () =>
+                props.navigation.navigate('SupervisorDashboard', {data}),
+            },
+          ],
+          {cancelable: true},
+        );
       } else if (role == 'datacell') {
         props.navigation.navigate('Datacell Dashboard');
       } else {

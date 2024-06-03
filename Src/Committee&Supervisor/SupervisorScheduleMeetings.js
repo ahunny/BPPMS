@@ -30,15 +30,21 @@ const SupervisorScheduleMeeting = props => {
   const fetchProjectsOfSupervisor = async () => {
     try {
       const response = await fetch(
-        `${API_URL}/Groups/GetProjectsbySpervisor?&userid=${userid}`,
+        `${API_URL}/Groups/GetProjectsbySpervisor?userid=${userid}`,
       );
       const data = await response.json();
-      const formattedData = data.map(item => ({
-        key: item.GroupId.toString(), // Extract supervisor ID as string
-        value: item.ProjectTitle,
-      }));
-      setFypGrouplist(formattedData);
-      console.log(FypGrouplist);
+
+      if (Array.isArray(data) && data.length > 0) {
+        const formattedData = data.map(item => ({
+          key: item.GroupId.toString(),
+          value: item.ProjectTitle,
+        }));
+        setFypGrouplist(formattedData);
+        console.log(formattedData);
+      } else {
+        setFypGrouplist([]);
+        ToastAndroid.show('No Project Available', ToastAndroid.SHORT);
+      }
     } catch (error) {
       ToastAndroid.show('Error fetching Projects', ToastAndroid.SHORT);
       console.error('Error fetching Projects:', error);
@@ -49,16 +55,21 @@ const SupervisorScheduleMeeting = props => {
   };
 
   useFocusEffect(
-    // useCallback prevent unnecessary re-renders caused by creating a new
-    // function instance on every render.
     useCallback(() => {
       fetchProjectsOfSupervisor();
     }, []),
   );
 
   const handleSubmit = async () => {
-    const is_with_supervisor = true; // This is set to true as per your requirement
-    // Format the date and time
+    if (!FypGroup) {
+      Alert.alert(
+        'Error',
+        'Please select an FYP group before scheduling a meeting.',
+      );
+      return;
+    }
+
+    const is_with_supervisor = true;
     const formattedDate = selectedDate.toISOString().split('T')[0];
     const hours = selectedTime.getHours().toString().padStart(2, '0');
     const minutes = selectedTime.getMinutes().toString().padStart(2, '0');
@@ -83,14 +94,13 @@ const SupervisorScheduleMeeting = props => {
         },
       );
       if (!response.ok) {
-        // Handle non-200 OK responses gracefully
-        const errorData = await response.json(); // Try to parse error details
+        const errorData = await response.json();
         const errorMessage =
           errorData?.message ||
           'Request failed with status: ' + response.status;
         console.error('Error:', errorMessage);
         Alert.alert('Error', errorMessage);
-        return; // Exit the function after handling the error
+        return;
       }
       const data = await response.json();
       console.log('Response data:', data);
@@ -151,18 +161,22 @@ const SupervisorScheduleMeeting = props => {
 
           <View style={styles.selectContainer}>
             <Text style={styles.boldText}>Select FYP Group:</Text>
-            <SelectList
-              setSelected={val => setFypGroup(val)}
-              data={FypGrouplist}
-              save="key"
-              onSelect={() => {
-                console.warn(FypGroup);
-              }}
-              dropdownTextStyles={{color: 'black'}}
-              boxStyles={styles.selectListStyle}
-              placeholder="Select FYP Group"
-              inputStyles={styles.selectListInput}
-            />
+            {FypGrouplist.length > 0 ? (
+              <SelectList
+                setSelected={val => setFypGroup(val)}
+                data={FypGrouplist}
+                save="key"
+                onSelect={() => {
+                  console.warn(FypGroup);
+                }}
+                dropdownTextStyles={{color: 'black'}}
+                boxStyles={styles.selectListStyle}
+                placeholder="Select FYP Group"
+                inputStyles={styles.selectListInput}
+              />
+            ) : (
+              <Text style={{color: 'black'}}>No projects available</Text>
+            )}
           </View>
 
           <Text style={[styles.boldText, {marginTop: 20}]}>Meeting Date</Text>
