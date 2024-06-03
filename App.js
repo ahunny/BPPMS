@@ -49,6 +49,7 @@ import VacantGroupDetails from './Src/Committee&Supervisor/VacantGroupDetails';
 import VacantGroupDetail from './Src/Committee&Supervisor/VacantGroupDetails';
 import {Button} from 'react-native';
 import SetScoreWeight from './Src/Committee&Supervisor/SetScoreWeightage';
+import GroupDetail from './Src/Student/GroupDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -108,6 +109,11 @@ const App = () => {
           name="uploadtask"
           component={UploadTasks}
           options={{title: 'Upload Task'}}
+        />
+        <Stack.Screen
+          name="GroupDetails"
+          component={GroupDetail}
+          options={{title: 'Group Member'}}
         />
         <Stack.Screen name="Grades" component={StudentGrading} />
 

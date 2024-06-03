@@ -11,6 +11,7 @@ import {
 import {SelectList} from 'react-native-dropdown-select-list';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import API_URL from '../../apiConfig';
+import {useNavigation} from '@react-navigation/native';
 
 const ScheduleMeeting = () => {
   const [Title, setTitle] = useState('');
@@ -21,6 +22,7 @@ const ScheduleMeeting = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
+  const navigation = useNavigation();
   const FypGroupList = [
     {key: 'fyp-0', value: 'FYP-0 Groups'},
     {key: 'fyp-1', value: 'FYP-I Groups'},
@@ -34,8 +36,7 @@ const ScheduleMeeting = () => {
     const formattedDate = selectedDate.toISOString().split('T')[0];
     const hours = selectedTime.getHours().toString().padStart(2, '0');
     const minutes = selectedTime.getMinutes().toString().padStart(2, '0');
-    const seconds = selectedTime.getSeconds().toString().padStart(2, '0');
-    const formattedTime = `${hours}:${minutes}:${seconds}`;
+    const formattedTime = `${hours}:${minutes}`;
 
     const formData = new FormData();
     formData.append('fyp_type', FypGroup);
@@ -152,7 +153,7 @@ const ScheduleMeeting = () => {
               testID="dateTimePicker"
               value={selectedDate}
               mode="date"
-              is24Hour={true}
+              is24Hour={false}
               display="default"
               onChange={handleDateChange}
             />

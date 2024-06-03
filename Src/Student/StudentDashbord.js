@@ -43,7 +43,11 @@ const Dashboardscreens = props => {
           width: '95%',
           height: '15%',
           marginTop: 50,
-        }}>
+        }}
+        // onPress={() =>
+        //   props.navigation.navigate('GroupDetails', {userid: userid})
+        // }
+      >
         <View
           style={{
             flexDirection: 'row',
@@ -58,7 +62,7 @@ const Dashboardscreens = props => {
               style={{width: 40, height: 40, marginTop: 5}} // Set the width and height of the image
             />
             <Text style={{marginLeft: -10, color: 'black', fontSize: 20}}>
-              {'Project Details'}
+              {'Group Details'}
             </Text>
           </View>
         </View>
