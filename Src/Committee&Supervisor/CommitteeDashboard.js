@@ -258,7 +258,7 @@ const CommitteeDashborad = props => {
           tabBarIcon: () => (
             <Image
               source={require('./Assets/icons8-home-50.png')}
-              style={{width: 25, height: 25}}
+              style={{width: 30, height: 30, marginTop: 5}}
             />
           ),
         }}
@@ -271,7 +271,7 @@ const CommitteeDashborad = props => {
           tabBarIcon: () => (
             <Image
               source={require('./Assets/icons8-person-64.png')}
-              style={{width: 35, height: 35}}
+              style={{width: 40, height: 35, marginBottom: 10}}
             />
           ),
         }}
@@ -284,7 +284,7 @@ const CommitteeDashborad = props => {
           tabBarIcon: () => (
             <Image
               source={require('./Assets/icons8-schedule-64.png')}
-              style={{width: 28, height: 28}}
+              style={{width: 40, height: 28}}
             />
           ),
         }}
