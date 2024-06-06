@@ -23,7 +23,7 @@ const StudentGrading = props => {
   const {userid} = props.route.params;
   console.log(userid);
 
-  const [grades, setGrades] = useState('');
+  const [grades, setGrades] = useState([]);
   const [scores, setScores] = useState([]);
 
   const fetchGrades = async () => {
@@ -32,8 +32,19 @@ const StudentGrading = props => {
         `${API_URL}/Grading/GetCalculatedGradesForStudent?userid=${userid}`,
       );
       const data = await response.json();
-      setGrades(data.Grades);
-      setScores(data.Scores);
+
+      // Ensure that Grades and Scores properties exist before setting them
+      if (data.Grades) {
+        setGrades(data.Grades);
+      } else {
+        ToastAndroid.show('no data Found', ToastAndroid.SHORT);
+      }
+
+      if (data.Scores) {
+        setScores(data.Scores);
+      } else {
+        ToastAndroid.show('no data Found', ToastAndroid.SHORT);
+      }
     } catch (error) {
       ToastAndroid.show('Error fetching Grades', ToastAndroid.SHORT);
       console.error('Error fetching Grades:', error);
