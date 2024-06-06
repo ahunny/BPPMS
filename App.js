@@ -50,6 +50,8 @@ import VacantGroupDetail from './Src/Committee&Supervisor/VacantGroupDetails';
 import {Button} from 'react-native';
 import SetScoreWeight from './Src/Committee&Supervisor/SetScoreWeightage';
 import GroupDetail from './Src/Student/GroupDetails';
+import chat from './Src/Chat';
+import Chat from './Src/Chat';
 
 const Stack = createNativeStackNavigator();
 
@@ -285,6 +287,7 @@ const App = () => {
         <Stack.Screen name="Datacell Dashboard" component={DatacellDashboard} />
         <Stack.Screen name="StudentDetail" component={StudentDetails} />
         <Stack.Screen name="DropStudents" component={DropStudent} />
+        <Stack.Screen name="chat" component={Chat} />
       </Stack.Navigator>
     </NavigationContainer>
   );

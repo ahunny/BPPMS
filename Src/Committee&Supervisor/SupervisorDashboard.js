@@ -18,6 +18,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SupervisorScheduleMeeting from './SupervisorScheduleMeetings';
 import SupervisorMeetings from './SupervisorMeetings';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import chat from '../Chat';
 
 const Tab = createBottomTabNavigator();
 const multiplescreen = createNativeStackNavigator();
@@ -237,7 +238,7 @@ const SupervisorDashboard = props => {
         name="dashboard"
         component={Dashboardscreens}
         options={{
-          title: 'Supervisor Dashboard',
+          title: 'Dashboard',
           headerShown: true,
           tabBarIcon: () => (
             <Image
@@ -247,7 +248,21 @@ const SupervisorDashboard = props => {
           ),
         }}
       />
-
+      <Tab.Screen
+        name="chat"
+        component={chat}
+        initialParams={{userid: userid}}
+        options={{
+          title: 'Chat',
+          headerShown: true,
+          tabBarIcon: () => (
+            <Image
+              source={require('./Assets/icons8-home-50.png')}
+              style={{width: 25, height: 25}}
+            />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Schedule Meeting"
         component={SupervisorScheduleMeeting}
