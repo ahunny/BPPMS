@@ -19,6 +19,7 @@ import SupervisorScheduleMeeting from './SupervisorScheduleMeetings';
 import SupervisorMeetings from './SupervisorMeetings';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import chat from '../Chat';
+import SupervisorGroups from './GroupChats';
 
 const Tab = createBottomTabNavigator();
 const multiplescreen = createNativeStackNavigator();
@@ -249,15 +250,15 @@ const SupervisorDashboard = props => {
         }}
       />
       <Tab.Screen
-        name="chat"
-        component={chat}
+        name="Supervisorgroup"
+        component={SupervisorGroups}
         initialParams={{userid: userid}}
         options={{
           title: 'Chat',
           headerShown: true,
           tabBarIcon: () => (
             <Image
-              source={require('./Assets/icons8-home-50.png')}
+              source={require('./Assets/icons8-chat-50.png')}
               style={{width: 25, height: 25}}
             />
           ),

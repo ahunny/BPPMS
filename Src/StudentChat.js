@@ -4,11 +4,11 @@ import {GiftedChat, Bubble, InputToolbar} from 'react-native-gifted-chat';
 import API_URL from '../apiConfig';
 import {useFocusEffect} from '@react-navigation/native';
 
-const Chat = props => {
+const StudentChat = props => {
   const {userid} = props.route.params; // Get userid from route params
   console.log(userid);
   const {Data} = props.route.params;
-  receiverid = Data.GroupId;
+  receiverid = Data.group_id;
 
   console.log('id', receiverid);
 
@@ -206,4 +206,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Chat;
+export default StudentChat;

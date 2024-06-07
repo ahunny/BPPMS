@@ -174,6 +174,10 @@ const StudentDashboard = props => {
     // Perform any necessary logout operations here, like clearing user data
     navigation.navigate('login'); // Navigate to the Login screen
   };
+  const handleChat = () => {
+    // Perform any necessary logout operations here, like clearing user data
+    navigation.navigate('studentChat', {Data: data, userid: userid});
+  };
   return (
     <Tab.Navigator
       screenOptions={{
@@ -184,9 +188,21 @@ const StudentDashboard = props => {
           backgroundColor: '#D9D9D9',
         },
         headerRight: () => (
-          <TouchableOpacity onPress={handleLogout} style={{marginRight: 10}}>
-            <Icon name="logout" size={25} color="#74A2A8" />
-          </TouchableOpacity>
+          <View style={{marginRight: 10, flexDirection: 'row'}}>
+            <Icon name="chat" size={25} color="#74A2A8" onPress={handleChat} />
+            <View
+              style={{
+                marginRight: 20,
+                marginTop: 20,
+                flexDirection: 'row',
+              }}></View>
+            <Icon
+              name="logout"
+              size={25}
+              color="#74A2A8"
+              onPress={handleLogout}
+            />
+          </View>
         ),
       }}>
       <Tab.Screen

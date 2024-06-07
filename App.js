@@ -52,6 +52,8 @@ import SetScoreWeight from './Src/Committee&Supervisor/SetScoreWeightage';
 import GroupDetail from './Src/Student/GroupDetails';
 import chat from './Src/Chat';
 import Chat from './Src/Chat';
+import SupervisorGroups from './Src/Committee&Supervisor/GroupChats';
+import StudentChat from './Src/StudentChat';
 
 const Stack = createNativeStackNavigator();
 
@@ -288,6 +290,13 @@ const App = () => {
         <Stack.Screen name="StudentDetail" component={StudentDetails} />
         <Stack.Screen name="DropStudents" component={DropStudent} />
         <Stack.Screen name="chat" component={Chat} />
+        <Stack.Screen name="studentChat" component={StudentChat} />
+
+        <Stack.Screen
+          name="Supervisorgroup"
+          component={SupervisorGroups}
+          options={{title: 'Groups'}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
