@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,11 +7,16 @@ import {
   StyleSheet,
   Alert,
   ToastAndroid,
+  ScrollView,
 } from 'react-native';
-import {SelectList} from 'react-native-dropdown-select-list';
+import {
+  MultipleSelectList,
+  SelectList,
+} from 'react-native-dropdown-select-list';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import API_URL from '../../apiConfig';
 import {useNavigation} from '@react-navigation/native';
+import CheckBox from '@react-native-community/checkbox'; // Import the CheckBox component
 
 const ScheduleMeeting = () => {
   const [Title, setTitle] = useState('');
@@ -21,6 +26,11 @@ const ScheduleMeeting = () => {
   const [selectedTime, setSelectedTime] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [Criteria, SetCriteria] = useState([]);
+  const [SelectedCriteria, setSelectedCriteria] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [isGraded, setIsGraded] = useState(false); // State for checkbox
 
   const navigation = useNavigation();
   const FypGroupList = [
@@ -44,6 +54,8 @@ const ScheduleMeeting = () => {
     formData.append('description', MeetingNotes.toString());
     formData.append('is_with_supervisor', is_with_supervisor.toString());
     formData.append('meeting_date', formattedDate);
+    formData.append('criteria_list', SelectedCriteria);
+    formData.append('is_graded', isGraded.toString()); // Add checkbox value
     console.log(formData);
     try {
       const response = await fetch(`${API_URL}/Meeting/AddMeetingsSchedule`, {
@@ -75,6 +87,29 @@ const ScheduleMeeting = () => {
     }
   };
 
+  const fetchCriteria = async () => {
+    try {
+      const response = await fetch(`${API_URL}/Grading/GetMeetCriteria`);
+      const data = await response.json();
+      const formattedData = data.map(item => ({
+        key: item.score_id.toString(),
+        value: item.criteria + '  (' + item.score_weight + ')',
+      }));
+      SetCriteria(formattedData);
+      console.log(data);
+    } catch (error) {
+      ToastAndroid.show('Error fetching Criteria', ToastAndroid.SHORT);
+      console.error('Error fetching Criteria:', error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCriteria();
+  }, []);
+
   const handleDateChange = (event, date) => {
     setShowDatePicker(false);
     if (date !== undefined) {
@@ -98,7 +133,7 @@ const ScheduleMeeting = () => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
+    <ScrollView style={{backgroundColor: '#74A2A8'}}>
       <View
         style={{
           backgroundColor: '#C0C0C0',
@@ -187,13 +222,36 @@ const ScheduleMeeting = () => {
               onChange={handleTimeChange}
             />
           )}
-
+          <View style={styles.checkboxContainer}>
+            <CheckBox
+              value={isGraded}
+              onValueChange={setIsGraded}
+              tintColors={{true: 'black', false: 'black'}}
+            />
+            <Text style={styles.label}>Is Graded</Text>
+          </View>
+          {isGraded && (
+            <View style={styles.selectContainer}>
+              <MultipleSelectList
+                setSelected={setSelectedCriteria}
+                data={Criteria}
+                save="key"
+                dropdownTextStyles={{color: 'black'}}
+                labelStyles={{color: 'grey'}}
+                label="Selected"
+                dropdownStyles={{width: '86%', alignSelf: 'center'}}
+                boxStyles={styles.multipleListStyle}
+                placeholder="Select Criterias"
+                inputStyles={styles.multipleListInput}
+              />
+            </View>
+          )}
           <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Schedule</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -266,6 +324,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
+  multipleListStyle: {
+    backgroundColor: '#E5E5E5',
+    borderColor: '#E5E5E5',
+    borderRadius: 20,
+    marginTop: '2%',
+    width: '86%',
+    alignSelf: 'center',
+  },
+  multipleListInput: {color: 'grey', fontSize: 18},
   radioText: {
     fontSize: 16,
     marginLeft: 10,
@@ -282,6 +349,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     marginTop: 40,
+    marginBottom: 30,
     marginLeft: 200,
     width: '40%',
   },
@@ -289,6 +357,12 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'left',
   },
 });
 

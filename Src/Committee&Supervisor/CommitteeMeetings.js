@@ -71,6 +71,15 @@ const CommitteeMeetings = props => {
                   padding: 10,
                 }}>
                 <View style={{flexDirection: 'column'}}>
+                  <Text
+                    style={{
+                      textAlign: 'left',
+                      color: 'black',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                    }}>
+                    {item.projectname}
+                  </Text>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -92,9 +101,10 @@ const CommitteeMeetings = props => {
                         color: 'black',
                         fontSize: 16,
                       }}>
-                      {item.fyp_type + ' Groups'}
+                      {item.fyp_type + ' Group'}
                     </Text>
                   </View>
+
                   <View
                     style={{
                       flexDirection: 'row',
