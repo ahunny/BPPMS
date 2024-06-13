@@ -85,6 +85,16 @@ const SupervisorMeetings = props => {
                       {item.projectTitle}
                     </Text>
                   </View>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: 'black',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      textAlign: 'left',
+                    }}>
+                    {item.description}
+                  </Text>
                   <View
                     style={{
                       flexDirection: 'row',

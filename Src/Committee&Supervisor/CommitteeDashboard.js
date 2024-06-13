@@ -306,6 +306,7 @@ const CommitteeDashborad = props => {
       <Tab.Screen
         name="Meeting"
         component={CommitteeMeetings}
+        initialParams={{userid: userid}} // Pass userid as initial parameter
         options={{
           title: 'Meetings',
           tabBarIcon: () => (
