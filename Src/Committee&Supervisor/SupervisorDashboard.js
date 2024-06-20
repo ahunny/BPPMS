@@ -281,6 +281,7 @@ const SupervisorDashboard = props => {
       <Tab.Screen
         name="Supervisor Meetings"
         component={SupervisorMeetings}
+        initialParams={{userid: userid}}
         options={{
           title: 'Meetings',
           tabBarIcon: () => (

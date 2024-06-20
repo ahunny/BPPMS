@@ -13,7 +13,7 @@ import {SelectList} from 'react-native-dropdown-select-list';
 import API_URL from '../../apiConfig';
 import {useNavigation} from '@react-navigation/native';
 
-const AddRemarks = props => {
+const AddSupervisorRemarks = props => {
   const {MeetDetail} = props.route.params;
   const {userid} = props.route.params;
   const projectid = MeetDetail.project_id;
@@ -61,8 +61,9 @@ const AddRemarks = props => {
       return;
     }
 
-    const is_From_supervisor = false;
+    const is_From_supervisor = true;
     console.log(isPublic);
+    console.log(is_From_supervisor);
     const data = {
       comment1: Comment,
       student_id: selectedStudent,
@@ -71,6 +72,7 @@ const AddRemarks = props => {
       by_Supervisor: is_From_supervisor,
       ispublic: isPublic,
     };
+    console.log('comment:   ' + data);
 
     setLoading(true);
 
@@ -227,4 +229,4 @@ const styles = StyleSheet.create({
     marginLeft: -220,
   },
 });
-export default AddRemarks;
+export default AddSupervisorRemarks;

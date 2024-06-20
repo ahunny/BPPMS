@@ -56,6 +56,8 @@ import SupervisorGroups from './Src/Committee&Supervisor/GroupChats';
 import StudentChat from './Src/StudentChat';
 import MeetDetails from './Src/Committee&Supervisor/MeetingDetails';
 import SetMeetGrades from './Src/Committee&Supervisor/SetMeetGrades';
+import AddSupervisorRemarks from './Src/Committee&Supervisor/AddSupervisorComments';
+import SupMeetDetails from './Src/Committee&Supervisor/SupMeetDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -293,7 +295,11 @@ const App = () => {
         <Stack.Screen name="DropStudents" component={DropStudent} />
         <Stack.Screen name="chat" component={Chat} />
         <Stack.Screen name="studentChat" component={StudentChat} />
-        <Stack.Screen name="MeetDetails" component={MeetDetails} />
+        <Stack.Screen
+          name="MeetDetails"
+          component={MeetDetails}
+          options={{title: ''}}
+        />
 
         <Stack.Screen
           name="Supervisorgroup"
@@ -305,6 +311,22 @@ const App = () => {
           name="SetMeetGrades"
           component={SetMeetGrades}
           options={{title: 'Set Grades'}}
+        />
+        <Stack.Screen
+          name="Addremarks"
+          component={AddRemarks}
+          options={{title: 'Set Comment'}}
+        />
+        <Stack.Screen
+          name="SupMeetDetails"
+          component={SupMeetDetails}
+          options={{title: ''}}
+        />
+
+        <Stack.Screen
+          name="AddSupremarks"
+          component={AddSupervisorRemarks}
+          options={{title: 'Set Comment'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

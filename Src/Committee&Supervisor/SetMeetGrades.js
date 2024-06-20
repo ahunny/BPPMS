@@ -90,8 +90,18 @@ const SetMeetGrades = props => {
   }, []);
 
   const HandleSetGrades = async () => {
+    if (!selectedStudent) {
+      Alert.alert('Validation Error', 'Please select a student.');
+      return;
+    }
+
+    if (!selectedCriteria) {
+      Alert.alert('Validation Error', 'Please select a criteria.');
+      return;
+    }
+
     if (loading) {
-      Alert.alert('Please wait', 'Supervisors are being submitted...');
+      Alert.alert('Please wait', 'Grades are being submitted...');
       return;
     }
 
@@ -116,11 +126,14 @@ const SetMeetGrades = props => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Error submitting preferences:', errorData);
+        console.error(
+          'Student has already been graded against this Criteria.',
+          errorData,
+        );
         setLoading(false); // Reset loading state on error
         ToastAndroid.show(
           errorData?.message ||
-            'Error submitting preferences. Please try again.',
+            'Student has already been graded against this Criteria.',
           ToastAndroid.SHORT,
         );
         return;
@@ -129,7 +142,7 @@ const SetMeetGrades = props => {
       const responseData = await response.json();
       console.log('Response data:', responseData);
       ToastAndroid.show('Graded Successfully', ToastAndroid.SHORT);
-
+      navigation.goBack();
       setLoading(false); // Reset loading state on success
     } catch (error) {
       console.error('Error:', error);
@@ -151,26 +164,18 @@ const SetMeetGrades = props => {
           marginTop: 10,
           borderRadius: 20,
         }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            marginTop: 20,
-          }}>
-          <SelectList
-            setSelected={val => setSelectedProject(val)}
-            data={ProjectList}
-            save="key" // also set save to key.
-            onSelect={() => {
-              // console.warn(selectedProject);
-            }}
-            searchPlaceholder="Search Project"
-            dropdownTextStyles={{color: 'black'}}
-            boxStyles={styles.selectListStyle}
-            placeholder="Select Project"
-            inputStyles={styles.selectListInput}
-          />
-        </View>
+        <TouchableOpacity style={[styles.itemContainer]}>
+          <View style={styles.itemContent}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                color: 'black',
+              }}>
+              {MeetDetail.project_title}
+            </Text>
+          </View>
+        </TouchableOpacity>
         <View
           style={{
             flexDirection: 'row',
@@ -266,6 +271,19 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: 230,
     height: 50,
+  },
+  itemContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+  },
+  itemContainer: {
+    elevation: 5,
+    backgroundColor: 'lightgrey',
+    borderRadius: 10,
+    marginBottom: 10,
+    width: 320,
+    marginTop: 20,
   },
   platFormSelect: {
     backgroundColor: '#E5E5E5',

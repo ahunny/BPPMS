@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   StyleSheet,
   Alert,
   TouchableOpacity,
@@ -11,13 +10,15 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   ToastAndroid,
+  ActivityIndicator,
 } from 'react-native';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import API_URL from '../apiConfig';
 
 const Login = props => {
-  const [username, setusername] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('123');
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const navigation = useNavigation();
 
@@ -31,6 +32,8 @@ const Login = props => {
         return;
       }
 
+      setLoading(true); // Start loading
+
       const response = await fetch(
         `${API_URL}/Auth/Login?username=${username.trim()}&password=${password.trim()}`,
       );
@@ -40,6 +43,7 @@ const Login = props => {
           'Incorrect credentials. Please try again.',
           ToastAndroid.SHORT,
         );
+        setLoading(false); // Stop loading on error
         return;
       }
 
@@ -112,17 +116,21 @@ const Login = props => {
           'Incorrect credentials. Please try again.',
           ToastAndroid.SHORT,
         );
+        setLoading(false); // Stop loading on error
         return;
       }
-      setusername('');
+
+      setUsername('');
       setPassword('');
+      setLoading(false); // Stop loading on success
     } catch (error) {
       console.error('Error occurred during login:', error);
+      setLoading(false); // Stop loading on error
     }
   };
 
   const handleUsernameChange = text => {
-    setusername(text);
+    setUsername(text);
   };
 
   const handlePasswordChange = text => {
@@ -137,7 +145,7 @@ const Login = props => {
             <Image source={require('./Assets/logo.png')} style={styles.logo} />
             <View style={styles.container1}>
               <Text style={styles.AppNameLabel1}>BIIT PROJECT PROGRESS</Text>
-              <Text style={styles.AppNameLabe2}>MONITORING SYSTEM</Text>
+              <Text style={styles.AppNameLabel2}>MONITORING SYSTEM</Text>
             </View>
           </View>
           <View style={styles.container1}>
@@ -168,9 +176,19 @@ const Login = props => {
 
             <TouchableOpacity
               style={styles.loginButton}
-              onPress={handleLoginPress}>
-              <Text style={styles.buttonText}>Login</Text>
+              onPress={handleLoginPress}
+              disabled={loading} // Disable button while loading
+            >
+              <Text style={styles.buttonText}>
+                {loading ? 'Logging in...' : 'Login'}{' '}
+                {/* Show different text while loading */}
+              </Text>
             </TouchableOpacity>
+            {loading && (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#0000ff" />
+              </View>
+            )}
           </View>
         </View>
       </KeyboardAvoidingView>
@@ -228,7 +246,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   AppNameLabel2: {
-    fontSize: 30,
+    fontSize: 15,
     fontWeight: 'bold',
     color: 'white',
     textShadowColor: 'rgba(0, 0, 0, 0.5)',
@@ -294,6 +312,10 @@ const styles = StyleSheet.create({
     width: 95,
     height: 130,
     resizeMode: 'contain',
+  },
+  loadingContainer: {
+    marginTop: 10,
+    alignItems: 'center',
   },
 });
 

@@ -4,7 +4,7 @@ import {SelectList} from 'react-native-dropdown-select-list';
 import {useNavigation} from '@react-navigation/native';
 import API_URL from '../../apiConfig';
 
-const MeetDetails = ({route}) => {
+const SupMeetDetails = ({route}) => {
   const [students, setStudents] = useState([]);
   const [supervisor, setSupervisor] = useState([]);
 
@@ -110,7 +110,7 @@ const MeetDetails = ({route}) => {
           keyExtractor={item => item.id}
         />
 
-        <TouchableOpacity style={[styles.itemContainer]}>
+        {/* <TouchableOpacity style={[styles.itemContainer]}>
           <View style={styles.itemContent}>
             <Text
               style={{
@@ -121,9 +121,9 @@ const MeetDetails = ({route}) => {
               Supervisor: {supervisor.SupervisorName}
             </Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             marginBottom: 20,
             backgroundColor: '#D9D9D9',
@@ -136,11 +136,11 @@ const MeetDetails = ({route}) => {
             alignSelf: 'center',
           }}
           onPress={() => handleSetGradePress(MeetDetails)}>
-          <Text style={styles.buttonText}>Set Grade</Text>
-        </TouchableOpacity>
+          <Text style={styles.buttonText}>SetGrade</Text>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={{
-            marginBottom: 200,
+            marginBottom: 300,
             backgroundColor: '#D9D9D9',
             padding: 8,
             borderRadius: 40,
@@ -193,4 +193,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MeetDetails;
+export default SupMeetDetails;
