@@ -64,18 +64,17 @@ const AddRemarks = props => {
     const is_From_supervisor = false;
     console.log(isPublic);
     const data = {
-      comment1: Comment,
+      comment: Comment,
       student_id: selectedStudent,
       meeting_id: MeetDetail.meeting_id,
       group_id: MeetDetail.group_id,
-      by_Supervisor: is_From_supervisor,
       ispublic: isPublic,
     };
 
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/Remarks/AddRemarks`, {
+      const response = await fetch(`${API_URL}/Remarks/AddMeetRemarks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

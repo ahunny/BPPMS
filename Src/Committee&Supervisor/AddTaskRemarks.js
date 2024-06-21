@@ -13,7 +13,7 @@ import {SelectList} from 'react-native-dropdown-select-list';
 import API_URL from '../../apiConfig';
 import {useNavigation} from '@react-navigation/native';
 
-const AddSupervisorRemarks = props => {
+const AddTaskRemarks = props => {
   const {MeetDetail} = props.route.params;
   const {userid} = props.route.params;
   const projectid = MeetDetail.project_id;
@@ -61,15 +61,11 @@ const AddSupervisorRemarks = props => {
       return;
     }
 
-    const is_From_supervisor = true;
-    console.log(isPublic);
-    console.log(is_From_supervisor);
     const data = {
-      comment1: Comment,
+      comment: Comment,
       student_id: selectedStudent,
       meeting_id: MeetDetail.meeting_id,
       group_id: MeetDetail.group_id,
-      by_Supervisor: is_From_supervisor,
       ispublic: isPublic,
     };
     console.log('comment:   ' + data);
@@ -77,13 +73,16 @@ const AddSupervisorRemarks = props => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/Remarks/AddRemarks`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${API_URL}/Remarks/AddSupervisorMeetRemarks`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify(data),
-      });
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -229,4 +228,4 @@ const styles = StyleSheet.create({
     marginLeft: -220,
   },
 });
-export default AddSupervisorRemarks;
+export default AddTaskRemarks;

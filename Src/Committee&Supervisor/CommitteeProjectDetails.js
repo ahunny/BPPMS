@@ -63,6 +63,11 @@ const CommitteeProjectDetails = ({route}) => {
     navigation.navigate('Uploaded Tasks', {Groupdata: supervisor});
   };
 
+  const handleViewCommentPress = item => {
+    // Navigate to 'uploadtask' screen and pass item data
+    navigation.navigate('Comments', {Data: projectData});
+  };
+
   const navigation = useNavigation();
 
   return (
@@ -84,7 +89,7 @@ const CommitteeProjectDetails = ({route}) => {
         <FlatList
           data={students}
           renderItem={({item, index}) => (
-            <TouchableOpacity
+            <View
               style={[styles.itemContainer, {marginTop: index === 0 ? 20 : 0}]}>
               <View style={styles.itemContent}>
                 <View style={styles.column}>
@@ -98,7 +103,7 @@ const CommitteeProjectDetails = ({route}) => {
                   </Text>
                 </View>
               </View>
-            </TouchableOpacity>
+            </View>
           )}
           keyExtractor={item => item.id}
         />
@@ -133,7 +138,7 @@ const CommitteeProjectDetails = ({route}) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={{
-            marginBottom: 200,
+            marginBottom: 20,
             backgroundColor: '#D9D9D9',
             padding: 8,
             borderRadius: 40,
@@ -145,6 +150,22 @@ const CommitteeProjectDetails = ({route}) => {
           }}
           onPress={() => handleViewTaskPress(supervisor)}>
           <Text style={styles.buttonText}>View Task</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            marginBottom: 20,
+            backgroundColor: '#D9D9D9',
+            padding: 8,
+            borderRadius: 40,
+            height: 60,
+            width: 300,
+            alignItems: 'center',
+            alignContent: 'center',
+            alignSelf: 'center',
+          }}
+          onPress={() => handleViewCommentPress(projectData)}>
+          <Text style={styles.buttonText}>View Comment</Text>
         </TouchableOpacity>
       </View>
     </View>

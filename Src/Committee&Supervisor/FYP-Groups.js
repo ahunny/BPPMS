@@ -65,13 +65,6 @@ const FypGroups = props => {
     fetchData();
   }, [fyptype]);
 
-  // const handleSearch = text => {
-  //   setSearchQuery(text);
-  //   const filtered = FilteredProjects.filter(item =>
-  //     item.Project.toLowerCase().includes(text.toLowerCase()),
-  //   );
-  //   setFilteredData(filtered);
-  // };
   const handleSearch = text => {
     setSearchQuery(text); // Update search input state
 

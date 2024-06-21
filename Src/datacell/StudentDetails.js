@@ -22,7 +22,7 @@ const StudentDetails = props => {
 
   const fetchStudents = async () => {
     try {
-      const response = await fetch(`${API_URL}/Student/GetAllStudent?`);
+      const response = await fetch(`${API_URL}/Student/GetStudents?`);
       const data = await response.json();
       setStudentList(data);
       setFilteredStudentList(data); // Set initial filtered list to all students
@@ -49,6 +49,80 @@ const StudentDetails = props => {
     setFilteredStudentList(filteredData);
   };
 
+  const handleEnroll = async student => {
+    const enroll = true;
+    const data = {
+      student_id: student.student_id,
+      status: enroll,
+    };
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(`${API_URL}/DataCell/EnrollStudent`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setLoading(false);
+        ToastAndroid.show(
+          errorData?.message || 'You Have Already Commented this Student',
+          ToastAndroid.SHORT,
+        );
+        return;
+      }
+
+      const responseData = await response.json();
+      ToastAndroid.show('Enroled Successfully', ToastAndroid.SHORT);
+      navigation.goBack();
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  const handleDrop = async student => {
+    const enroll = false;
+    const data = {
+      student_id: student.student_id,
+      status: enroll,
+    };
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(`${API_URL}/DataCell/EnrollStudent`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setLoading(false);
+        ToastAndroid.show(
+          errorData?.message || 'You Have Already Commented this Student',
+          ToastAndroid.SHORT,
+        );
+        return;
+      }
+
+      const responseData = await response.json();
+      ToastAndroid.show('Dropped Successfully', ToastAndroid.SHORT);
+      navigation.goBack();
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       fetchStudents();
@@ -67,23 +141,31 @@ const StudentDetails = props => {
         data={filteredStudentList}
         renderItem={({item}) => (
           <ScrollView style={{marginTop: 20}}>
-            <TouchableOpacity style={styles.itemContainer}>
+            <View style={styles.itemContainer}>
               <View style={styles.itemContent}>
                 <View style={styles.column}>
                   <Text style={styles.boldText}>{item.student_name}</Text>
                   <Text style={{color: 'black'}}>{item.arid_no}</Text>
-                </View>
-                <View style={styles.column}>
                   <Text style={{color: 'black'}}>{'Cgpa: ' + item.cgpa}</Text>
-                  <Text style={{color: 'black'}}>
-                    {'Platform: ' + item.platform}
-                  </Text>
+                </View>
+
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => handleEnroll(item)}>
+                    <Text style={styles.buttonText}>Enroll</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => handleDrop(item)}>
+                    <Text style={styles.buttonText}>Drop</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
-            </TouchableOpacity>
+            </View>
           </ScrollView>
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.student_id}
         refreshing={refreshing}
         onRefresh={() => {
           setRefreshing(true);
@@ -110,9 +192,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: '100%',
   },
-  selectContainer: {
-    marginTop: 10,
-  },
   itemContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -126,29 +205,19 @@ const styles = StyleSheet.create({
   column: {
     flexDirection: 'column',
   },
-
-  selectListStyle: {
-    backgroundColor: '#E5E5E5',
-    borderColor: '#E5E5E5',
-    borderRadius: 20,
-    width: 220,
-    height: 50,
-  },
-  selectListInput: {color: 'black', fontSize: 18},
-  button: {
-    backgroundColor: '#D9D9D9',
-    padding: 8,
-    borderRadius: 40,
-    height: 40,
-    width: 130,
+  buttonContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'flex-end',
-    marginTop: 50,
-    marginBottom: 50,
+  },
+  button: {
+    backgroundColor: '#74A2A8',
+    padding: 8,
+    borderRadius: 20,
+    marginHorizontal: 5,
   },
   buttonText: {
     color: 'black',
-    fontSize: 16,
+    fontSize: 14,
   },
 });
 

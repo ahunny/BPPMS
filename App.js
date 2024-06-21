@@ -41,23 +41,23 @@ import SupervisorViewUploadedTasks from './Src/Committee&Supervisor/SupervisorVi
 import FailGroups from './Src/Committee&Supervisor/FailGroups&Students';
 import Addmembers from './Src/Committee&Supervisor/AddMembers(Failures)';
 import SetGrades from './Src/Committee&Supervisor/Set Grades';
-import Grades from './Src/Committee&Supervisor/Grades';
 import StudentGrades from './Src/Committee&Supervisor/Grades';
-import AddmembersInGroup from './Src/Committee&Supervisor/VacantTechGroups';
 import VacantTechGroups from './Src/Committee&Supervisor/VacantTechGroups';
-import VacantGroupDetails from './Src/Committee&Supervisor/VacantGroupDetails';
 import VacantGroupDetail from './Src/Committee&Supervisor/VacantGroupDetails';
 import {Button} from 'react-native';
 import SetScoreWeight from './Src/Committee&Supervisor/SetScoreWeightage';
 import GroupDetail from './Src/Student/GroupDetails';
-import chat from './Src/Chat';
 import Chat from './Src/Chat';
 import SupervisorGroups from './Src/Committee&Supervisor/GroupChats';
 import StudentChat from './Src/StudentChat';
 import MeetDetails from './Src/Committee&Supervisor/MeetingDetails';
 import SetMeetGrades from './Src/Committee&Supervisor/SetMeetGrades';
-import AddSupervisorRemarks from './Src/Committee&Supervisor/AddSupervisorComments';
 import SupMeetDetails from './Src/Committee&Supervisor/SupMeetDetails';
+import AddTaskRemarks from './Src/Committee&Supervisor/AddTaskRemarks';
+import ViewComments from './Src/Committee&Supervisor/ViewGroupComments';
+import SupViewComments from './Src/Committee&Supervisor/SupViewComments';
+import GradeAndRemark from './Src/Student/Grade&Remarks';
+import ViewstdComments from './Src/Student/ViewComments';
 
 const Stack = createNativeStackNavigator();
 
@@ -287,14 +287,18 @@ const App = () => {
         <Stack.Screen
           name="Sup view Uploaded Task"
           component={SupervisorViewUploadedTasks}
-          options={{title: 'Add Task'}}
+          options={{title: 'Tasks'}}
         />
 
         <Stack.Screen name="Datacell Dashboard" component={DatacellDashboard} />
         <Stack.Screen name="StudentDetail" component={StudentDetails} />
         <Stack.Screen name="DropStudents" component={DropStudent} />
-        <Stack.Screen name="chat" component={Chat} />
-        <Stack.Screen name="studentChat" component={StudentChat} />
+        <Stack.Screen name="chat" component={Chat} options={{title: 'Chat'}} />
+        <Stack.Screen
+          name="studentChat"
+          component={StudentChat}
+          options={{title: 'Chat'}}
+        />
         <Stack.Screen
           name="MeetDetails"
           component={MeetDetails}
@@ -324,9 +328,33 @@ const App = () => {
         />
 
         <Stack.Screen
-          name="AddSupremarks"
-          component={AddSupervisorRemarks}
+          name="AddTaskremarks"
+          component={AddTaskRemarks}
           options={{title: 'Set Comment'}}
+        />
+
+        <Stack.Screen
+          name="Comments"
+          component={ViewComments}
+          options={{title: ''}}
+        />
+
+        <Stack.Screen
+          name="SupComments"
+          component={SupViewComments}
+          options={{title: ''}}
+        />
+
+        <Stack.Screen
+          name="Grade&Remarks"
+          component={GradeAndRemark}
+          options={{title: ''}}
+        />
+
+        <Stack.Screen
+          name="StdComments"
+          component={ViewstdComments}
+          options={{title: ''}}
         />
       </Stack.Navigator>
     </NavigationContainer>

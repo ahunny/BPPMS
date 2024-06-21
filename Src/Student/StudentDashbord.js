@@ -31,6 +31,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Stack = createNativeStackNavigator();
 var userid;
+var groupid;
 
 const Dashboardscreens = props => {
   return (
@@ -76,7 +77,9 @@ const Dashboardscreens = props => {
           height: '15%',
           marginTop: 30,
         }}
-        onPress={() => props.navigation.navigate('Grades', {userid})}>
+        onPress={() =>
+          props.navigation.navigate('Grade&Remarks', {userid, groupid})
+        }>
         <View
           style={{
             flexDirection: 'row',
@@ -92,7 +95,7 @@ const Dashboardscreens = props => {
             />
             <Text style={{marginLeft: -10, color: 'black', fontSize: 20}}>
               {' '}
-              {'Grades'}
+              {'Grades & Remarks'}
             </Text>
           </View>
         </View>

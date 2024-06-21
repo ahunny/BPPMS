@@ -62,6 +62,11 @@ const SupervisorProjectDetails = ({route}) => {
     // Navigate to 'uploadtask' screen and pass item data
     navigation.navigate('Sup view Uploaded Task', {Groupdata: supervisor});
   };
+
+  const handleViewCommentPress = item => {
+    // Navigate to 'uploadtask' screen and pass item data
+    navigation.navigate('SupComments', {Data: projectData});
+  };
   const navigation = useNavigation();
 
   return (
@@ -119,7 +124,7 @@ const SupervisorProjectDetails = ({route}) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={{
-            marginBottom: 200,
+            marginBottom: 20,
             backgroundColor: '#D9D9D9',
             padding: 8,
             borderRadius: 40,
@@ -131,6 +136,22 @@ const SupervisorProjectDetails = ({route}) => {
           }}
           onPress={() => handleViewTaskPress(supervisor)}>
           <Text style={styles.buttonText}>View Task</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            marginBottom: 20,
+            backgroundColor: '#D9D9D9',
+            padding: 8,
+            borderRadius: 40,
+            height: 60,
+            width: 300,
+            alignItems: 'center',
+            alignContent: 'center',
+            alignSelf: 'center',
+          }}
+          onPress={() => handleViewCommentPress(projectData)}>
+          <Text style={styles.buttonText}>View Comment</Text>
         </TouchableOpacity>
       </View>
     </View>
