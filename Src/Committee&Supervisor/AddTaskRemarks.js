@@ -14,10 +14,14 @@ import API_URL from '../../apiConfig';
 import {useNavigation} from '@react-navigation/native';
 
 const AddTaskRemarks = props => {
-  const {MeetDetail} = props.route.params;
-  const {userid} = props.route.params;
-  const projectid = MeetDetail.project_id;
-  const meetingid = MeetDetail.meeting_id;
+  const {Taskdata} = props.route.params;
+  console.log(Taskdata);
+  const {data} = props.route.params;
+  console.log(data);
+  projectid = data.ProjectId;
+
+  groupid = data.GroupId;
+  console.log(groupid);
 
   const [selectedStudent, setSelectedStudent] = useState('');
   const [Comment, setComment] = useState('');
@@ -64,8 +68,8 @@ const AddTaskRemarks = props => {
     const data = {
       comment: Comment,
       student_id: selectedStudent,
-      meeting_id: MeetDetail.meeting_id,
-      group_id: MeetDetail.group_id,
+      task_id: Taskdata.task_id,
+      group_id: groupid,
       ispublic: isPublic,
     };
     console.log('comment:   ' + data);
@@ -73,16 +77,13 @@ const AddTaskRemarks = props => {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `${API_URL}/Remarks/AddSupervisorMeetRemarks`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
+      const response = await fetch(`${API_URL}/Remarks/AddTaskRemarks`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: JSON.stringify(data),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -117,11 +118,11 @@ const AddTaskRemarks = props => {
           marginTop: 10,
           borderRadius: 20,
         }}>
-        <TouchableOpacity style={styles.itemContainer}>
+        <View style={styles.itemContainer}>
           <View style={styles.itemContent}>
-            <Text style={styles.projectTitle}>{MeetDetail.project_title}</Text>
+            <Text style={styles.projectTitle}>{data.ProjectTitle}</Text>
           </View>
-        </TouchableOpacity>
+        </View>
         <View style={styles.selectContainer}>
           <SelectList
             setSelected={val => setSelectedStudent(val)}
@@ -186,6 +187,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: 'black',
+    alignSelf: 'center',
   },
   selectContainer: {
     flexDirection: 'row',

@@ -13,7 +13,7 @@ import {
 import {TextInput} from 'react-native-paper'; // Import for Search Input
 import API_URL from '../../apiConfig';
 
-const RestrictedStudent = props => {
+const EnroledStudent = props => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [studentList, setStudentList] = useState([]);
@@ -22,7 +22,7 @@ const RestrictedStudent = props => {
 
   const fetchDroppedStudents = async () => {
     try {
-      const response = await fetch(`${API_URL}/DataCell/GetDroppedStudents?`);
+      const response = await fetch(`${API_URL}/DataCell/GetEnroledStudents?`);
       const data = await response.json();
       setStudentList(data);
       setFilteredStudentList(data); // Set initial filtered list to all students
@@ -148,4 +148,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RestrictedStudent;
+export default EnroledStudent;

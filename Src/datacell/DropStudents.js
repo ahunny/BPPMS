@@ -20,9 +20,9 @@ const DropStudent = props => {
   const [filteredStudentList, setFilteredStudentList] = useState([]); // State for filtered students
   const [searchText, setSearchText] = useState(''); // State for search term
 
-  const fetchStudents = async () => {
+  const fetchDroppedStudents = async () => {
     try {
-      const response = await fetch(`${API_URL}/Student/GetAllStudent?`);
+      const response = await fetch(`${API_URL}/DataCell/GetDroppedStudents?`);
       const data = await response.json();
       setStudentList(data);
       setFilteredStudentList(data); // Set initial filtered list to all students
@@ -51,7 +51,7 @@ const DropStudent = props => {
 
   useFocusEffect(
     useCallback(() => {
-      fetchStudents();
+      fetchDroppedStudents();
     }, []),
   );
 
@@ -70,14 +70,10 @@ const DropStudent = props => {
             <TouchableOpacity style={styles.itemContainer}>
               <View style={styles.itemContent}>
                 <View style={styles.column}>
-                  <Text style={styles.boldText}>{item.student_name}</Text>
-                  <Text style={{color: 'black'}}>{item.arid_no}</Text>
-                </View>
-                <View style={styles.column}>
-                  <Text style={{color: 'black'}}>{'Cgpa: ' + item.cgpa}</Text>
-                  <Text style={{color: 'black'}}>
-                    {'Platform: ' + item.platform}
+                  <Text style={styles.boldText}>
+                    {item.student_name + ' (' + item.arid_no + ') '}
                   </Text>
+                  <Text style={{color: 'black'}}>{'Cgpa: ' + item.cgpa}</Text>
                 </View>
               </View>
             </TouchableOpacity>

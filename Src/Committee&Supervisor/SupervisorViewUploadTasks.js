@@ -15,6 +15,8 @@ const SupervisorViewUploadedTasks = ({route}) => {
   const {Groupdata} = route.params;
   groupid = Groupdata.GroupId;
   console.log('GroupID:', groupid);
+  const {data} = route.params;
+  console.log(data);
 
   const [TaskList, setTaskList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,7 +43,7 @@ const SupervisorViewUploadedTasks = ({route}) => {
   };
   const handleViewTaskPress = item => {
     // Navigate to 'uploadtask' screen and pass item data
-    navigation.navigate('View Task', {Taskdata: item});
+    navigation.navigate('View Task', {Taskdata: item, data: data});
   };
   useFocusEffect(
     // useCallback prevent unnecessary re-renders caused by creating a newfunction instance on every render.

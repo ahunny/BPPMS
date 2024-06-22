@@ -65,39 +65,41 @@ const Login = props => {
             routes: [{name: 'SupervisorDashboard', params: {data: data}}],
           }),
         );
-      } else if (role == 'Committee') {
-        Alert.alert(
-          'LogIn',
-          'Login as Committee or Supervisor?',
-          [
-            {
-              text: 'Committee',
-              onPress: () =>
-                props.navigation.dispatch(
-                  CommonActions.reset({
-                    index: 0,
-                    routes: [
-                      {name: 'CommitteeDashboard', params: {data: data}},
-                    ],
-                  }),
-                ),
-            },
-            {
-              text: 'Supervisor',
-              onPress: () =>
-                props.navigation.dispatch(
-                  CommonActions.reset({
-                    index: 0,
-                    routes: [
-                      {name: 'SupervisorDashboard', params: {data: data}},
-                    ],
-                  }),
-                ),
-            },
-          ],
-          {cancelable: true},
-        );
-      } else if (role == 'Director') {
+      }
+      // else if (role == 'Committee') {
+      //   Alert.alert(
+      //     'LogIn',
+      //     'Login as Committee or Supervisor?',
+      //     [
+      //       {
+      //         text: 'Committee',
+      //         onPress: () =>
+      //           props.navigation.dispatch(
+      //             CommonActions.reset({
+      //               index: 0,
+      //               routes: [
+      //                 {name: 'CommitteeDashboard', params: {data: data}},
+      //               ],
+      //             }),
+      //           ),
+      //       },
+      //       {
+      //         text: 'Supervisor',
+      //         onPress: () =>
+      //           props.navigation.dispatch(
+      //             CommonActions.reset({
+      //               index: 0,
+      //               routes: [
+      //                 {name: 'SupervisorDashboard', params: {data: data}},
+      //               ],
+      //             }),
+      //           ),
+      //       },
+      //     ],
+      //     {cancelable: true},
+      //   );
+      // }
+      else if (role == 'Director' || role == 'Committee') {
         props.navigation.dispatch(
           CommonActions.reset({
             index: 0,

@@ -58,6 +58,12 @@ import ViewComments from './Src/Committee&Supervisor/ViewGroupComments';
 import SupViewComments from './Src/Committee&Supervisor/SupViewComments';
 import GradeAndRemark from './Src/Student/Grade&Remarks';
 import ViewstdComments from './Src/Student/ViewComments';
+import EnroledStudent from './Src/Committee&Supervisor/EnrolledStudents';
+import Enroled from './Src/datacell/enrolled';
+import ViewTaskComments from './Src/Committee&Supervisor/ViewTaskComments';
+import ViewsupTaskComments from './Src/Committee&Supervisor/ViewSupTaskComment';
+import GraphRepr from './Src/GraphRepresentation';
+import SupGraphRepr from './Src/SupGraphRepresentation';
 
 const Stack = createNativeStackNavigator();
 
@@ -143,7 +149,11 @@ const App = () => {
             ),
           }}
         />
-        <Stack.Screen name="Groups" component={Groups} />
+        <Stack.Screen
+          name="Groups"
+          component={Groups}
+          options={{title: 'FYP-0 Groups'}}
+        />
         <Stack.Screen
           name="ProjectAllocation"
           component={ProjectAllocation}
@@ -168,6 +178,11 @@ const App = () => {
           name="RestrictedStudents"
           component={RestrictedStudent}
           options={{title: 'Restricted Students'}}
+        />
+        <Stack.Screen
+          name="enrolStudents"
+          component={EnroledStudent}
+          options={{title: 'Enrolled Students'}}
         />
         <Stack.Screen
           name="CommitteeProjectDetails"
@@ -292,8 +307,19 @@ const App = () => {
 
         <Stack.Screen name="Datacell Dashboard" component={DatacellDashboard} />
         <Stack.Screen name="StudentDetail" component={StudentDetails} />
-        <Stack.Screen name="DropStudents" component={DropStudent} />
+        <Stack.Screen
+          name="DropStudents"
+          component={DropStudent}
+          options={{title: 'Dropped Students'}}
+        />
+        <Stack.Screen
+          name="enroledStudents"
+          component={Enroled}
+          options={{title: 'Enrolled Students'}}
+        />
+
         <Stack.Screen name="chat" component={Chat} options={{title: 'Chat'}} />
+
         <Stack.Screen
           name="studentChat"
           component={StudentChat}
@@ -340,11 +366,21 @@ const App = () => {
         />
 
         <Stack.Screen
+          name="taskComments"
+          component={ViewTaskComments}
+          options={{title: ''}}
+        />
+
+        <Stack.Screen
           name="SupComments"
           component={SupViewComments}
           options={{title: ''}}
         />
-
+        <Stack.Screen
+          name="suptaskComments"
+          component={ViewsupTaskComments}
+          options={{title: ''}}
+        />
         <Stack.Screen
           name="Grade&Remarks"
           component={GradeAndRemark}
@@ -355,6 +391,16 @@ const App = () => {
           name="StdComments"
           component={ViewstdComments}
           options={{title: ''}}
+        />
+        <Stack.Screen
+          name="graph"
+          component={GraphRepr}
+          options={{title: 'Project Progress'}}
+        />
+        <Stack.Screen
+          name="Supgraph"
+          component={SupGraphRepr}
+          options={{title: 'Project Progress'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

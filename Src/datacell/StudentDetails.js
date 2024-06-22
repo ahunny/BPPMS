@@ -71,7 +71,7 @@ const StudentDetails = props => {
         const errorData = await response.json();
         setLoading(false);
         ToastAndroid.show(
-          errorData?.message || 'You Have Already Commented this Student',
+          errorData?.message || 'You Have Already Enrolled this Student',
           ToastAndroid.SHORT,
         );
         return;
@@ -108,7 +108,7 @@ const StudentDetails = props => {
         const errorData = await response.json();
         setLoading(false);
         ToastAndroid.show(
-          errorData?.message || 'You Have Already Commented this Student',
+          errorData?.message || 'You Have Already Dropped this Student',
           ToastAndroid.SHORT,
         );
         return;

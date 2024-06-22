@@ -5,12 +5,10 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
-  TextBase,
   ToastAndroid,
 } from 'react-native';
 import {SelectList} from 'react-native-dropdown-select-list';
 import API_URL from '../../apiConfig';
-import {black} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 import {useFocusEffect} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
 
@@ -54,10 +52,11 @@ const ProjectAllocation = props => {
           arid_no: member.user.student.arid_no,
           cgpa: member.user.student.cgpa,
           platform: member.user.platform,
+          status: member.user.status,
         }));
 
         setStudents(students);
-        console.log(students);
+        console.log('Students:', students);
 
         const prefsupervisors = data.supervisors.map(supervisor => ({
           supervisor_id: supervisor.supervisor_id,
@@ -195,6 +194,7 @@ const ProjectAllocation = props => {
       );
     }
   };
+
   return (
     <View
       style={{
@@ -215,7 +215,11 @@ const ProjectAllocation = props => {
           data={students}
           renderItem={({item, index}) => (
             <TouchableOpacity
-              style={[styles.itemContainer, {marginTop: index === 0 ? 20 : 0}]}>
+              style={[
+                styles.itemContainer,
+                {marginTop: index === 0 ? 20 : 0},
+                item.status === false && styles.highlightedItem,
+              ]}>
               <View style={styles.itemContent}>
                 <View style={styles.column}>
                   <Text style={styles.boldText}>{item.student_name}</Text>
@@ -230,7 +234,7 @@ const ProjectAllocation = props => {
               </View>
             </TouchableOpacity>
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.arid_no} // Use unique key extractor
         />
         <Text style={{color: 'black', fontSize: 18}}>
           Supervisor Preferences:
@@ -247,7 +251,7 @@ const ProjectAllocation = props => {
               </View>
             </TouchableOpacity>
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.supervisor_id.toString()}
         />
 
         <View style={[styles.selectContainer]}>
@@ -328,6 +332,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: 300,
   },
+  highlightedItem: {
+    backgroundColor: '#CB7F7F', // Set the background color for highlighted items
+  },
   selectContainer: {
     marginTop: 10,
     width: '60%',
@@ -362,9 +369,8 @@ const styles = StyleSheet.create({
     height: 40,
     width: 130,
     alignItems: 'center',
-
-    marginTop: 50,
-    marginBottom: 50,
+    marginTop: 20,
+    marginBottom: 20,
   },
   buttonText: {
     color: 'black',

@@ -60,12 +60,19 @@ const CommitteeProjectDetails = ({route}) => {
   };
   const handleViewTaskPress = item => {
     // Navigate to 'uploadtask' screen and pass item data
-    navigation.navigate('Uploaded Tasks', {Groupdata: supervisor});
+    navigation.navigate('Uploaded Tasks', {
+      Groupdata: supervisor,
+      data: projectData,
+    });
   };
 
   const handleViewCommentPress = item => {
     // Navigate to 'uploadtask' screen and pass item data
     navigation.navigate('Comments', {Data: projectData});
+  };
+  const handleViewTaskCommentsPress = item => {
+    // Navigate to 'uploadtask' screen and pass item data
+    navigation.navigate('taskComments', {Data: projectData});
   };
 
   const navigation = useNavigation();
@@ -165,7 +172,22 @@ const CommitteeProjectDetails = ({route}) => {
             alignSelf: 'center',
           }}
           onPress={() => handleViewCommentPress(projectData)}>
-          <Text style={styles.buttonText}>View Comment</Text>
+          <Text style={styles.buttonText}>View Meet Comments</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            marginBottom: 20,
+            backgroundColor: '#D9D9D9',
+            padding: 8,
+            borderRadius: 40,
+            height: 60,
+            width: 300,
+            alignItems: 'center',
+            alignContent: 'center',
+            alignSelf: 'center',
+          }}
+          onPress={() => handleViewTaskCommentsPress(projectData)}>
+          <Text style={styles.buttonText}>View Task Comments</Text>
         </TouchableOpacity>
       </View>
     </View>

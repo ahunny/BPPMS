@@ -55,38 +55,6 @@ const Dashboardscreens = props => {
             borderRadius: 20,
             width: '90%',
             height: '14%',
-            marginTop: 10,
-          }}
-          onPress={() =>
-            props.navigation.navigate('FypGroups', {
-              fyptype: 'fyp-0',
-            })
-          }>
-          <View
-            style={{
-              flexDirection: 'row',
-              padding: 10,
-            }}>
-            <View
-              style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
-              <Image
-                source={require('./Assets/icons8-group-30.png')} // Provide the local image path
-                style={{width: 50, height: 40}} // Set the width and height of the image
-              />
-              <Text style={{color: 'black', fontSize: 16}}>
-                {' '}
-                {'FYP-0 GROUPS'}
-              </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            elevation: 5,
-            backgroundColor: 'lightgrey',
-            borderRadius: 20,
-            width: '90%',
-            height: '14%',
             marginTop: 15,
           }}
           onPress={() =>
@@ -195,7 +163,38 @@ const Dashboardscreens = props => {
                 source={require('./Assets/icons8-grades-48.png')} // Provide the local image path
                 style={{width: 40, height: 40}} // Set the width and height of the image
               />
-              <Text style={{color: 'black', fontSize: 16}}> {'Grading'}</Text>
+              <Text style={{color: 'black', fontSize: 16}}>
+                {' '}
+                {'Grading & Progress'}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            elevation: 5,
+            backgroundColor: 'lightgrey',
+            borderRadius: 20,
+            width: '90%',
+            height: '14%',
+            marginTop: 10,
+          }}
+          onPress={() => props.navigation.navigate('enrolStudents')}>
+          <View
+            style={{
+              flexDirection: 'row',
+              padding: 10,
+            }}>
+            <View
+              style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
+              <Image
+                source={require('./Assets/icons8-group-30.png')} // Provide the local image path
+                style={{width: 50, height: 40}} // Set the width and height of the image
+              />
+              <Text style={{color: 'black', fontSize: 16}}>
+                {' '}
+                {'Enrolled Students'}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -208,8 +207,7 @@ const Dashboardscreens = props => {
             height: '14%',
             marginTop: 15,
           }}
-          //onPress={() => props.navigation.navigate('RestrictedStudents')}
-        >
+          onPress={() => props.navigation.navigate('RestrictedStudents')}>
           <View
             style={{
               flexDirection: 'row',

@@ -46,7 +46,7 @@ const Dashboardscreens = props => {
           marginTop: 10,
           borderRadius: 20,
         }}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             elevation: 5,
             backgroundColor: 'lightgrey',
@@ -78,14 +78,14 @@ const Dashboardscreens = props => {
               </Text>
             </View>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={{
             elevation: 5,
             backgroundColor: 'lightgrey',
             borderRadius: 20,
             width: '90%',
-            height: '15%',
+            height: '16%',
             marginTop: 15,
           }}
           onPress={() =>
@@ -119,7 +119,7 @@ const Dashboardscreens = props => {
             backgroundColor: 'lightgrey',
             borderRadius: 20,
             width: '90%',
-            height: '15%',
+            height: '16%',
             marginTop: 15,
           }}
           onPress={() =>
@@ -153,7 +153,7 @@ const Dashboardscreens = props => {
             backgroundColor: 'lightgrey',
             borderRadius: 20,
             width: '90%',
-            height: '15%',
+            height: '16%',
             marginTop: 15,
           }}
           onPress={() =>
@@ -180,11 +180,10 @@ const Dashboardscreens = props => {
             backgroundColor: 'lightgrey',
             borderRadius: 20,
             width: '90%',
-            height: '15%',
+            height: '16%',
             marginTop: 15,
           }}
-          // onPress={() => props.navigation.navigate('Fyp Groups')}
-        >
+          onPress={() => props.navigation.navigate('RestrictedStudents')}>
           <View
             style={{
               flexDirection: 'row',
@@ -198,6 +197,34 @@ const Dashboardscreens = props => {
               />
               <Text style={{color: 'black', fontSize: 16}}>
                 {'Restricted Students'}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            elevation: 5,
+            backgroundColor: 'lightgrey',
+            borderRadius: 20,
+            width: '90%',
+            height: '16%',
+            marginTop: 20,
+          }}
+          onPress={() => props.navigation.navigate('Supgraph', {userid})}>
+          <View
+            style={{
+              flexDirection: 'row',
+              padding: 10,
+            }}>
+            <View
+              style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
+              <Image
+                source={require('./Assets/icons8-graph-50.png')} // Provide the local image path
+                style={{width: 50, height: 50, marginTop: 10}} // Set the width and height of the image
+              />
+              <Text style={{color: 'black', fontSize: 16}}>
+                {' '}
+                {'View Progress'}
               </Text>
             </View>
           </View>

@@ -11,10 +11,13 @@ import {
 import RNFetchBlob from 'rn-fetch-blob';
 import DocumentPicker from 'react-native-document-picker';
 import API_URL from '../../apiConfig';
+import {useNavigation} from '@react-navigation/native';
 
 const Viewtask = ({route}) => {
   const {Taskdata} = route.params;
   console.log(Taskdata);
+  const {data} = route.params;
+  console.log(data);
 
   const downloadFile = async () => {
     const fileName = Taskdata.submittedFile;
@@ -78,6 +81,15 @@ const Viewtask = ({route}) => {
       ToastAndroid.show('Download Failed.', ToastAndroid.SHORT);
     }
   };
+  const navigation = useNavigation();
+
+  const handleAddremarksPress = item => {
+    // Navigate to 'uploadtask' screen and pass item data
+    navigation.navigate('AddTaskremarks', {
+      Taskdata: Taskdata,
+      data: data,
+    });
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: '#74A2A8'}}>
@@ -128,7 +140,7 @@ const Viewtask = ({route}) => {
 
           <TouchableOpacity
             style={styles.submitButton}
-            onPress={() => props.navigation.navigate('Add Remarks')}>
+            onPress={() => handleAddremarksPress()}>
             <Text style={styles.buttonText}>Add Remarks</Text>
           </TouchableOpacity>
         </View>
