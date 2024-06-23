@@ -1,14 +1,15 @@
 import React, {useCallback, useState} from 'react';
 import {Alert, StyleSheet, ToastAndroid, View} from 'react-native';
-import {GiftedChat, Bubble, InputToolbar} from 'react-native-gifted-chat';
-import API_URL from '../apiConfig';
+import {GiftedChat, Bubble, InputToolbar, Send} from 'react-native-gifted-chat';
 import {useFocusEffect} from '@react-navigation/native';
+import {IconButton} from 'react-native-paper'; // Import IconButton from react-native-paper
+import API_URL from '../apiConfig';
 
 const Chat = props => {
   const {userid} = props.route.params; // Get userid from route params
   console.log(userid);
   const {Data} = props.route.params;
-  receiverid = Data.GroupId;
+  const receiverid = Data.GroupId;
 
   console.log('id', receiverid);
 
@@ -166,6 +167,17 @@ const Chat = props => {
     );
   };
 
+  // Custom renderSend function to replace text with an icon
+  const renderSend = props => {
+    return (
+      <Send {...props}>
+        <View style={styles.sendingContainer}>
+          <IconButton icon="send" size={25} color="#0A3BEE" />
+        </View>
+      </Send>
+    );
+  };
+
   const user = {
     _id: userid, // Use the sender's ID from props
     name,
@@ -182,6 +194,7 @@ const Chat = props => {
         renderUsernameOnMessage
         renderBubble={renderBubble} // Use custom bubble render
         renderInputToolbar={renderInputToolbar} // Use custom input toolbar
+        renderSend={renderSend} // Use custom send button
       />
     </View>
   );
@@ -203,6 +216,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgrey',
     color: 'black',
     padding: 5,
+  },
+  sendingContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 20,
+    marginTop: 10,
   },
 });
 

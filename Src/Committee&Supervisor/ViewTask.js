@@ -23,6 +23,7 @@ const Viewtask = ({route}) => {
     const fileName = Taskdata.submittedFile;
     const dirs = RNFetchBlob.fs.dirs;
     const downloadDir = dirs.DownloadDir;
+
     const getMimeType = fileName => {
       const extension = fileName.split('.').pop().toLowerCase();
       switch (extension) {
@@ -38,11 +39,11 @@ const Viewtask = ({route}) => {
           return 'application/octet-stream'; // Default for binary data
       }
     };
+
     const mimeType = getMimeType(fileName);
 
     try {
       const folderPath = `${downloadDir}/TaskFiles`;
-
       // Check if the folder exists, create it if not
       const isFolderExists = await RNFetchBlob.fs.isDir(folderPath);
       if (!isFolderExists) {
@@ -75,6 +76,10 @@ const Viewtask = ({route}) => {
         .then(res => {
           ToastAndroid.show('Download Successful.', ToastAndroid.SHORT);
           console.log('The file saved to ', res.path());
+        })
+        .catch(error => {
+          console.error('Download failed:', error);
+          ToastAndroid.show('Download Failed.', ToastAndroid.SHORT);
         });
     } catch (error) {
       console.error('Download failed:', error);

@@ -116,12 +116,16 @@ const GraphRepr = () => {
         .padStart(2, '0');
       return `#47FF59${hexOpacity}`;
     },
-    strokeWidth: 2, // optional, default 3
+    strokeWidth: 2,
     barPercentage: 0.5,
-    useShadowColorFromDataset: false, // optional
+    useShadowColorFromDataset: false,
     propsForBackgroundLines: {
-      strokeDasharray: '', // solid background lines with no dashes
+      strokeDasharray: '',
     },
+    yAxisLabel: '',
+    yAxisSuffix: '',
+    yAxisInterval: 20,
+    formatYLabel: yValue => `${yValue}`,
   };
 
   const cumulativeScores = calculateCumulativeScores();
@@ -178,7 +182,7 @@ const GraphRepr = () => {
           data={data}
           width={screenWidth}
           height={300}
-          yAxisLabel=""
+          yAxisLabel="%"
           yAxisSuffix=""
           yAxisInterval={20} // interval of 20
           chartConfig={chartConfig}
