@@ -182,8 +182,8 @@ const GraphRepr = () => {
           data={data}
           width={screenWidth}
           height={300}
-          yAxisLabel="%"
-          yAxisSuffix=""
+          yAxisLabel=""
+          yAxisSuffix="%"
           yAxisInterval={20} // interval of 20
           chartConfig={chartConfig}
           bezier

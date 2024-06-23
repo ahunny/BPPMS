@@ -45,10 +45,9 @@ const Dashboardscreens = props => {
           height: '15%',
           marginTop: 50,
         }}
-        // onPress={() =>
-        //   props.navigation.navigate('GroupDetails', {userid: userid})
-        // }
-      >
+        onPress={() =>
+          props.navigation.navigate('GroupDetails', {userid: userid})
+        }>
         <View
           style={{
             flexDirection: 'row',

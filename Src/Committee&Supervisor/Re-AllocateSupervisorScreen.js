@@ -37,6 +37,7 @@ const ProjectDetails = ({route}) => {
       if (response.ok) {
         const data = await response.json();
         setStudents(data);
+        console.log(data);
       } else {
         throw new Error('Failed to fetch student data');
       }
@@ -79,13 +80,7 @@ const ProjectDetails = ({route}) => {
       fetchSupervisors();
     }, []),
   );
-  useEffect(() => {
-    const fetchData = async () => {
-      await fetchStudents(groupid);
-    };
 
-    fetchData();
-  }, [groupid]);
   // const HandleAssignSupervisor = () => {
   //   ToastAndroid.show('New Supervisor Assigned', ToastAndroid.SHORT);
   // };
@@ -151,7 +146,7 @@ const ProjectDetails = ({route}) => {
         <FlatList
           data={students}
           renderItem={({item, index}) => (
-            <TouchableOpacity
+            <View
               style={[styles.itemContainer, {marginTop: index === 0 ? 20 : 0}]}>
               <View style={styles.itemContent}>
                 <View style={styles.column}>
@@ -164,10 +159,11 @@ const ProjectDetails = ({route}) => {
                   </Text>
                 </View>
               </View>
-            </TouchableOpacity>
+            </View>
           )}
           keyExtractor={item => item.id}
         />
+
         <View style={[styles.selectContainer]}>
           <Text style={[styles.boldText, {alignSelf: 'center'}]}>
             Re-Allocate Supervisor

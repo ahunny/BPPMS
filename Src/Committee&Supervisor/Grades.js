@@ -51,8 +51,8 @@ const StudentGrades = () => {
         `${API_URL}/Grading/GetCalculatedGrades?student_id=${selectedStudent}`,
       );
       const data = await response.json();
-      setGrades(data.Grades);
-      setScores(data.Scores);
+      setGrades(data.Grades || '');
+      setScores(data.Scores || []);
     } catch (error) {
       ToastAndroid.show('Error fetching Grades', ToastAndroid.SHORT);
       console.error('Error fetching Grades:', error);
@@ -121,31 +121,62 @@ const StudentGrades = () => {
             inputStyles={styles.selectListInput}
           />
         </View>
-        {scores.map((scoreItem, index) => (
-          <View
-            key={scoreItem.ScoreId}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginTop: 20,
-            }}>
-            <View
-              style={{
-                backgroundColor: '#D9D9D9',
-                width: 200,
-                height: 50,
-                borderRadius: 10,
-                justifyContent: 'center',
-              }}>
-              <Text
+        {scores.length > 0
+          ? scores.map(scoreItem => (
+              <View
+                key={scoreItem.ScoreId}
                 style={{
-                  color: 'black',
-                  fontSize: 20,
-                  alignSelf: 'center',
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  marginTop: 20,
                 }}>
-                {scoreItem.Criteria}
+                <View
+                  style={{
+                    backgroundColor: '#D9D9D9',
+                    width: 200,
+                    height: 50,
+                    borderRadius: 10,
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: 'black',
+                      fontSize: 20,
+                      alignSelf: 'center',
+                    }}>
+                    {scoreItem.Criteria}
+                  </Text>
+                </View>
+                <Text
+                  style={{
+                    backgroundColor: '#D9D9D9',
+                    width: 100,
+                    height: 50,
+                    borderRadius: 10,
+                    color: 'black',
+                    textAlign: 'center',
+                    textAlignVertical: 'center',
+                    marginLeft: 10,
+                  }}>
+                  {scoreItem.AverageScore + '/' + scoreItem.ScoreWeight}
+                </Text>
+              </View>
+            ))
+          : selectedStudent && (
+              <Text style={styles.noGradesText}>
+                This student is not yet graded.
               </Text>
-            </View>
+            )}
+        {grades ? (
+          <>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 20,
+                marginTop: 20,
+              }}>
+              Cumulative Grade:
+            </Text>
             <Text
               style={{
                 backgroundColor: '#D9D9D9',
@@ -155,33 +186,12 @@ const StudentGrades = () => {
                 color: 'black',
                 textAlign: 'center',
                 textAlignVertical: 'center',
-                marginLeft: 10,
+                marginTop: 10,
               }}>
-              {scoreItem.AverageScore + '/' + scoreItem.ScoreWeight}
+              {grades}
             </Text>
-          </View>
-        ))}
-        <Text
-          style={{
-            color: 'black',
-            fontSize: 20,
-            marginTop: 20,
-          }}>
-          Cumulative Grade:
-        </Text>
-        <Text
-          style={{
-            backgroundColor: '#D9D9D9',
-            width: 100,
-            height: 50,
-            borderRadius: 10,
-            color: 'black',
-            textAlign: 'center',
-            textAlignVertical: 'center',
-            marginTop: 10,
-          }}>
-          {grades}
-        </Text>
+          </>
+        ) : null}
       </View>
     </View>
   );
@@ -257,5 +267,11 @@ const styles = StyleSheet.create({
     width: 110,
     top: 35,
   },
+  noGradesText: {
+    color: 'black',
+    fontSize: 18,
+    marginTop: 20,
+  },
 });
+
 export default StudentGrades;

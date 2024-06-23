@@ -1,5 +1,4 @@
-import {useFocusEffect} from '@react-navigation/native';
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,18 +7,16 @@ import {
   FlatList,
   ToastAndroid,
   ScrollView,
-  Alert,
 } from 'react-native';
-import {SelectList} from 'react-native-dropdown-select-list';
+import {useFocusEffect} from '@react-navigation/native';
 import API_URL from '../../apiConfig';
 
 const GroupDetail = props => {
-  const userid = props.route.params;
-  const user_id = userid;
-  console.log(user_id);
+  const {userid} = props.route.params;
   const [users, setUsers] = useState([]);
+  const [projectTitle, setProjectTitle] = useState('');
 
-  const fetchGroupDetails = async () => {
+  const fetchGroupDetails = useCallback(async () => {
     try {
       const response = await fetch(
         `${API_URL}/Groups/GetGroupDetails?student_id=${userid}`,
@@ -27,9 +24,8 @@ const GroupDetail = props => {
       const data = await response.json();
 
       if (response.ok) {
-        const members = data.members || [];
-        const userList = members.map(member => member.user);
-        setUsers(userList);
+        setUsers(data.members || []);
+        setProjectTitle(data.projectdetail?.project_title || '');
       } else {
         throw new Error(data);
       }
@@ -37,41 +33,54 @@ const GroupDetail = props => {
       ToastAndroid.show('Error fetching Group Details', ToastAndroid.SHORT);
       console.error('Error fetching Group Details:', error);
     }
-  };
+  }, [userid]);
 
   useFocusEffect(
     useCallback(() => {
       fetchGroupDetails();
-    }, []),
+    }, [fetchGroupDetails]),
   );
 
   return (
     <View style={styles.container}>
+      <View style={styles.title}>
+        <Text
+          style={{
+            color: 'black',
+            marginTop: 7,
+            fontSize: 20,
+            fontWeight: 'bold',
+          }}>
+          {projectTitle}
+        </Text>
+      </View>
       <FlatList
         data={users}
         renderItem={({item}) => (
           <ScrollView style={{marginTop: 20}}>
-            <TouchableOpacity style={styles.itemContainer}>
+            <View style={styles.itemContainer}>
               <View style={styles.itemContent}>
                 <View style={styles.column}>
                   <Text style={styles.boldText}>
-                    {item.student.student_name}
+                    {item.user.student.student_name}
                   </Text>
-                  <Text style={{color: 'black'}}>{item.student.arid_no}</Text>
+                  <Text style={{color: 'black'}}>
+                    {item.user.student.arid_no}
+                  </Text>
                 </View>
                 <View style={styles.column}>
                   <Text style={{color: 'black'}}>
-                    {'Cgpa: ' + item.student.cgpa}
+                    {'CGPA: ' + item.user.student.cgpa}
                   </Text>
                   <Text style={{color: 'black'}}>
-                    {'Platform: ' + item.platform}
+                    {'Platform: ' + item.user.platform}
                   </Text>
                 </View>
               </View>
-            </TouchableOpacity>
+            </View>
           </ScrollView>
         )}
-        keyExtractor={item => item.id} // Assuming 'id' is unique for each user
+        keyExtractor={item => item.id.toString()} // Assuming 'id' is unique for each user
       />
     </View>
   );
@@ -83,14 +92,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#74A2A8',
     paddingHorizontal: 20,
   },
+  title: {
+    elevation: 5,
+    backgroundColor: 'lightgrey',
+    borderRadius: 10,
+    width: '100%',
+    height: 40,
+    marginTop: 20,
+    alignItems: 'center',
+  },
   itemContainer: {
     elevation: 5,
     backgroundColor: 'lightgrey',
     borderRadius: 10,
     width: '100%',
-  },
-  selectContainer: {
-    marginTop: 10,
   },
   itemContent: {
     flexDirection: 'row',
@@ -104,30 +119,6 @@ const styles = StyleSheet.create({
   },
   column: {
     flexDirection: 'column',
-  },
-
-  selectListStyle: {
-    backgroundColor: '#E5E5E5',
-    borderColor: '#E5E5E5',
-    borderRadius: 20,
-    width: 220,
-    height: 50,
-  },
-  selectListInput: {color: 'black', fontSize: 18},
-  button: {
-    backgroundColor: '#D9D9D9',
-    padding: 8,
-    borderRadius: 40,
-    height: 40,
-    width: 140,
-    alignItems: 'center',
-    alignSelf: 'flex-end',
-    marginTop: 50,
-    marginBottom: 50,
-  },
-  buttonText: {
-    color: 'black',
-    fontSize: 16,
   },
 });
 

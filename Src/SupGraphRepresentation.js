@@ -194,7 +194,7 @@ const SupGraphRepr = props => {
           width={screenWidth}
           height={300}
           yAxisLabel=""
-          yAxisSuffix=""
+          yAxisSuffix="%"
           yAxisInterval={20} // interval of 20
           chartConfig={chartConfig}
           bezier

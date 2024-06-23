@@ -141,11 +141,10 @@ const SetGrades = props => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Error submitting preferences:', errorData);
         setLoading(false); // Reset loading state on error
         ToastAndroid.show(
           errorData?.message ||
-            'Error submitting preferences. Please try again.',
+            'Student has already been graded against this score Criteria.',
           ToastAndroid.SHORT,
         );
         return;
@@ -159,7 +158,6 @@ const SetGrades = props => {
     } catch (error) {
       console.error('Error:', error);
       setLoading(false); // Reset loading state on error
-      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
     }
   };
 
