@@ -39,8 +39,10 @@ const ReAllocateSupervisor = ({navigation}) => {
   const handleSearch = text => {
     setSearchQuery(text);
     // Filter project list based on search query
-    const filteredProjects = projectList.filter(project =>
-      project.project_title.toLowerCase().includes(text.toLowerCase()),
+    const filteredProjects = projectList.filter(
+      project =>
+        project.name.toLowerCase().includes(text.toLowerCase()) ||
+        project.project_title.toLowerCase().includes(text.toLowerCase()),
     );
     setFilteredProjectList(filteredProjects);
   };

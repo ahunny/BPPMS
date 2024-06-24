@@ -21,6 +21,8 @@ const StudentGrades = () => {
         key: item.project_id.toString(),
         value: item.project_title,
       }));
+      console.log(data);
+
       setProjectList(formattedData);
     } catch (error) {
       ToastAndroid.show('Error fetching Projects', ToastAndroid.SHORT);
@@ -48,7 +50,7 @@ const StudentGrades = () => {
   const fetchGrades = async () => {
     try {
       const response = await fetch(
-        `${API_URL}/Grading/GetCalculatedGrades?student_id=${selectedStudent}`,
+        `${API_URL}/Grading/GetGradesforGraph?student_id=${selectedStudent}`,
       );
       const data = await response.json();
       setGrades(data.Grades || '');

@@ -1,5 +1,4 @@
-import {useFocusEffect} from '@react-navigation/native';
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,12 +7,12 @@ import {
   FlatList,
   ToastAndroid,
   ScrollView,
-  Alert,
 } from 'react-native';
 import {TextInput} from 'react-native-paper'; // Import for Search Input
+import {useFocusEffect} from '@react-navigation/native';
 import API_URL from '../../apiConfig';
 
-const DropStudent = props => {
+const DropStudent = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [studentList, setStudentList] = useState([]);
@@ -22,7 +21,7 @@ const DropStudent = props => {
 
   const fetchDroppedStudents = async () => {
     try {
-      const response = await fetch(`${API_URL}/DataCell/GetDroppedStudents?`);
+      const response = await fetch(`${API_URL}/DataCell/GetDroppedStudents`);
       const data = await response.json();
       setStudentList(data);
       setFilteredStudentList(data); // Set initial filtered list to all students
@@ -49,6 +48,44 @@ const DropStudent = props => {
     setFilteredStudentList(filteredData);
   };
 
+  const handleEnroll = async student => {
+    const enroll = true;
+    const data = {
+      student_id: student.student_id,
+      status: enroll,
+    };
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(`${API_URL}/DataCell/EnrollStudent`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setLoading(false);
+        ToastAndroid.show(
+          errorData?.message || 'Failed to enroll student',
+          ToastAndroid.SHORT,
+        );
+        return;
+      }
+
+      const responseData = await response.json();
+      ToastAndroid.show('Enrolled Successfully', ToastAndroid.SHORT);
+      setLoading(false);
+      fetchDroppedStudents(); // Refresh the list after enrollment
+    } catch (error) {
+      setLoading(false);
+      console.error('Failed to enroll student:', error);
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       fetchDroppedStudents();
@@ -57,7 +94,7 @@ const DropStudent = props => {
 
   return (
     <View style={styles.container}>
-      <TextInput // Search Input
+      <TextInput
         label="Search Students"
         value={searchText}
         onChangeText={handleSearch}
@@ -75,15 +112,20 @@ const DropStudent = props => {
                   </Text>
                   <Text style={{color: 'black'}}>{'Cgpa: ' + item.cgpa}</Text>
                 </View>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => handleEnroll(item)}>
+                  <Text style={styles.buttonText}>Enroll</Text>
+                </TouchableOpacity>
               </View>
             </TouchableOpacity>
           </ScrollView>
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.student_id} // Ensure key is string
         refreshing={refreshing}
         onRefresh={() => {
           setRefreshing(true);
-          fetchStudents();
+          fetchDroppedStudents();
         }}
       />
     </View>
@@ -106,9 +148,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: '100%',
   },
-  selectContainer: {
-    marginTop: 10,
-  },
   itemContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -122,25 +161,10 @@ const styles = StyleSheet.create({
   column: {
     flexDirection: 'column',
   },
-
-  selectListStyle: {
-    backgroundColor: '#E5E5E5',
-    borderColor: '#E5E5E5',
-    borderRadius: 20,
-    width: 220,
-    height: 50,
-  },
-  selectListInput: {color: 'black', fontSize: 18},
   button: {
     backgroundColor: '#D9D9D9',
     padding: 8,
-    borderRadius: 40,
-    height: 40,
-    width: 130,
-    alignItems: 'center',
-    alignSelf: 'flex-end',
-    marginTop: 50,
-    marginBottom: 50,
+    borderRadius: 20,
   },
   buttonText: {
     color: 'black',

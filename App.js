@@ -64,6 +64,8 @@ import ViewTaskComments from './Src/Committee&Supervisor/ViewTaskComments';
 import ViewsupTaskComments from './Src/Committee&Supervisor/ViewSupTaskComment';
 import GraphRepr from './Src/GraphRepresentation';
 import SupGraphRepr from './Src/SupGraphRepresentation';
+import MarkAttendance from './Src/Committee&Supervisor/MarkAttendance';
+import AddProject from './Src/Committee&Supervisor/AddProject';
 
 const Stack = createNativeStackNavigator();
 
@@ -401,6 +403,16 @@ const App = () => {
           name="Supgraph"
           component={SupGraphRepr}
           options={{title: 'Project Progress'}}
+        />
+        <Stack.Screen
+          name="markattendance"
+          component={MarkAttendance}
+          options={{title: 'Attendance'}}
+        />
+        <Stack.Screen
+          name="Addproject"
+          component={AddProject}
+          options={{title: 'Add New Project'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

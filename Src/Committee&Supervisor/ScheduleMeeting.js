@@ -89,7 +89,9 @@ const ScheduleMeeting = () => {
 
   const fetchCriteria = async () => {
     try {
-      const response = await fetch(`${API_URL}/Grading/GetMeetCriteria`);
+      const response = await fetch(
+        `${API_URL}/Grading/GetMeetCriteria?fyptype=${FypGroup}`,
+      );
       const data = await response.json();
       const formattedData = data.map(item => ({
         key: item.score_id.toString(),
@@ -107,8 +109,10 @@ const ScheduleMeeting = () => {
   };
 
   useEffect(() => {
-    fetchCriteria();
-  }, []);
+    if (FypGroup) {
+      fetchCriteria();
+    }
+  }, [FypGroup]);
 
   const handleDateChange = (event, date) => {
     setShowDatePicker(false);

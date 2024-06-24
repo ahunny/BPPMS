@@ -31,18 +31,18 @@ var roles;
 
 const Dashboardscreens = props => {
   return (
-    <View
+    <ScrollView
       style={{
-        flex: 1,
+        // flex: 1,
         backgroundColor: '#74A2A8',
-        alignItems: 'center',
+        // alignItems: 'center',
         flexDirection: 'column',
       }}>
       <View
         style={{
           backgroundColor: '#C0C0C0',
           width: '93%',
-          height: '97%',
+          height: '100%',
           alignSelf: 'center',
           alignItems: 'center',
           marginTop: 10,
@@ -54,7 +54,7 @@ const Dashboardscreens = props => {
             backgroundColor: 'lightgrey',
             borderRadius: 20,
             width: '90%',
-            height: '14%',
+            height: '12%',
             marginTop: 15,
           }}
           onPress={() =>
@@ -87,7 +87,7 @@ const Dashboardscreens = props => {
             backgroundColor: 'lightgrey',
             borderRadius: 20,
             width: '90%',
-            height: '14%',
+            height: '12%',
             marginTop: 15,
           }}
           onPress={() =>
@@ -119,7 +119,7 @@ const Dashboardscreens = props => {
             backgroundColor: 'lightgrey',
             borderRadius: 20,
             width: '90%',
-            height: '14%',
+            height: '12%',
             marginTop: 15,
           }}
           onPress={() => props.navigation.navigate('ReAllocation')}>
@@ -148,7 +148,7 @@ const Dashboardscreens = props => {
             backgroundColor: 'lightgrey',
             borderRadius: 20,
             width: '90%',
-            height: '14%',
+            height: '12%',
             marginTop: 15,
           }}
           onPress={() => props.navigation.navigate('Grading', {userid, roles})}>
@@ -176,7 +176,7 @@ const Dashboardscreens = props => {
             backgroundColor: 'lightgrey',
             borderRadius: 20,
             width: '90%',
-            height: '14%',
+            height: '12%',
             marginTop: 10,
           }}
           onPress={() => props.navigation.navigate('enrolStudents')}>
@@ -204,7 +204,7 @@ const Dashboardscreens = props => {
             backgroundColor: 'lightgrey',
             borderRadius: 20,
             width: '90%',
-            height: '14%',
+            height: '12%',
             marginTop: 15,
           }}
           onPress={() => props.navigation.navigate('RestrictedStudents')}>
@@ -226,8 +226,36 @@ const Dashboardscreens = props => {
             </View>
           </View>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            elevation: 5,
+            backgroundColor: 'lightgrey',
+            borderRadius: 20,
+            width: '90%',
+            height: '12%',
+            marginTop: 15,
+          }}
+          onPress={() => props.navigation.navigate('Addproject')}>
+          <View
+            style={{
+              flexDirection: 'row',
+              padding: 10,
+            }}>
+            <View
+              style={{flexDirection: 'column', alignItems: 'center', flex: 1}}>
+              <Image
+                source={require('./Assets/icons8-add-50.png')} // Provide the local image path
+                style={{width: 40, height: 40}} // Set the width and height of the image
+              />
+              <Text style={{color: 'black', fontSize: 16}}>
+                {' '}
+                {'Add Project'}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

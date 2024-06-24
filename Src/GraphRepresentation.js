@@ -5,8 +5,9 @@ import {
   View,
   Dimensions,
   SafeAreaView,
+  Text,
 } from 'react-native';
-import {LineChart} from 'react-native-chart-kit';
+import {BarChart} from 'react-native-chart-kit';
 import API_URL from '../apiConfig';
 import {SelectList} from 'react-native-dropdown-select-list';
 
@@ -14,7 +15,7 @@ const screenWidth = Dimensions.get('window').width;
 
 const GraphRepr = () => {
   const [criteria, setCriteria] = useState([]);
-  const [averageScores, setAverageScores] = useState([]);
+  const [percentageScores, setPercentageScores] = useState([]);
   const [selectedProject, setSelectedProject] = useState('');
   const [selectedStudent, setSelectedStudent] = useState('');
   const [ProjectList, setProjectList] = useState([]);
@@ -22,7 +23,7 @@ const GraphRepr = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch(`${API_URL}/Groups/GetProjects?`);
+      const response = await fetch(`${API_URL}/Groups/GetProjects`);
       const data = await response.json();
       const formattedData = data.map(item => ({
         key: item.project_id.toString(),
@@ -65,24 +66,31 @@ const GraphRepr = () => {
   const fetchGrades = async () => {
     try {
       const response = await fetch(
-        `${API_URL}/Grading/GetCalculatedGrades?student_id=${selectedStudent}`,
+        `${API_URL}/Grading/GetGradesforGraph?student_id=${selectedStudent}`,
       );
       const data = await response.json();
       console.log(data);
-
       if (Array.isArray(data.Scores)) {
-        const criteria = data.Scores.map(score => score.Criteria);
-        const averageScores = data.Scores.map(score => score.AverageScore);
+        const criteria = [];
+        const percentageScores = [];
+
+        data.Scores.forEach(score => {
+          const key = score.Criteria;
+          const percentage = (score.AverageScore / score.ScoreWeight) * 100;
+          criteria.push(key);
+          percentageScores.push(percentage.toFixed(2)); // Round to two decimal places
+        });
+
         setCriteria(criteria);
-        setAverageScores(averageScores);
+        setPercentageScores(percentageScores);
       } else {
         setCriteria([]);
-        setAverageScores([]);
+        setPercentageScores([]);
         ToastAndroid.show('No scores data found', ToastAndroid.SHORT);
       }
     } catch (error) {
       setCriteria([]);
-      setAverageScores([]);
+      setPercentageScores([]);
       ToastAndroid.show('Error fetching grades', ToastAndroid.SHORT);
       console.error('Error fetching grades:', error);
     }
@@ -94,49 +102,49 @@ const GraphRepr = () => {
     }
   }, [selectedStudent]);
 
-  // Function to calculate cumulative scores
-  const calculateCumulativeScores = () => {
-    if (averageScores.length === 0) return [0];
-
-    let cumulativeSum = 0;
-    return averageScores.map(score => {
-      cumulativeSum += score;
-      return cumulativeSum;
-    });
-  };
-
   const chartConfig = {
     backgroundGradientFrom: '#1E2923',
     backgroundGradientFromOpacity: 0.5,
     backgroundGradientTo: '#08130D',
     backgroundGradientToOpacity: 0.5,
-    color: (opacity = 1) => {
-      const hexOpacity = Math.round(opacity * 255)
-        .toString(16)
-        .padStart(2, '0');
-      return `#47FF59${hexOpacity}`;
-    },
-    strokeWidth: 2,
+    color: (opacity = 1) => `rgba(71, 255, 89, ${opacity})`,
     barPercentage: 0.5,
     useShadowColorFromDataset: false,
     propsForBackgroundLines: {
       strokeDasharray: '',
     },
     yAxisLabel: '',
-    yAxisSuffix: '',
+    yAxisSuffix: '%',
     yAxisInterval: 20,
     formatYLabel: yValue => `${yValue}`,
+    decimalPlaces: 0, // ensure Y-axis labels are whole numbers
   };
 
-  const cumulativeScores = calculateCumulativeScores();
+  // Custom function to render labels at the end of each bar
+  const CustomBarLabel = ({data}) => {
+    return data.datasets.map((dataset, index) =>
+      dataset.data.map((value, i) => (
+        <Text
+          key={`${index}-${i}`}
+          style={{
+            textAlign: 'center',
+            color: 'white',
+            fontSize: 14,
+            fontWeight: 'bold',
+            marginTop: 8,
+          }}>
+          {value}%
+        </Text>
+      )),
+    );
+  };
 
   const data = {
     labels: criteria.length > 0 ? criteria : ['No Data'],
     datasets: [
       {
-        data: cumulativeScores.length > 0 ? cumulativeScores : [0],
-        strokeWidth: 2, // optional
-        color: (opacity = 1) => `rgba(71, 255, 89, ${opacity})`, // line color
+        data: percentageScores.length > 0 ? percentageScores : [0],
+        color: (opacity = 1) => `rgba(71, 255, 89, ${opacity})`,
       },
     ],
   };
@@ -178,20 +186,25 @@ const GraphRepr = () => {
         />
       </View>
       <View style={styles.container}>
-        <LineChart
+        <BarChart
           data={data}
           width={screenWidth}
           height={300}
           yAxisLabel=""
           yAxisSuffix="%"
-          yAxisInterval={20} // interval of 20
+          yAxisInterval={20}
           chartConfig={chartConfig}
-          bezier
-          fromZero // start the y-axis from zero
-          yLabelsOffset={10} // offset for the y-axis labels
-          verticalLabelRotation={10} // rotate x-axis labels if necessary
-          formatYLabel={yValue => `${yValue}`} // format Y-axis labels
-          segments={5} // Number of segments to divide the Y axis into (100 / 20 = 5 segments)
+          fromZero={true} // Ensure bars start from the bottom
+          yMin={0} // Ensure Y-axis starts from 0
+          yMax={100} // Ensure Y-axis ends at 100
+          yLabelsOffset={10}
+          verticalLabelRotation={10}
+          formatYLabel={yValue => `${yValue}`}
+          style={{
+            marginVertical: 8,
+            borderRadius: 16,
+          }}
+          renderBarLabel={CustomBarLabel} // Custom function to render labels at the end of each bar
         />
       </View>
     </SafeAreaView>

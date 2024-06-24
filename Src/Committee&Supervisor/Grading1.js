@@ -61,7 +61,7 @@ const Grading = props => {
           marginTop: 10,
           borderRadius: 20,
         }}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             elevation: 5,
             backgroundColor: 'lightgrey',
@@ -90,7 +90,7 @@ const Grading = props => {
               </Text>
             </View>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={{
             elevation: 5,

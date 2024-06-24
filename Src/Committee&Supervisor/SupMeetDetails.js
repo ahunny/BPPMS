@@ -70,6 +70,14 @@ const SupMeetDetails = ({route}) => {
     });
   };
 
+  const handleMarkAttendancePress = item => {
+    // Navigate to 'uploadtask' screen and pass item data
+    navigation.navigate('markattendance', {
+      MeetDetail: MeetDetails,
+      userid: userid,
+    });
+  };
+
   const navigation = useNavigation();
 
   return (
@@ -140,7 +148,7 @@ const SupMeetDetails = ({route}) => {
         </TouchableOpacity> */}
         <TouchableOpacity
           style={{
-            marginBottom: 300,
+            marginBottom: 30,
             backgroundColor: '#D9D9D9',
             padding: 8,
             borderRadius: 40,
@@ -152,6 +160,21 @@ const SupMeetDetails = ({route}) => {
           }}
           onPress={() => handleAddCommentPress(supervisor)}>
           <Text style={styles.buttonText}>Add Comment</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            marginBottom: 100,
+            backgroundColor: '#D9D9D9',
+            padding: 8,
+            borderRadius: 40,
+            height: 60,
+            width: 300,
+            alignItems: 'center',
+            alignContent: 'center',
+            alignSelf: 'center',
+          }}
+          onPress={() => handleMarkAttendancePress(supervisor)}>
+          <Text style={styles.buttonText}>Mark Attendance</Text>
         </TouchableOpacity>
       </View>
     </View>

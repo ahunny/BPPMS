@@ -72,6 +72,8 @@ const FypGroups = props => {
     const filtered = FilteredProjects.filter(
       project =>
         project?.ProjectTitle?.toLowerCase()?.includes(text.toLowerCase()) ||
+        project?.SupName?.toLowerCase()?.includes(text.toLowerCase()) ||
+        project?.Gender?.toLowerCase()?.includes(text.toLowerCase()) ||
         '',
     );
 
@@ -149,7 +151,7 @@ const FypGroups = props => {
                         color: 'black',
                         fontSize: 16,
                       }}>
-                      {item.ProjectTitle}
+                      {item.ProjectTitle + '  (' + item.FypType + ') '}
                     </Text>
                   </View>
                 </View>
