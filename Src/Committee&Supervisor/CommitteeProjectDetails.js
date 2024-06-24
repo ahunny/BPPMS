@@ -112,7 +112,7 @@ const CommitteeProjectDetails = ({route}) => {
               </View>
             </View>
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.arid_no}
         />
 
         <TouchableOpacity style={[styles.itemContainer]}>
